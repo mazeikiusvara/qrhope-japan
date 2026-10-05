@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Hope – スキャン情報</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-3 font-sans">
+
+  <div class="w-full max-w-sm bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
+    
+    <!-- SOS Medicininis Vaizdas -->
+    <div id="sosView" class="hidden">
+      <div class="bg-red-600 text-white p-5 text-center">
+        <div class="flex items-center justify-center gap-2 mb-1">
+          <i class="fa-solid fa-truck-medical text-2xl animate-pulse"></i>
+          <h2 class="text-xl font-black uppercase tracking-wider">緊急医療情報 (SOS)</h2>
+        </div>
+        <p class="text-[11px] text-red-100 uppercase tracking-widest font-bold">QR Hope 見守りシステム</p>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <div class="flex justify-between items-baseline border-b pb-3">
+          <div>
+            <span class="text-[10px] uppercase font-bold text-slate-400 block">氏名 (Vardas)</span>
+            <span class="text-2xl font-black text-slate-900" id="sosName">タナカ (Tanaka)</span>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] uppercase font-bold text-slate-400 block">年齢 (Amžius)</span>
+            <span class="text-base font-bold text-slate-700">72歳</span>
+          </div>
+        </div>
+
+        <div class="bg-red-50 border border-red-200 rounded-2xl p-3.5 space-y-2 text-xs">
+          <div class="flex justify-between">
+            <span class="text-slate-500 font-bold">血液型 (Kraujo grupė):</span>
+            <span class="font-black text-red-600">A型 Rh+</span>
+          </div>
+          <div class="flex justify-between border-t border-red-100 pt-2">
+            <span class="text-slate-500 font-bold">既往症 (Būklė):</span>
+            <span class="font-extrabold text-slate-900">糖尿病 (Diabetas I)</span>
+          </div>
+          <div class="border-t border-red-100 pt-2">
+            <span class="text-slate-500 font-bold block mb-1">留意点 (Pagalbos instrukcija):</span>
+            <span class="font-semibold text-slate-800">意識がない場合は無理に飲ませず、直ちに救急車(119)を呼んでください。</span>
+          </div>
+        </div>
+
+        <div class="space-y-2 pt-1">
+          <button onclick="simulateLineAlert('sos')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 px-4 rounded-2xl font-bold flex items-center justify-center gap-2 shadow text-sm">
+            <i class="fa-solid fa-phone-volume"></i>
+            <span>ご家族に連絡 (Skambinti artimajam)</span>
+          </button>
+          <button onclick="sendLocation()" class="w-full bg-slate-800 hover:bg-slate-900 text-white py-2.5 px-4 rounded-xl font-semibold flex items-center justify-center gap-2 text-xs">
+            <i class="fa-solid fa-location-arrow text-red-400"></i>
+            <span>現在地をご家族に送信 (Siųsti GPS vietą)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gyvūno / Daikto Vaizdas -->
+    <div id="petView" class="hidden">
+      <div class="bg-amber-500 text-slate-950 p-5 text-center">
+        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-2 text-2xl font-bold">
+          <i class="fa-solid fa-paw"></i>
+        </div>
+        <h2 class="text-xl font-black uppercase tracking-wide">迷子通知 (Aš pasiklydau!)</h2>
+        <p class="text-xs font-bold text-amber-950">飼い主を探しています</p>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <div class="text-center">
+          <h3 class="text-2xl font-black text-slate-900">ポチ (Pochi)</h3>
+          <p class="text-xs text-slate-500 mt-0.5">柴犬 (Shiba Inu) • 人懐っこい性格</p>
+          <div class="inline-block bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold px-3 py-1 rounded-full mt-2.5">
+            🎁 お礼金: 5,000 円 (Atlygis: 5,000 ¥)
+          </div>
+        </div>
+
+        <div class="space-y-2 pt-2">
+          <button onclick="simulateLineAlert('pet')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 px-4 rounded-2xl font-bold flex items-center justify-center gap-2 text-sm shadow">
+            <i class="fa-solid fa-phone"></i>
+            <span>飼い主に連絡 (Skambinti šeimininkui)</span>
+          </button>
+          <button onclick="sendLocation()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 py-3 px-4 rounded-2xl font-bold flex items-center justify-center gap-2 text-xs border">
+            <i class="fa-solid fa-location-dot text-red-500"></i>
+            <span>発見場所をLINEで通知 (Siųsti lokaciją)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-3 text-center border-t bg-slate-50">
+      <p class="text-[10px] text-slate-400">
+        <i class="fa-solid fa-shield-halved text-emerald-600 mr-0.5"></i>
+        プライバシー保護システム • 電話番号は非公開です
+      </p>
+    </div>
+
+  </div>
+
+  <script>
+    // Nuskaitome URL parametrus: ?type=sos arba ?type=pet
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type') || 'sos';
+
+    if (type === 'pet') {
+      document.getElementById('petView').classList.remove('hidden');
+    } else {
+      document.getElementById('sosView').classList.remove('hidden');
+    }
+
+    function simulateLineAlert(mode) {
+      alert("【QR Hope Proxy】\nSujungiama saugi telefono linija. Nei viena pusė nesužino tikrojo numerio!");
+    }
+
+    function sendLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(() => {
+          alert("【LINE Pranešimas】\nGPS koordinatės nustatytos! Savininkui tiesiai į LINE išsiųstas pranešimas su žemėlapio nuoroda.");
+        }, () => {
+          alert("Prašome leisti prieigą prie vietos nustatymo.");
+        });
+      }
+    }
+  </script>
+</body>
+</html>
