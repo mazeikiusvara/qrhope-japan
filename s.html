@@ -6,10 +6,26 @@
   <title>QR Hope – スキャン情報</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Supabase JS biblioteka -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-slate-100 min-h-screen flex items-center justify-center p-3 font-sans">
 
-  <div class="w-full max-w-sm bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
+  <!-- Krovimo indikatorius -->
+  <div id="loader" class="text-center py-10">
+    <i class="fa-solid fa-circle-notch fa-spin text-3xl text-emerald-600 mb-3"></i>
+    <p class="text-xs font-bold text-slate-500">データを読み込み中... (Kraunami duomenys...)</p>
+  </div>
+
+  <!-- Klaidos pranešimas, jei ID nerastas -->
+  <div id="errorView" class="hidden w-full max-w-sm bg-white rounded-3xl p-6 text-center shadow-xl border border-red-200">
+    <i class="fa-solid fa-triangle-exclamation text-3xl text-red-500 mb-2"></i>
+    <h3 class="font-black text-slate-800 text-lg">タグが見つかりません</h3>
+    <p class="text-xs text-slate-500 mt-1">Šis pakabuko ID sistemoje neegzistuoja arba dar neaktyvuotas.</p>
+  </div>
+
+  <!-- Pagrindinė kortelė -->
+  <div id="mainCard" class="hidden w-full max-w-sm bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
     
     <!-- SOS Medicininis Vaizdas -->
     <div id="sosView" class="hidden">
@@ -25,31 +41,27 @@
         <div class="flex justify-between items-baseline border-b pb-3">
           <div>
             <span class="text-[10px] uppercase font-bold text-slate-400 block">氏名 (Vardas)</span>
-            <span class="text-2xl font-black text-slate-900" id="sosName">タナカ (Tanaka)</span>
+            <span class="text-2xl font-black text-slate-900" id="sosName">---</span>
           </div>
           <div class="text-right">
             <span class="text-[10px] uppercase font-bold text-slate-400 block">年齢 (Amžius)</span>
-            <span class="text-base font-bold text-slate-700">72歳</span>
+            <span class="text-base font-bold text-slate-700" id="sosAge">---</span>
           </div>
         </div>
 
         <div class="bg-red-50 border border-red-200 rounded-2xl p-3.5 space-y-2 text-xs">
-          <div class="flex justify-between">
-            <span class="text-slate-500 font-bold">血液型 (Kraujo grupė):</span>
-            <span class="font-black text-red-600">A型 Rh+</span>
-          </div>
-          <div class="flex justify-between border-t border-red-100 pt-2">
-            <span class="text-slate-500 font-bold">既往症 (Būklė):</span>
-            <span class="font-extrabold text-slate-900">糖尿病 (Diabetas I)</span>
+          <div>
+            <span class="text-slate-500 font-bold block mb-0.5">既往症・詳細 (Būklė / Diagnozė):</span>
+            <span class="font-extrabold text-slate-900" id="sosDetails">---</span>
           </div>
           <div class="border-t border-red-100 pt-2">
-            <span class="text-slate-500 font-bold block mb-1">留意点 (Pagalbos instrukcija):</span>
-            <span class="font-semibold text-slate-800">意識がない場合は無理に飲ませず、直ちに救急車(119)を呼んでください。</span>
+            <span class="text-slate-500 font-bold block mb-0.5">医療情報 (Kritiniai duomenys / Vaistai):</span>
+            <span class="font-semibold text-slate-800" id="sosCritical">---</span>
           </div>
         </div>
 
         <div class="space-y-2 pt-1">
-          <button onclick="simulateLineAlert('sos')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 px-4 rounded-2xl font-bold flex items-center justify-center gap-2 shadow text-sm">
+          <button onclick="triggerCall()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 px-4 rounded-2xl font-bold flex items-center justify-center gap-2 shadow text-sm">
             <i class="fa-solid fa-phone-volume"></i>
             <span>ご家族に連絡 (Skambinti artimajam)</span>
           </button>
@@ -73,15 +85,15 @@
 
       <div class="p-5 space-y-4">
         <div class="text-center">
-          <h3 class="text-2xl font-black text-slate-900">ポチ (Pochi)</h3>
-          <p class="text-xs text-slate-500 mt-0.5">柴犬 (Shiba Inu) • 人懐っこい性格</p>
-          <div class="inline-block bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold px-3 py-1 rounded-full mt-2.5">
-            🎁 お礼金: 5,000 円 (Atlygis: 5,000 ¥)
+          <h3 class="text-2xl font-black text-slate-900" id="petName">---</h3>
+          <p class="text-xs text-slate-500 mt-0.5" id="petDetails">---</p>
+          <div class="inline-block bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold px-3 py-1 rounded-full mt-2.5" id="petRewardBadge">
+            🎁 お礼金: <span id="petReward">5,000 円</span>
           </div>
         </div>
 
         <div class="space-y-2 pt-2">
-          <button onclick="simulateLineAlert('pet')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 px-4 rounded-2xl font-bold flex items-center justify-center gap-2 text-sm shadow">
+          <button onclick="triggerCall()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 px-4 rounded-2xl font-bold flex items-center justify-center gap-2 text-sm shadow">
             <i class="fa-solid fa-phone"></i>
             <span>飼い主に連絡 (Skambinti šeimininkui)</span>
           </button>
@@ -103,29 +115,77 @@
   </div>
 
   <script>
-    // Nuskaitome URL parametrus: ?type=sos arba ?type=pet
-    const params = new URLSearchParams(window.location.search);
-    const type = params.get('type') || 'sos';
+    // Supabase Prisijungimas su jūsų tikrais raktais:
+    const SUPABASE_URL = "https://nhnyvztyvovgxbbwmlxx.supabase.co";
+    const SUPABASE_KEY = "Sb_publishable_4HgE41et0nT6U7pBvH2HmA_ABsR2PZx";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    if (type === 'pet') {
-      document.getElementById('petView').classList.remove('hidden');
-    } else {
-      document.getElementById('sosView').classList.remove('hidden');
+    let currentTag = null;
+
+    async function loadTagData() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tagId = urlParams.get('id') || 'SOS-001'; // Numatytoji reikšmė testui
+
+      try {
+        const { data, error } = await supabaseClient
+          .from('tags')
+          .select('*')
+          .eq('id', tagId)
+          .single();
+
+        document.getElementById('loader').classList.add('hidden');
+
+        if (error || !data) {
+          document.getElementById('errorView').classList.remove('hidden');
+          return;
+        }
+
+        currentTag = data;
+        document.getElementById('mainCard').classList.remove('hidden');
+
+        if (data.type === 'pet') {
+          document.getElementById('petView').classList.remove('hidden');
+          document.getElementById('petName').innerText = data.name;
+          document.getElementById('petDetails').innerText = (data.details || '') + ' • ' + (data.age || '');
+          if (data.reward) {
+            document.getElementById('petReward').innerText = data.reward;
+          }
+        } else {
+          document.getElementById('sosView').classList.remove('hidden');
+          document.getElementById('sosName').innerText = data.name;
+          document.getElementById('sosAge').innerText = data.age || '';
+          document.getElementById('sosDetails').innerText = data.details || 'Nenurodyta';
+          document.getElementById('sosCritical').innerText = data.critical_info || 'Nenurodyta';
+        }
+      } catch (err) {
+        document.getElementById('loader').classList.add('hidden');
+        document.getElementById('errorView').classList.remove('hidden');
+      }
     }
 
-    function simulateLineAlert(mode) {
-      alert("【QR Hope Proxy】\nSujungiama saugi telefono linija. Nei viena pusė nesužino tikrojo numerio!");
+    function triggerCall() {
+      if (currentTag && currentTag.emergency_phone) {
+        // Tiesioginis demonstracinis skambučio inicijavimas (realiuoju atveju jungiama per Twilio proxy)
+        window.location.href = "tel:" + currentTag.emergency_phone;
+      } else {
+        alert("Sistemos klaida: kontaktas nerastas.");
+      }
     }
 
     function sendLocation() {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(() => {
-          alert("【LINE Pranešimas】\nGPS koordinatės nustatytos! Savininkui tiesiai į LINE išsiųstas pranešimas su žemėlapio nuoroda.");
+        navigator.geolocation.getCurrentPosition((pos) => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          const mapUrl = `https://maps.google.com/?q=${lat},${lon}`;
+          alert(`【GPS Vieta Nustatyta】\nKoordinatės: ${lat.toFixed(4)}, ${lon.toFixed(4)}\nNuoroda šeimininkui: ${mapUrl}`);
         }, () => {
-          alert("Prašome leisti prieigą prie vietos nustatymo.");
+          alert("Prašome leisti prieigą prie buvimo vietos.");
         });
       }
     }
+
+    loadTagData();
   </script>
 </body>
 </html>
