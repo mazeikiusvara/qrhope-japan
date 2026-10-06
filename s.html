@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="lt">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Hope – スキャン情報</title>
+  <title>QR Hope – Skubios pagalbos kortelė</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-100 min-h-screen flex items-center justify-center p-4 font-sans text-slate-800">
@@ -13,68 +13,68 @@
     <!-- Krovimo indikatorius -->
     <div id="loader" class="bg-white rounded-3xl p-8 text-center shadow-lg border border-slate-200">
       <div class="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-      <p class="text-sm font-bold text-slate-600">データを読み込み中...</p>
-      <p class="text-xs text-slate-400 mt-1">Kraunami duomenys...</p>
+      <p class="text-sm font-bold text-slate-700">Kraunami duomenys...</p>
+      <p class="text-xs text-slate-400 mt-1">Prašome palaukti</p>
     </div>
 
     <!-- Klaidos rodymas -->
     <div id="errorView" class="hidden bg-white rounded-3xl p-6 text-center shadow-lg border border-red-200">
       <div class="text-3xl mb-2">⚠️</div>
-      <h3 class="font-bold text-red-600 text-base">タグが見つかりません</h3>
-      <p class="text-xs text-slate-500 mt-1">Įrašas nerastas arba neteisingas ID.</p>
+      <h3 class="font-bold text-red-600 text-base">Pakabukas nerastas</h3>
+      <p class="text-xs text-slate-500 mt-1">Neteisingas ID arba pakabukas dar neaktyvuotas.</p>
       <p id="debugError" class="text-[10px] text-red-400 mt-2 font-mono break-all"></p>
     </div>
 
-    <!-- Kortelė -->
+    <!-- Pagrindinė kortelė -->
     <div id="mainCard" class="hidden bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
       
-      <!-- SOS Medicininis -->
+      <!-- SOS Medicininis vaizdas -->
       <div id="sosView" class="hidden">
         <div class="bg-red-600 text-white p-5 text-center">
-          <h2 class="text-lg font-black tracking-wide">🚨 緊急医療情報 (SOS)</h2>
-          <p class="text-[11px] text-red-100 font-bold uppercase tracking-wider">QR Hope 見守りシステム</p>
+          <h2 class="text-lg font-black tracking-wide">🚨 SKUBI MEDICININĖ INFORMACIJA (SOS)</h2>
+          <p class="text-[11px] text-red-100 font-bold uppercase tracking-wider">QR Hope Pagalbos Sistema</p>
         </div>
 
         <div class="p-5 space-y-4">
           <div class="flex justify-between items-baseline border-b pb-3">
             <div>
-              <span class="text-[10px] uppercase font-bold text-slate-400 block">氏名 (Vardas)</span>
+              <span class="text-[10px] uppercase font-bold text-slate-400 block">Vardas, Pavardė</span>
               <span class="text-2xl font-black text-slate-900" id="sosName">---</span>
             </div>
             <div class="text-right">
-              <span class="text-[10px] uppercase font-bold text-slate-400 block">年齢 (Amžius)</span>
+              <span class="text-[10px] uppercase font-bold text-slate-400 block">Amžius</span>
               <span class="text-base font-bold text-slate-700" id="sosAge">---</span>
             </div>
           </div>
 
           <div class="bg-red-50 border border-red-200 rounded-2xl p-3.5 space-y-2 text-xs">
             <div>
-              <span class="text-slate-500 font-bold block mb-0.5">既往症・詳細 (Būklė / Diagnozė):</span>
+              <span class="text-slate-500 font-bold block mb-0.5">Būklė / Diagnozė:</span>
               <span class="font-bold text-slate-900" id="sosDetails">---</span>
             </div>
             <div class="border-t border-red-100 pt-2">
-              <span class="text-slate-500 font-bold block mb-0.5">医療情報 (Kritiniai duomenys):</span>
+              <span class="text-slate-500 font-bold block mb-0.5">Kritiniai medicinos duomenys:</span>
               <span class="font-medium text-slate-800" id="sosCritical">---</span>
             </div>
           </div>
 
           <div class="space-y-2 pt-1">
             <button onclick="triggerCall()" class="w-full bg-emerald-600 active:bg-emerald-700 text-white py-3.5 px-4 rounded-2xl font-bold text-sm shadow">
-              📞 ご家族に連絡 (Skambinti)
+              📞 Skambinti artimiesiems
             </button>
             <button onclick="sendLocation()" id="gpsBtn" class="w-full bg-slate-800 active:bg-slate-900 text-white py-2.5 px-4 rounded-xl font-semibold text-xs flex items-center justify-center gap-2">
-              <span>📍 現在地をご家族に送信 (GPS)</span>
+              <span>📍 Siųsti dabartinę vietą (GPS)</span>
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Gyvūno / Daikto -->
+      <!-- Gyvūno / Daikto vaizdas -->
       <div id="petView" class="hidden">
         <div class="bg-amber-500 text-slate-950 p-5 text-center">
           <div class="text-3xl mb-1">🐾</div>
-          <h2 class="text-lg font-black uppercase tracking-wide">迷子通知 (Aš pasiklydau!)</h2>
-          <p class="text-xs font-bold text-amber-950">飼い主を探しています</p>
+          <h2 class="text-lg font-black uppercase tracking-wide">Aš pasiklydau!</h2>
+          <p class="text-xs font-bold text-amber-950">Ieškau savo šeimininko</p>
         </div>
 
         <div class="p-5 space-y-4">
@@ -82,23 +82,23 @@
             <h3 class="text-2xl font-black text-slate-900" id="petName">---</h3>
             <p class="text-xs text-slate-500 mt-0.5" id="petDetails">---</p>
             <div class="inline-block bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold px-3 py-1 rounded-full mt-2.5" id="petRewardBadge">
-              🎁 お礼金: <span id="petReward">---</span>
+              🎁 Atlygis: <span id="petReward">---</span>
             </div>
           </div>
 
           <div class="space-y-2 pt-2">
             <button onclick="triggerCall()" class="w-full bg-emerald-600 active:bg-emerald-700 text-white py-3.5 px-4 rounded-2xl font-bold text-sm shadow">
-              📞 飼い主に連絡 (Skambinti)
+              📞 Skambinti šeimininkui
             </button>
             <button onclick="sendLocation()" id="petGpsBtn" class="w-full bg-slate-100 active:bg-slate-200 border text-slate-700 py-3 px-4 rounded-2xl font-bold text-xs flex items-center justify-center gap-2">
-              <span>📍 発見場所を通知 (Siųsti GPS)</span>
+              <span>📍 Siųsti radimo vietą (GPS)</span>
             </button>
           </div>
         </div>
       </div>
 
       <div class="p-3 text-center border-t bg-slate-50">
-        <p class="text-[10px] text-slate-400">🛡️ プライバシー保護システム • 電話番号は非公開です</p>
+        <p class="text-[10px] text-slate-400">🛡️ Privatumo apsaugos sistema • Telefono numeris yra saugus</p>
       </div>
 
     </div>
@@ -168,10 +168,9 @@
     }
 
     function sendLocation() {
-      // Aiškus patvirtinimas praeiviui
-      const confirmText = "ご家族に現在地を送信しますか？\n(Ar sutinkate nusiųsti savo buvimo vietą šeimai, kad jie galėtų atvykti?)";
+      const confirmText = "Ar sutinkate nusiųsti savo buvimo vietą šeimai / šeimininkui, kad jie galėtų atvykti?";
       if (!confirm(confirmText)) {
-        return; // Praeivis atsisakė – nieko nedaroma
+        return;
       }
 
       if (!navigator.geolocation) {
@@ -181,14 +180,14 @@
 
       const activeBtn = currentTag.type === 'pet' ? document.getElementById('petGpsBtn') : document.getElementById('gpsBtn');
       const originalText = activeBtn.innerHTML;
-      activeBtn.innerText = "位置情報を取得中 (Nustatoma vieta)...";
+      activeBtn.innerText = "Nustatoma vieta...";
 
       navigator.geolocation.getCurrentPosition(async (pos) => {
         const lat = pos.coords.latitude;
         const lon = pos.coords.longitude;
         const mapsLink = `https://maps.google.com/?q=${lat},${lon}`;
 
-        // 1. Įrašoma į Supabase scan_logs
+        // Įrašoma į Supabase scan_logs
         try {
           await fetch(`${SUPABASE_URL}/rest/v1/scan_logs`, {
             method: 'POST',
@@ -209,7 +208,7 @@
 
         activeBtn.innerHTML = originalText;
 
-        // 2. Paruošiama SMS žinutė savininkui
+        // Paruošiama SMS žinutė
         const smsMessage = encodeURIComponent(`QR Hope: Radau [${currentTag.name || currentTag.id}]. Buvimo vieta: ${mapsLink}`);
         const phone = currentTag.emergency_phone || '';
 
