@@ -10,6 +10,14 @@
 
   <div class="w-full max-w-sm">
 
+    <!-- Grįžimo mygtukas -->
+    <div class="mb-3 flex justify-between items-center">
+      <a href="index.html" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-800 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-sm transition">
+        <span>←</span> Pagrindinis puslapis
+      </a>
+      <span class="text-[11px] font-mono text-slate-400 font-bold" id="tagIdDisplay"></span>
+    </div>
+
     <!-- Krovimo indikatorius -->
     <div id="loader" class="bg-white rounded-3xl p-8 text-center shadow-lg border border-slate-200">
       <div class="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
@@ -22,6 +30,11 @@
       <div class="text-3xl mb-2">⚠️</div>
       <h3 class="font-bold text-red-600 text-base">Pakabukas nerastas</h3>
       <p class="text-xs text-slate-500 mt-1">Neteisingas ID arba pakabukas dar neaktyvuotas.</p>
+      <div class="mt-4">
+        <a href="register.html" class="inline-block bg-emerald-600 text-white text-xs font-bold py-2 px-4 rounded-xl">
+          Aktyvuoti šį pakabuką dabar
+        </a>
+      </div>
       <p id="debugError" class="text-[10px] text-red-400 mt-2 font-mono break-all"></p>
     </div>
 
@@ -98,7 +111,7 @@
       </div>
 
       <div class="p-3 text-center border-t bg-slate-50">
-        <p class="text-[10px] text-slate-400">🛡️ Privatumo apsaugos sistema • Telefono numeris yra saugus</p>
+        <p class="text-[10px] text-slate-400">🛡️️ Privatumo apsaugos sistema • Telefono numeris yra saugus</p>
       </div>
 
     </div>
@@ -114,6 +127,7 @@
     async function loadData() {
       const urlParams = new URLSearchParams(window.location.search);
       const tagId = urlParams.get('id') || 'SOS-001';
+      document.getElementById('tagIdDisplay').innerText = '#' + tagId;
 
       try {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(tagId)}&select=*`, {
@@ -187,7 +201,6 @@
         const lon = pos.coords.longitude;
         const mapsLink = `https://maps.google.com/?q=${lat},${lon}`;
 
-        // Įrašoma į Supabase scan_logs
         try {
           await fetch(`${SUPABASE_URL}/rest/v1/scan_logs`, {
             method: 'POST',
@@ -208,7 +221,6 @@
 
         activeBtn.innerHTML = originalText;
 
-        // Paruošiama SMS žinutė
         const smsMessage = encodeURIComponent(`QR Hope: Radau [${currentTag.name || currentTag.id}]. Buvimo vieta: ${mapsLink}`);
         const phone = currentTag.emergency_phone || '';
 
