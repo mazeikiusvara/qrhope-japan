@@ -110,8 +110,13 @@
         </div>
       </div>
 
+      <!-- Pranešimo apie sėkmingą vietos nusiuntimą blokelis -->
+      <div id="gpsSuccessBox" class="hidden p-3 bg-emerald-50 border-t border-emerald-200 text-center">
+        <p class="text-xs font-bold text-emerald-800">✅ Vieta sėkmingai perduota šeimai!</p>
+      </div>
+
       <div class="p-3 text-center border-t bg-slate-50">
-        <p class="text-[10px] text-slate-400">🛡️️ Privatumo apsaugos sistema • Telefono numeris yra saugus</p>
+        <p class="text-[10px] text-slate-400">🛡 Privatumo apsaugos sistema • Telefono numeris yra saugus</p>
       </div>
 
     </div>
@@ -121,6 +126,9 @@
   <script>
     const SUPABASE_URL = "https://nhnyvztyvovgxbbwmlxx.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A";
+
+    const TG_BOT_TOKEN = "8716784258:AAESHrfQS77RWGDbZhbnBMmOGlkUYNMJbeU";
+    const TG_CHAT_ID = "8840219972";
 
     let currentTag = null;
 
@@ -201,6 +209,7 @@
         const lon = pos.coords.longitude;
         const mapsLink = `https://maps.google.com/?q=${lat},${lon}`;
 
+        // 1. Įrašymas į Supabase scan_logs
         try {
           await fetch(`${SUPABASE_URL}/rest/v1/scan_logs`, {
             method: 'POST',
@@ -216,12 +225,40 @@
             })
           });
         } catch (e) {
-          console.error("Klaida įrašant koordinates:", e);
+          console.error("Klaida įrašant į Supabase:", e);
+        }
+
+        // 2. Automatinis momentinis pranešimas į Telegram
+        try {
+          const typeLabel = currentTag.type === 'pet' ? '🐾 Rastas gyvūnas / daiktas' : '🚨 SKUBI PAGALBA (SOS)';
+          const text = `${typeLabel}\n\nPakabuko ID: #${currentTag.id}\nVardas: ${currentTag.name || 'Nenurodyta'}\nTelefonas: ${currentTag.emergency_phone || 'Nenurodyta'}\n\n📍 Dabartinė vieta:\n${mapsLink}`;
+
+          await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: TG_CHAT_ID,
+              text: text
+            })
+          });
+        } catch (e) {
+          console.error("Klaida siunčiant į Telegram:", e);
         }
 
         activeBtn.innerHTML = originalText;
+        document.getElementById('gpsSuccessBox').classList.remove('hidden');
 
-        const smsMessage = encodeURIComponent(`QR Hope: Radau [${currentTag.name || currentTag.id}]. Buvimo vieta: ${mapsLink}`);
+      }, (err) => {
+        activeBtn.innerHTML = originalText;
+        alert("Vietos nustatymas atmestas arba neprieinamas.");
+      }, { enableHighAccuracy: true, timeout: 10000 });
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
+tTag.name || currentTag.id}]. Buvimo vieta: ${mapsLink}`);
         const phone = currentTag.emergency_phone || '';
 
         window.location.href = `sms:${phone}?body=${smsMessage}`;
