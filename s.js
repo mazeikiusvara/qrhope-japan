@@ -4,6 +4,9 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const TG_BOT_TOKEN = "8716784258:AAESHrfQS77RWGDbZhbnBMmOGlkUYNMJbeU";
 const TG_CHAT_ID = "8840219972";
 
+// Bendrasis demonstracinis sistemos numeris
+const SYSTEM_DISPATCH_PHONE = "+37060000000";
+
 let currentTag = null;
 
 async function loadData() {
@@ -59,9 +62,13 @@ async function loadData() {
 }
 
 function triggerCall() {
-  if (currentTag && currentTag.emergency_phone) {
-    window.location.href = "tel:" + currentTag.emergency_phone;
-  }
+  const pin = currentTag && currentTag.pin_code ? currentTag.pin_code : '1024';
+  
+  // Skambutis į bendrąjį numerį su automatine 2 sek. pauze ir PIN kodu
+  const dialString = `${SYSTEM_DISPATCH_PHONE},,${pin}#`;
+  
+  // Tikrasis numeris lieka paslėptas duomenų bazėje
+  window.location.href = `tel:${dialString}`;
 }
 
 function sendLocation() {
@@ -84,7 +91,6 @@ function sendLocation() {
     const lon = pos.coords.longitude;
     const mapsLink = `https://maps.google.com/?q=${lat},${lon}`;
 
-    // 1. Įrašymas į Supabase scan_logs
     try {
       await fetch(`${SUPABASE_URL}/rest/v1/scan_logs`, {
         method: 'POST',
@@ -103,10 +109,10 @@ function sendLocation() {
       console.error("Klaida įrašant į Supabase:", e);
     }
 
-    // 2. Automatinis Telegram pranešimas
     try {
       const typeLabel = currentTag.type === 'pet' ? '🐾 Rastas gyvūnas / daiktas' : '🚨 SKUBI PAGALBA (SOS)';
-      const text = `${typeLabel}\n\nPakabukas: #${currentTag.id}\nVardas: ${currentTag.name || 'Nenurodyta'}\nTelefonas: ${currentTag.emergency_phone || 'Nenurodyta'}\n\n📍 Vieta žemėlapyje:\n${mapsLink}`;
+      const pinInfo = currentTag.pin_code ? `\nSaugus PIN: ${currentTag.pin_code}` : '';
+      const text = `${typeLabel}\n\nPakabukas: #${currentTag.id}${pinInfo}\nVardas: ${currentTag.name || 'Nenurodyta'}\n\n📍 Vieta žemėlapyje:\n${mapsLink}`;
 
       await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
         method: 'POST',
