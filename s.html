@@ -10,78 +10,69 @@
 </head>
 <body class="bg-[#fcfdfc] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-4 sm:p-6">
 
-  <!-- Navigacija -->
   <header class="max-w-md mx-auto w-full py-3 flex justify-between items-center border-b border-slate-100">
     <a href="index.html" class="flex items-center space-x-2">
       <span class="w-2.5 h-2.5 rounded-full bg-emerald-700"></span>
       <span class="text-xl font-bold tracking-tight text-slate-900">QR Hope</span>
     </a>
     <div class="flex items-center space-x-2">
-      <button onclick="toggleLang()" id="langBtn" type="button" class="text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 px-2.5 py-1 rounded-md hover:bg-emerald-100 cursor-pointer">
-        EN
-      </button>
+      <button onclick="toggleLang()" id="langBtn" type="button" class="text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 px-2.5 py-1 rounded-md">EN</button>
       <a href="login.html" class="text-xs text-slate-500 hover:text-slate-800 font-semibold" data-i18n="nav_owner">Savininkui</a>
     </div>
   </header>
 
   <main class="max-w-md mx-auto w-full my-6">
 
-    <!-- KROVIMASIS -->
     <div id="loadingState" class="text-center py-12 space-y-3">
       <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-800 border-t-transparent"></div>
-      <p id="loadingMsg" class="text-xs text-slate-500 font-medium">Tikrinama žymos informacija...</p>
+      <p class="text-xs text-slate-500 font-medium">Tikrinama žymos informacija...</p>
     </div>
 
-    <!-- PIRKĖJO AKTYVAVIMAS (Naujas gaminys iš gamintojo) -->
+    <!-- PIRKĖJO PIRMINIS AKTYVAVIMAS -->
     <div id="batchActivationState" class="hidden bg-white border-2 border-emerald-700 rounded-2xl p-6 shadow-sm space-y-5">
       <div>
-        <span class="text-[10px] font-black uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200" data-i18n="badge_new_item">Naujas gaminys</span>
-        <h1 class="text-2xl font-black text-slate-950 mt-2" data-i18n="act_title">Aktyvuokite savo apsaugą</h1>
-        <p class="text-xs text-slate-600 mt-1 leading-relaxed" data-i18n="act_desc">
-          Sveikiname įsigijus gaminį! Įveskite pakuotėje esantį 6 simbolių saugos kodą, kad susietumėte žymą su savo telefonu.
+        <span class="text-[10px] font-black uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">Naujas gaminys</span>
+        <h1 class="text-2xl font-black text-slate-950 mt-2">Aktyvuokite savo apsaugą</h1>
+        <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+          Įveskite pakuotėje esantį 6 simbolių saugos kodą, kad susietumėte žymą su savo telefonu.
         </p>
       </div>
 
       <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs flex justify-between items-center">
-        <span class="text-slate-500 font-semibold" data-i18n="lbl_tag_code">Gaminio ID:</span>
+        <span class="text-slate-500 font-semibold">Gaminio ID:</span>
         <span id="batchTagId" class="font-mono font-bold text-slate-900 text-sm"></span>
       </div>
 
       <form onsubmit="handleClaimActivation(event)" class="space-y-3 text-xs">
         <div>
-          <label class="block font-bold text-slate-700 mb-1" data-i18n="lbl_secret">6 simbolių saugos kodas (iš pakuotės)</label>
-          <input id="claimSecret" type="text" maxlength="6" required placeholder="Pvz., 7A9K2M" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 font-mono text-center tracking-widest font-black uppercase text-sm focus:outline-none focus:border-emerald-700" />
+          <label class="block font-bold text-slate-700 mb-1">6 simbolių saugos kodas</label>
+          <input id="claimSecret" type="text" maxlength="6" required placeholder="Pvz., 7A9K2M" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 font-mono text-center tracking-widest font-black uppercase text-sm" />
         </div>
-
         <div>
-          <label class="block font-bold text-slate-700 mb-1" data-i18n="lbl_custom_name">Gaminio / Augintinio vardas</label>
-          <input id="claimName" type="text" required placeholder="Pvz., Kelioninis lagaminas" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 focus:outline-none focus:border-emerald-700" />
+          <label class="block font-bold text-slate-700 mb-1">Gaminio / Augintinio vardas</label>
+          <input id="claimName" type="text" required class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5" />
         </div>
-
         <div>
-          <label class="block font-bold text-slate-700 mb-1" data-i18n="lbl_email">Jūsų el. pašto adresas</label>
-          <input id="claimEmail" type="email" required placeholder="vardas@pastas.lt" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 focus:outline-none focus:border-emerald-700" />
+          <label class="block font-bold text-slate-700 mb-1">El. pašto adresas</label>
+          <input id="claimEmail" type="email" required class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5" />
         </div>
-
         <div>
-          <label class="block font-bold text-slate-700 mb-1" data-i18n="lbl_phone">Telefono numeris (nukreipimui)</label>
-          <input id="claimPhone" type="tel" required placeholder="+37060000000" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 focus:outline-none focus:border-emerald-700" />
+          <label class="block font-bold text-slate-700 mb-1">Telefono numeris</label>
+          <input id="claimPhone" type="tel" required class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5" />
         </div>
-
         <div>
-          <label class="block font-bold text-slate-700 mb-1" data-i18n="lbl_pin">Sukurkite 4 skaitmenų valdymo PIN</label>
-          <input id="claimPin" type="password" maxlength="4" pattern="[0-9]{4}" required placeholder="••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 font-mono text-center tracking-widest font-bold text-sm focus:outline-none focus:border-emerald-700" />
+          <label class="block font-bold text-slate-700 mb-1">4 skaitmenų valdymo PIN</label>
+          <input id="claimPin" type="password" maxlength="4" pattern="[0-9]{4}" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 font-mono text-center tracking-widest font-bold text-sm" />
         </div>
-
-        <button id="claimBtn" type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3.5 rounded-xl transition text-sm cursor-pointer">
-          <span data-i18n="btn_claim">Patvirtinti ir aktyvuoti</span>
+        <button id="claimBtn" type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3.5 rounded-xl transition text-sm">
+          Patvirtinti ir aktyvuoti
         </button>
       </form>
       <div id="claimStatus" class="hidden text-xs p-3 rounded-xl text-center"></div>
     </div>
 
-    <!-- RADĖJO KORTELĖ (Jau aktyvuota žyma) -->
-    <div id="finderCardState" class="hidden bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-5">
+    <!-- RADĖJO KORTELĖ -->
+    <div id="finderCardState" class="hidden bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
       <div class="flex justify-between items-start border-b border-slate-100 pb-3">
         <div>
           <span id="tagTypeBadge" class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded">DAIKTAS</span>
@@ -90,17 +81,31 @@
         <span id="tagIdDisplay" class="text-xs font-mono font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded"></span>
       </div>
 
-      <div id="lostModeBanner" class="hidden bg-rose-50 border border-rose-200 text-rose-900 rounded-xl p-3.5 text-xs font-bold">
-        <i class="fa-solid fa-triangle-exclamation mr-1"></i> <span id="lostModeText"></span>
+      <!-- PAIEŠKOS REŽIMAS (LOST MODE) IR ATLYGIS -->
+      <div id="lostModeBanner" class="hidden bg-rose-50 border border-rose-200 text-rose-900 rounded-xl p-3.5 space-y-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-1.5 font-bold text-rose-800 text-xs">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span data-i18n="lost_alert">Paskelbta paieška!</span>
+          </div>
+          <span id="rewardBadge" class="hidden bg-amber-100 text-amber-900 border border-amber-300 font-black px-2.5 py-0.5 rounded text-[11px]"></span>
+        </div>
+        <p id="lostModeText" class="text-xs leading-relaxed text-rose-950 font-medium"></p>
       </div>
 
-      <div class="space-y-2.5">
-        <a id="callOwnerBtn" href="#" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center space-x-2 text-xs transition">
+      <!-- Pastabos -->
+      <div id="tagDetailsBox" class="hidden bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-xs space-y-1">
+        <span class="font-bold text-slate-700">Savininko pastabos:</span>
+        <p id="tagDetailsText" class="text-slate-600 text-[11px] leading-relaxed"></p>
+      </div>
+
+      <div class="space-y-2.5 pt-1">
+        <a id="callOwnerBtn" href="#" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center space-x-2 text-xs transition shadow-sm">
           <i class="fa-solid fa-phone"></i>
           <span data-i18n="btn_call">Anoniminis skambutis savininkui</span>
         </a>
 
-        <button onclick="sendLocation()" id="gpsBtn" type="button" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 px-4 rounded-xl flex items-center justify-center space-x-2 text-xs transition border border-slate-200 cursor-pointer">
+        <button onclick="sendLocation()" id="gpsBtn" type="button" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 px-4 rounded-xl flex items-center justify-center space-x-2 text-xs transition border border-slate-200">
           <i class="fa-solid fa-location-crosshairs text-emerald-700"></i>
           <span data-i18n="btn_gps">Nusiųsti radimo vietą (GPS)</span>
         </button>
@@ -108,12 +113,11 @@
       </div>
     </div>
 
-    <!-- ŽYMA NERASTA -->
+    <!-- Žyma nerasta -->
     <div id="notFoundState" class="hidden bg-white border border-rose-200 rounded-2xl p-6 shadow-sm text-center space-y-3">
       <i class="fa-solid fa-circle-question text-3xl text-rose-500"></i>
-      <h2 class="text-base font-bold text-slate-900" data-i18n="err_not_found">Žyma sistemoje nerasta</h2>
-      <p id="notFoundMsg" class="text-xs text-slate-500" data-i18n="err_not_found_desc">Patikrinkite ID kodą arba aktyvuokite žymą iš naujo.</p>
-      <a href="register.html" class="inline-block text-xs font-bold text-emerald-800 underline" data-i18n="link_register">Aktyvuoti naują žymą</a>
+      <h2 class="text-base font-bold text-slate-900">Žyma sistemoje nerasta</h2>
+      <a href="index.html" class="inline-block text-xs font-bold text-emerald-800 underline">Grįžti į pradžią</a>
     </div>
 
   </main>
@@ -126,148 +130,132 @@
     var SUPABASE_URL = "https://nhnyvztyvovgxbbwmlxx.supabase.co";
     var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A";
 
-    var activeLang = "lt";
-    var currentTagData = null;
+    var activeLang = "lt", currentTagData = null;
 
     var DICT = {
       lt: {
-        btn: "EN",
-        nav_owner: "Savininkui",
-        badge_new_item: "Naujas gaminys",
-        act_title: "Aktyvuokite savo apsaugą",
-        act_desc: "Sveikiname įsigijus gaminį! Įveskite pakuotėje esantį 6 simbolių saugos kodą, kad susietumėte žymą su savo telefonu.",
-        lbl_tag_code: "Gaminio ID:",
-        lbl_secret: "6 simbolių saugos kodas (iš pakuotės)",
-        lbl_custom_name: "Gaminio / Augintinio vardas",
-        lbl_email: "Jūsų el. pašto adresas",
-        lbl_phone: "Telefono numeris (nukreipimui)",
-        lbl_pin: "Sukurkite 4 skaitmenų valdymo PIN",
-        btn_claim: "Patvirtinti ir aktyvuoti",
-        err_secret_wrong: "Neteisingas 6 simbolių saugos kodas.",
-        btn_call: "Anoniminis skambutis savininkui",
-        btn_gps: "Nusiųsti radimo vietą (GPS)",
-        gps_sending: "Nustatoma vieta ir siunčiama...",
-        gps_sent: "✅ Vieta nusiųsta!",
-        gps_err: "Nepavyko nustatyti vietos.",
-        err_not_found: "Žyma sistemoje nerasta",
-        err_not_found_desc: "Patikrinkite ID kodą arba aktyvuokite žymą iš naujo.",
-        link_register: "Aktyvuoti naują žymą"
+        btn: "EN", nav_owner: "Savininkui", lost_alert: "Paskelbta paieška!",
+        btn_call: "Anoniminis skambutis savininkui", btn_gps: "Nusiųsti radimo vietą (GPS)",
+        reward_prefix: "Atlygis: "
       },
       en: {
-        btn: "LT",
-        nav_owner: "Owner Sign In",
-        badge_new_item: "Brand New Item",
-        act_title: "Activate Your Smart Protection",
-        act_desc: "Welcome! Enter the 6-character secret activation key from the packaging to link this tag to your mobile phone.",
-        lbl_tag_code: "Product ID:",
-        lbl_secret: "6-Character Activation Secret (from packaging)",
-        lbl_custom_name: "Item / Pet Name",
-        lbl_email: "Your Email Address",
-        lbl_phone: "Mobile Phone (for call relay)",
-        lbl_pin: "Create a 4-digit Security PIN",
-        btn_claim: "Verify & Activate Tag",
-        err_secret_wrong: "Invalid 6-character secret key.",
-        btn_call: "Anonymous Call to Owner",
-        btn_gps: "Send Found Location (GPS)",
-        gps_sending: "Locating and transmitting...",
-        gps_sent: "✅ GPS sent!",
-        gps_err: "Could not retrieve GPS.",
-        err_not_found: "Smart Tag Not Found",
-        err_not_found_desc: "Check the tag ID or activate a new tag.",
-        link_register: "Activate New Tag"
+        btn: "LT", nav_owner: "Owner Sign In", lost_alert: "Lost Mode Active!",
+        btn_call: "Anonymous Call to Owner", btn_gps: "Send Found Location (GPS)",
+        reward_prefix: "Reward: "
       }
     };
 
-    function setLanguage(lang) {
-      activeLang = lang;
-      try { localStorage.setItem("qrhope_lang", lang); } catch(e){}
-      var data = DICT[lang];
-      var btn = document.getElementById("langBtn");
-      if (btn) btn.innerText = data.btn;
-
-      document.querySelectorAll("[data-i18n]").forEach(function(el) {
-        var key = el.getAttribute("data-i18n");
-        if (data[key]) el.innerText = data[key];
+    function setLanguage(l) {
+      activeLang = l;
+      try { localStorage.setItem("qrhope_lang", l); } catch(e){}
+      var d = DICT[l];
+      var b = document.getElementById("langBtn");
+      if (b) b.innerText = d.btn;
+      document.querySelectorAll("[data-i18n]").forEach(function(el){
+        var k = el.getAttribute("data-i18n");
+        if (d[k]) el.innerText = d[k];
       });
+      if (currentTagData) setupFinderCard(currentTagData);
     }
 
-    function toggleLang() {
-      setLanguage(activeLang === "lt" ? "en" : "lt");
-    }
+    function toggleLang() { setLanguage(activeLang === "lt" ? "en" : "lt"); }
 
-    function hideLoading() {
-      var l = document.getElementById('loadingState');
-      if (l) l.classList.add('hidden');
-    }
-
-    async function initPage() {
-      var urlParams = new URLSearchParams(window.location.search);
-      var tagId = urlParams.get('id');
-
-      if (!tagId) {
-        hideLoading();
-        document.getElementById('notFoundMsg').innerText = "Trūksta žymos kodo adreso eilutėje (?id=...)";
-        document.getElementById('notFoundState').classList.remove('hidden');
-        return;
-      }
-
-      tagId = tagId.trim().toUpperCase();
+    async function loadTag() {
+      var p = new URLSearchParams(window.location.search).get('id');
+      if (!p) { showState('notFound'); return; }
 
       try {
-        var res = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(tagId)}&select=*`, {
-          headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`
-          }
+        var res = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(p.trim().toUpperCase())}&select=*`, {
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
         });
-
         var data = await res.json();
-        hideLoading();
-
-        if (!data || data.length === 0) {
-          document.getElementById('notFoundMsg').innerText = `Žyma #${tagId} nerasta sistemoje.`;
-          document.getElementById('notFoundState').classList.remove('hidden');
-          return;
-        }
+        if (!data || data.length === 0) { showState('notFound'); return; }
 
         currentTagData = data[0];
 
-        // 1. Nauja gaminio žyma, kurią reikia aktyvuoti
         if (currentTagData.status === 'batch_ready' || (!currentTagData.user_email && currentTagData.activation_secret)) {
           document.getElementById('batchTagId').innerText = currentTagData.id;
           document.getElementById('claimName').value = currentTagData.name || '';
-          document.getElementById('batchActivationState').classList.remove('hidden');
-        } 
-        // 2. Aktyvuota žyma (radėjo langas)
-        else {
-          document.getElementById('tagName').innerText = currentTagData.name || 'Saugomas daiktas';
-          document.getElementById('tagIdDisplay').innerText = `#${currentTagData.id}`;
-          if (currentTagData.emergency_phone) {
-            document.getElementById('callOwnerBtn').href = `tel:${currentTagData.emergency_phone}`;
-          }
-          document.getElementById('finderCardState').classList.remove('hidden');
+          showState('batch');
+        } else {
+          setupFinderCard(currentTagData);
+          showState('finder');
         }
+      } catch(e) { showState('notFound'); }
+    }
 
-      } catch (err) {
-        hideLoading();
-        document.getElementById('notFoundMsg').innerText = "Ryšio klaida: " + err.message;
-        document.getElementById('notFoundState').classList.remove('hidden');
+    function showState(s) {
+      document.getElementById('loadingState').classList.add('hidden');
+      document.getElementById('batchActivationState').classList.add('hidden');
+      document.getElementById('finderCardState').classList.add('hidden');
+      document.getElementById('notFoundState').classList.add('hidden');
+      if (s === 'batch') document.getElementById('batchActivationState').classList.remove('hidden');
+      else if (s === 'finder') document.getElementById('finderCardState').classList.remove('hidden');
+      else if (s === 'notFound') document.getElementById('notFoundState').classList.remove('hidden');
+    }
+
+    function setupFinderCard(tag) {
+      document.getElementById('tagName').innerText = tag.name || 'Saugomas objektas';
+      document.getElementById('tagIdDisplay').innerText = `#${tag.id}`;
+
+      // LOST MODE & REWARD RODYMAS
+      var lostBox = document.getElementById('lostModeBanner');
+      var lostTxt = document.getElementById('lostModeText');
+      var rewBadge = document.getElementById('rewardBadge');
+
+      if (tag.lost_mode) {
+        lostBox.classList.remove('hidden');
+        lostTxt.innerText = tag.lost_message || 'Šis daiktas ar augintinis šiuo metu ieškomas savininko!';
+        
+        if (tag.reward && tag.reward.trim() !== "") {
+          rewBadge.innerText = DICT[activeLang].reward_prefix + tag.reward;
+          rewBadge.classList.remove('hidden');
+        } else {
+          rewBadge.classList.add('hidden');
+        }
+      } else {
+        lostBox.classList.add('hidden');
       }
+
+      if (tag.details) {
+        document.getElementById('tagDetailsBox').classList.remove('hidden');
+        document.getElementById('tagDetailsText').innerText = tag.details;
+      }
+
+      if (tag.emergency_phone) {
+        document.getElementById('callOwnerBtn').href = `tel:${tag.emergency_phone}`;
+      }
+    }
+
+    function sendLocation() {
+      var s = document.getElementById('gpsStatus');
+      s.innerText = "Nustatoma vieta...";
+      if (!navigator.geolocation) { s.innerText = "GPS nepalaikoma"; return; }
+
+      navigator.geolocation.getCurrentPosition(async function(pos) {
+        try {
+          await fetch(`${SUPABASE_URL}/rest/v1/scan_logs`, {
+            method: 'POST',
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tag_id: currentTagData.id, latitude: pos.coords.latitude, longitude: pos.coords.longitude })
+          });
+          s.innerText = "✅ Vieta nusiųsta savininkui!";
+        } catch(e){ s.innerText = "Klaida siunčiant"; }
+      }, function(){ s.innerText = "Nepavyko nustatyti vietos"; });
     }
 
     async function handleClaimActivation(e) {
       e.preventDefault();
-      var t = DICT[activeLang];
-      var secret = document.getElementById('claimSecret').value.trim().toUpperCase();
-      var status = document.getElementById('claimStatus');
+      var sec = document.getElementById('claimSecret').value.trim().toUpperCase();
+      var st = document.getElementById('claimStatus');
 
-      if (currentTagData.activation_secret && secret !== currentTagData.activation_secret.toUpperCase()) {
-        status.className = "bg-rose-50 border border-rose-200 text-rose-800 text-xs p-3 rounded-xl block";
-        status.innerText = t.err_secret_wrong;
+      if (currentTagData.activation_secret && sec !== currentTagData.activation_secret.toUpperCase()) {
+        st.className = "bg-rose-50 text-rose-800 text-xs p-3 rounded-xl block";
+        st.innerText = "Neteisingas 6 simbolių kodas.";
         return;
       }
 
-      var updatePayload = {
+      var payload = {
         name: document.getElementById('claimName').value.trim(),
         user_email: document.getElementById('claimEmail').value.trim(),
         emergency_phone: document.getElementById('claimPhone').value.trim(),
@@ -276,72 +264,24 @@
       };
 
       try {
-        var res = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(currentTagData.id)}`, {
+        var r = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(currentTagData.id)}`, {
           method: 'PATCH',
-          headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(updatePayload)
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
         });
-
-        if (res.ok) {
-          status.className = "bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs p-3 rounded-xl block font-bold";
-          status.innerText = "🎉 Apsauga aktyvuota! Nukreipiama į valdymo pultą...";
-          setTimeout(function() {
-            window.location.href = `dashboard.html?id=${encodeURIComponent(currentTagData.id)}`;
-          }, 1000);
-        } else {
-          throw new Error("Nepavyko atnaujinti");
+        if (r.ok) {
+          window.location.href = `dashboard.html?id=${encodeURIComponent(currentTagData.id)}`;
         }
-      } catch (err) {
-        status.className = "bg-rose-50 border border-rose-200 text-rose-800 text-xs p-3 rounded-xl block";
-        status.innerText = "Klaida: " + err.message;
-      }
-    }
-
-    function sendLocation() {
-      var t = DICT[activeLang];
-      var s = document.getElementById('gpsStatus');
-      s.innerText = t.gps_sending;
-
-      if (!navigator.geolocation) {
-        s.innerText = t.gps_err;
-        return;
-      }
-
-      navigator.geolocation.getCurrentPosition(async function(pos) {
-        try {
-          await fetch(`${SUPABASE_URL}/rest/v1/scan_logs`, {
-            method: 'POST',
-            headers: {
-              'apikey': SUPABASE_KEY,
-              'Authorization': `Bearer ${SUPABASE_KEY}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              tag_id: currentTagData.id,
-              latitude: pos.coords.latitude,
-              longitude: pos.coords.longitude
-            })
-          });
-          s.innerText = t.gps_sent;
-        } catch(e) {
-          s.innerText = t.gps_err;
-        }
-      }, function() {
-        s.innerText = t.gps_err;
-      });
+      } catch(e){}
     }
 
     document.addEventListener("DOMContentLoaded", function() {
       try {
-        var saved = localStorage.getItem("qrhope_lang");
-        if (saved === "en" || saved === "lt") activeLang = saved;
+        var s = localStorage.getItem("qrhope_lang");
+        if (s === "en" || s === "lt") activeLang = s;
       } catch(e){}
       setLanguage(activeLang);
-      initPage();
+      loadTag();
     });
   </script>
 </body>
