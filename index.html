@@ -3,10 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Hope – Išmanioji daiktų ir augintinių apsauga</title>
+  <title>QR Hope – Išmanioji daiktų, lagaminų ir augintinių apsauga bei paieška</title>
+  <meta name="description" content="QR Hope – išmanioji pamestų daiktų ir augintinių apsaugos sistema. Nuskane QR kodą arba NFC pakabuką radėjas akimirksniu susisiekia su jumis anonimiškai.">
+  <meta name="keywords" content="QR kodas daiktams, pamesti raktai, augintinio žyma, NFC pakabukas, QR Hope, daiktų paieška, apsauga">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }</style>
+  
+  <!-- SEO / Schema.org struktūrizuoti duomenys -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "QR Hope",
+    "url": "https://qrhope.app",
+    "description": "Išmanioji daiktų ir augintinių apsaugos sistema per QR bei NFC."
+  }
+  </script>
 </head>
 <body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen flex flex-col justify-between">
 
@@ -26,11 +39,11 @@
       </div>
 
       <a href="manufacturer.html" class="text-xs font-bold bg-slate-900 text-emerald-400 border border-slate-800 px-3 py-1.5 rounded-xl hover:bg-slate-800 transition shadow-sm">
-        <i class="fa-solid fa-industry mr-1"></i>Gamintojai
+        <i class="fa-solid fa-industry mr-1"></i>Gamintojams
       </a>
 
       <a href="dashboard.html" class="text-xs font-bold bg-white text-slate-800 border border-slate-300 px-3 py-1.5 rounded-xl hover:bg-slate-50 transition shadow-sm">
-        <i class="fa-solid fa-user-shield mr-1 text-emerald-700"></i>Pultas
+        <i class="fa-solid fa-right-to-bracket mr-1 text-emerald-700"></i>Prisijungti
       </a>
     </div>
   </header>
@@ -50,36 +63,37 @@
       </p>
     </section>
 
-    <!-- MOTYVACIJA IR MISIJA -->
-    <section class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-      <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-2">
-        <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-shield-heart"></i>
-        </div>
-        <h3 class="text-sm font-black text-slate-900" data-i18n="feat_safe_title">Saugumas be kompromisų</h3>
-        <p class="text-[11px] text-slate-500 font-medium leading-relaxed" data-i18n="feat_safe_desc">
-          Jūsų kontaktai paslėpti už dvigubos apsaugos. Radėjas susisiekia anonimiškai arba vienu mygtuku nusiunčia GPS lokaciją.
-        </p>
+    <!-- MOTYVACIJA IR FAKTAI -->
+    <section class="space-y-4">
+      <div class="text-center space-y-1">
+        <h2 class="text-xs font-black uppercase tracking-widest text-emerald-700" data-i18n="stats_sub">Realybės statistika</h2>
+        <h3 class="text-lg sm:text-xl font-black text-slate-900" data-i18n="stats_title">Kodėl QR Hope apsauga reikalinga šiandien?</h3>
       </div>
 
-      <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-2">
-        <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-nfc-symbol"></i>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-2 text-center">
+          <div class="text-2xl sm:text-3xl font-black text-emerald-700">80%</div>
+          <h4 class="text-xs font-bold text-slate-900" data-i18n="stat_1_h">Pamesti daiktai grįžta</h4>
+          <p class="text-[11px] text-slate-500 font-medium leading-relaxed" data-i18n="stat_1_d">
+            Statistika rodo, kad dauguma radėjų nori grąžinti pamestus daiktus, tačiau nežino savininko kontaktų. QR Hope šią problemą išsprendžia akimirksniu.
+          </p>
         </div>
-        <h3 class="text-sm font-black text-slate-900" data-i18n="feat_nfc_title">NFC ir QR sinergija</h3>
-        <p class="text-[11px] text-slate-500 font-medium leading-relaxed" data-i18n="feat_nfc_desc">
-          Kiekviena žyma veikia tiek per QR vizualinį kodą, tiek per momentinį bekontaktį NFC prilietimą bet kokiu šiuolaikiniu telefonu.
-        </p>
-      </div>
 
-      <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-2">
-        <div class="w-10 h-10 rounded-2xl bg-rose-50 text-rose-700 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-bullhorn"></i>
+        <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-2 text-center">
+          <div class="text-2xl sm:text-3xl font-black text-indigo-700">0 Sek.</div>
+          <h4 class="text-xs font-bold text-slate-900" data-i18n="stat_2_h">Jokių programėlių radėjui</h4>
+          <p class="text-[11px] text-slate-500 font-medium leading-relaxed" data-i18n="stat_2_d">
+            Radėjui nereikia siųstis jokių programėlių ar registruotis. Pakanka įprastos telefono kameros arba NFC prilietimo.
+          </p>
         </div>
-        <h3 class="text-sm font-black text-slate-900" data-i18n="feat_lost_title">Momentinis „Lost Mode“</h3>
-        <p class="text-[11px] text-slate-500 font-medium leading-relaxed" data-i18n="feat_lost_desc">
-          Pametus daiktą ar augintinį, pulte įjunkite paieškos režimą, pranešimą ir nurodykite siūlomą atlygį radėjui.
-        </p>
+
+        <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-2 text-center">
+          <div class="text-2xl sm:text-3xl font-black text-rose-600">100%</div>
+          <h4 class="text-xs font-bold text-slate-900" data-i18n="stat_3_h">Privatumo apsauga</h4>
+          <p class="text-[11px] text-slate-500 font-medium leading-relaxed" data-i18n="stat_3_d">
+            Jūsų asmeninis telefono numeris ir el. paštas niekada nėra viešinami ant daikto. Vyksta saugus tarpinis ryšys.
+          </p>
+        </div>
       </div>
     </section>
 
@@ -123,7 +137,7 @@
         </div>
 
         <button type="submit" id="regBtn" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-black py-3 rounded-xl transition text-xs shadow-md cursor-pointer" data-i18n="reg_submit">
-          Sukurti žymą ir atidaryti pultą
+          Sukurti žymą ir prisijungti
         </button>
       </form>
 
@@ -140,13 +154,13 @@
           Integruokite QR Hope į savo produkciją
         </h2>
         <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium" data-i18n="b2b_desc">
-          Gaminate lagaminus, kuprines, apykakles augintiniams ar drabužius? Pridėkite išmaniąją QR Hope apsaugą tiesiai į savo gaminius su masiniu žymų generavimu.
+          Gaminate lagaminus, kuprines ar drabužius? Pridėkite išmaniąją apsaugą su masiniu žymų generavimu.
         </p>
       </div>
 
       <div class="pt-2">
         <a href="manufacturer.html" class="inline-flex items-center bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition shadow-md">
-          <i class="fa-solid fa-industry mr-1.5"></i> Atidaryti gamintojo pultą
+          <i class="fa-solid fa-industry mr-1.5"></i> Gamintojų portalas
         </a>
       </div>
     </section>
@@ -186,7 +200,7 @@
     <div>QR Hope &copy; 2026. Visos teisės saugomos.</div>
     <div class="flex items-center space-x-3 font-semibold">
       <a href="manufacturer.html" class="hover:text-slate-900">Gamintojai</a>
-      <a href="dashboard.html" class="hover:text-slate-900" data-i18n="footer_dash">Savininko pultas</a>
+      <a href="dashboard.html" class="hover:text-slate-900" data-i18n="footer_dash">Prisijungti</a>
     </div>
   </footer>
 
@@ -199,12 +213,14 @@
         hero_badge: "Išmanioji atgavimo platforma",
         hero_title: "Niekada nepraraskite to, kas jums brangiausia",
         hero_desc: "Sujungiame žmones ir pamestus daiktus per vieną akimirką. Radėjui tereikia priglausti telefoną arba nuskenuoti kameros programėle.",
-        feat_safe_title: "Saugumas be kompromisų",
-        feat_safe_desc: "Jūsų kontaktai paslėpti už dvigubos apsaugos. Radėjas susisiekia anonimiškai arba nusiunčia GPS lokaciją.",
-        feat_nfc_title: "NFC ir QR sinergija",
-        feat_nfc_desc: "Kiekviena žyma veikia tiek per QR vizualinį kodą, tiek per momentinį bekontaktį NFC prilietimą.",
-        feat_lost_title: "Momentinis „Lost Mode“",
-        feat_lost_desc: "Pametus daiktą ar augintinį, pulte įjunkite paieškos režimą, pranešimą ir atlygį radėjui.",
+        stats_sub: "Realybės statistika",
+        stats_title: "Kodėl QR Hope apsauga reikalinga šiandien?",
+        stat_1_h: "Pamesti daiktai grįžta",
+        stat_1_d: "Statistika rodo, kad dauguma radėjų nori grąžinti pamestus daiktus, tačiau nežino savininko kontaktų.",
+        stat_2_h: "Jokių programėlių radėjui",
+        stat_2_d: "Radėjui nereikia siųstis jokių programėlių ar registruotis. Pakanka įprastos telefono kameros.",
+        stat_3_h: "Privatumo apsauga",
+        stat_3_d: "Jūsų asmeninis telefono numeris ir el. paštas niekada nėra viešinami ant daikto.",
         reg_title: "Aktyvuokite nemokamą žymą",
         reg_subtitle: "Sukurkite apsaugos žymą per 30 sekundžių.",
         reg_field_name: "Objekto pavadinimas",
@@ -215,7 +231,7 @@
         reg_field_phone: "Telefonas skambučiui",
         reg_field_email: "El. paštas (atkūrimo kodui)",
         reg_field_pass: "Slaptažodis (bent 6 simb.)",
-        reg_submit: "Sukurti žymą ir atidaryti pultą",
+        reg_submit: "Sukurti žymą ir prisijungti",
         b2b_tag: "Gamintojams ir Verslui",
         b2b_title: "Integruokite QR Hope į savo produkciją",
         b2b_desc: "Gaminate lagaminus, kuprines ar drabužius? Pridėkite išmaniąją apsaugą su masiniu žymų generavimu.",
@@ -224,18 +240,20 @@
         faq_1_a: "Taip! Viena skaitmeninė žyma suteikiama visiškai nemokamai visam laikui.",
         faq_2_q: "Ar radėjui reikia specialios programėlės?",
         faq_2_a: "Ne, jokių programėlių diegti nereikia.",
-        footer_dash: "Savininko pultas"
+        footer_dash: "Prisijungti"
       },
       en: {
         hero_badge: "Smart Recovery Platform",
         hero_title: "Never lose what matters most",
         hero_desc: "Reconnecting people with lost items instantly via NFC or QR scan.",
-        feat_safe_title: "Uncompromising Privacy",
-        feat_safe_desc: "Your details stay protected. The finder connects anonymously.",
-        feat_nfc_title: "NFC & QR Synergy",
-        feat_nfc_desc: "Every tag supports both QR codes and instant NFC chip reading.",
-        feat_lost_title: "Instant Lost Mode",
-        feat_lost_desc: "Activate Lost Mode remotely and add a custom message.",
+        stats_sub: "Real Statistics",
+        stats_title: "Why QR Hope protection matters today",
+        stat_1_h: "Lost items find their way back",
+        stat_1_d: "Most finders want to return lost items but lack a direct, private way to contact the owner.",
+        stat_2_h: "No app required for finders",
+        stat_2_d: "Finders don't need to download anything. Just point the phone camera or tap NFC.",
+        stat_3_h: "Uncompromising Privacy",
+        stat_3_d: "Your personal phone number and email are never exposed publicly on the physical tag.",
         reg_title: "Activate Free Tag",
         reg_subtitle: "Set up in 30 seconds.",
         reg_field_name: "Item / Pet Name",
@@ -246,7 +264,7 @@
         reg_field_phone: "Contact Phone Number",
         reg_field_email: "Email",
         reg_field_pass: "Password",
-        reg_submit: "Create Tag & Open Dashboard",
+        reg_submit: "Create Tag & Sign In",
         b2b_tag: "For Manufacturers",
         b2b_title: "Integrate QR Hope into Products",
         b2b_desc: "Embed smart recovery tags directly into your physical products.",
@@ -255,18 +273,20 @@
         faq_1_a: "Yes, forever free.",
         faq_2_q: "Does finder need an app?",
         faq_2_a: "No apps required.",
-        footer_dash: "Owner Dashboard"
+        footer_dash: "Sign In"
       },
       ja: {
         hero_badge: "スマート発見プラットフォーム",
         hero_title: "大切なものを失わない",
         hero_desc: "NFCやQRコードで落とし物を瞬時に発見。",
-        feat_safe_title: "プライバシー保護",
-        feat_safe_desc: "連絡先は安全に保護されます。",
-        feat_nfc_title: "NFC & QRコード両対応",
-        feat_nfc_desc: "すべてのタグが標準対応。",
-        feat_lost_title: "紛失モード",
-        feat_lost_desc: "遠隔で紛失モードを有効化。",
+        stats_sub: "現実の統計データ",
+        stats_title: "なぜQR Hopeが必要なのか？",
+        stat_1_h: "落とし物は戻ってくる",
+        stat_1_d: "ほとんどの人は落とし物を返したいと思っていますが、連絡方法がありません。",
+        stat_2_h: "発見者のアプリ不要",
+        stat_2_d: "専用アプリのダウンロードは不要。カメラやNFCで瞬時にアクセス。",
+        stat_3_h: "プライバシー保護",
+        stat_3_d: "個人の電話番号やメールアドレスが公開されることはありません。",
         reg_title: "無料タグを有効化",
         reg_subtitle: "30秒でセットアップ。",
         reg_field_name: "名前",
@@ -277,7 +297,7 @@
         reg_field_phone: "電話番号",
         reg_field_email: "メール",
         reg_field_pass: "パスワード",
-        reg_submit: "タグを作成",
+        reg_submit: "タグを作成してログイン",
         b2b_tag: "メーカー向け",
         b2b_title: "製品に標準搭載",
         b2b_desc: "製品にQR Hope機能を組み込む。",
@@ -286,7 +306,7 @@
         faq_1_a: "はい、永久無料です。",
         faq_2_q: "アプリは必要ですか？",
         faq_2_a: "不要です。",
-        footer_dash: "管理画面"
+        footer_dash: "ログイン"
       }
     };
 
@@ -357,7 +377,7 @@
 
         localStorage.setItem('qrhope_current_active_tag', JSON.stringify(newTag));
         msg.className = "bg-emerald-50 text-emerald-800 text-xs p-2.5 rounded-xl block font-bold";
-        msg.innerText = `✅ Žyma #${newId} sukurta! Nukreipiama į pultas...`;
+        msg.innerText = `✅ Žyma #${newId} sukurta! Jungiamės...`;
 
         setTimeout(function() {
           window.location.href = `dashboard.html?id=${newId}`;
@@ -368,7 +388,7 @@
         msg.innerText = "Klaida: " + err.message;
         msg.classList.remove('hidden');
         btn.disabled = false;
-        btn.innerText = "Sukurti žymą ir atidaryti pultą";
+        btn.innerText = "Sukurti žymą ir prisijungti";
       }
     }
 
