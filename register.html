@@ -12,73 +12,78 @@
 </head>
 <body class="bg-[#fcfdfc] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-4 sm:p-6">
 
-  <!-- Viršutinė juosta -->
+  <!-- Viršutinė juosta su kalbos perjungikliu -->
   <header class="max-w-md mx-auto w-full py-3 flex justify-between items-center border-b border-slate-100">
     <a href="index.html" class="flex items-center space-x-2">
       <span class="w-2.5 h-2.5 rounded-full bg-emerald-700"></span>
       <span class="text-xl font-bold tracking-tight text-slate-900">QR Hope</span>
     </a>
-    <a href="index.html" class="text-xs text-slate-500 hover:text-slate-800 font-medium">Grįžti į pradžią</a>
+    <div class="flex items-center space-x-2">
+      <button onclick="toggleLanguage()" id="langBtn" class="text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-1 rounded-md hover:bg-emerald-100 transition">
+        EN
+      </button>
+      <a href="index.html" id="t_homeLink" class="text-xs text-slate-500 hover:text-slate-800 font-medium">Grįžti į pradžią</a>
+    </div>
   </header>
 
   <!-- Pagrindinė kortelė -->
   <main class="max-w-md mx-auto w-full my-6 bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm space-y-6">
     <div>
-      <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Naujas pakabukas</span>
-      <h1 class="text-2xl font-extrabold text-slate-950 mt-1">Aktyvuokite savo apsaugą</h1>
-      <p class="text-xs text-slate-500 mt-1">Supildykite duomenis, kad radėjas galėtų susisiekti per saugią sistemą neatidengiant jūsų numerio.</p>
+      <span id="t_badge" class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Naujas pakabukas</span>
+      <h1 id="t_title" class="text-2xl font-extrabold text-slate-950 mt-1">Aktyvuokite savo apsaugą</h1>
+      <p id="t_desc" class="text-xs text-slate-500 mt-1">Supildykite duomenis, kad radėjas galėtų susisiekti per saugią sistemą neatidengiant jūsų numerio.</p>
     </div>
 
     <form id="activateForm" onsubmit="handleActivation(event)" class="space-y-4 text-xs">
       <div>
-        <label class="block font-semibold text-slate-700 mb-1">Pakabuko ID kodas</label>
+        <label id="t_label_id" class="block font-semibold text-slate-700 mb-1">Pakabuko ID kodas</label>
         <input id="tagId" type="text" required placeholder="Pvz., SOS-001" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 font-mono text-slate-800 font-bold uppercase focus:outline-none focus:border-emerald-700" />
       </div>
 
       <div>
-        <label class="block font-semibold text-slate-700 mb-1">Tipas</label>
+        <label id="t_label_type" class="block font-semibold text-slate-700 mb-1">Tipas</label>
         <select id="tagType" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-emerald-600">
-          <option value="pet">Augintinis (šuo, katė)</option>
-          <option value="item">Asmeninis daiktas (lagaminas, raktai, piniginė)</option>
-          <option value="sos">SOS / Medicininė apsauga (vaikui, senjorui)</option>
+          <option value="pet" id="opt_pet">Augintinis (šuo, katė)</option>
+          <option value="item" id="opt_item">Asmeninis daiktas (lagaminas, raktai, piniginė)</option>
+          <option value="sos" id="opt_sos">SOS / Medicininė apsauga (vaikui, senjorui)</option>
         </select>
       </div>
 
       <div>
-        <label class="block font-semibold text-slate-700 mb-1">Vardas / Pavadinimas</label>
+        <label id="t_label_name" class="block font-semibold text-slate-700 mb-1">Vardas / Pavadinimas</label>
         <input id="tagName" type="text" required placeholder="Pvz., Reksas arba Kelioninis lagaminas" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-emerald-600" />
       </div>
 
       <div>
-        <label class="block font-semibold text-slate-700 mb-1">Jūsų el. pašto adresas (pranešimams gauti)</label>
+        <label id="t_label_email" class="block font-semibold text-slate-700 mb-1">Jūsų el. pašto adresas (pranešimams gauti)</label>
         <input id="userEmail" type="email" required placeholder="vardas@pastas.lt" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-emerald-600" />
-        <span class="text-[10px] text-slate-400 mt-0.5 block">Čia gausite įspėjimus, kai pakabukas bus nuskaitytas ar gausite žinutę.</span>
+        <span id="t_hint_email" class="text-[10px] text-slate-400 mt-0.5 block">Čia gausite įspėjimus, kai pakabukas bus nuskaitytas ar gausite žinutę.</span>
       </div>
 
       <div>
-        <label class="block font-semibold text-slate-700 mb-1">Pagrindinis telefono numeris (skambučio peradresavimui)</label>
+        <label id="t_label_phone1" class="block font-semibold text-slate-700 mb-1">Pagrindinis telefono numeris (skambučio peradresavimui)</label>
         <input id="emergencyPhone" type="tel" required placeholder="+37060000000 arba +353..." class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-emerald-600" />
-        <span class="text-[10px] text-slate-400 mt-0.5 block">Šis numeris niekada nebus viešai rodomas radėjui.</span>
+        <span id="t_hint_phone1" class="text-[10px] text-slate-400 mt-0.5 block">Šis numeris niekada nebus viešai rodomas radėjui.</span>
       </div>
 
       <div>
-        <label class="block font-semibold text-slate-700 mb-1">Antras / Atsarginis telefono numeris (nebūtina)</label>
+        <label id="t_label_phone2" class="block font-semibold text-slate-700 mb-1">Antras / Atsarginis telefono numeris (nebūtina)</label>
         <input id="secondaryPhone" type="tel" placeholder="+37060000001 arba +353..." class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-emerald-600" />
-        <span class="text-[10px] text-slate-400 mt-0.5 block">Atsarginis numeris, jei neatsiliepsite pirmuoju.</span>
+        <span id="t_hint_phone2" class="text-[10px] text-slate-400 mt-0.5 block">Atsarginis numeris, jei neatsiliepsite pirmuoju.</span>
       </div>
 
       <div>
-        <label class="block font-semibold text-slate-700 mb-1">Apsauginis PIN kodas (4 skaitmenys sujungimui)</label>
+        <label id="t_label_pin" class="block font-semibold text-slate-700 mb-1">Apsauginis PIN kodas (4 skaitmenys sujungimui)</label>
         <input id="pinCode" type="text" maxlength="4" pattern="[0-9]{4}" required placeholder="1024" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 font-mono tracking-widest text-slate-800 focus:outline-none focus:border-emerald-600" />
       </div>
 
       <div>
-        <label class="block font-semibold text-slate-700 mb-1">Papildoma informacija / Požymiai (nebūtina)</label>
+        <label id="t_label_details" class="block font-semibold text-slate-700 mb-1">Papildoma informacija / Požymiai (nebūtina)</label>
         <textarea id="tagDetails" rows="2" placeholder="Pvz., Bailus, turi mikroschemą arba atlygis radusiam..." class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-emerald-600"></textarea>
       </div>
 
       <button id="submitBtn" type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-sm text-sm">
-        Aktyvuoti pakabuką
+        <span id="t_btn">Aktyvuoti pakabuką</span>
       </button>
     </form>
 
@@ -86,25 +91,120 @@
   </main>
 
   <footer class="max-w-md mx-auto w-full text-center text-[11px] text-slate-400 py-4">
-    QR Hope &copy; 2026. Saugus pamestų daiktų ir augintinių ryšys.
+    <span id="t_footer">QR Hope &copy; 2026. Saugus pamestų daiktų ir augintinių ryšys.</span>
   </footer>
 
   <script>
     const SUPABASE_URL = "https://nhnyvztyvovgxbbwmlxx.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A";
 
+    let currentLang = localStorage.getItem('qrhope_lang') || 'lt';
+
+    const I18N = {
+      lt: {
+        langBtn: 'EN',
+        homeLink: 'Grįžti į pradžią',
+        badge: 'Naujas pakabukas',
+        title: 'Aktyvuokite savo apsaugą',
+        desc: 'Supildykite duomenis, kad radėjas galėtų susisiekti per saugią sistemą neatidengiant jūsų numerio.',
+        label_id: 'Pakabuko ID kodas',
+        label_type: 'Tipas',
+        opt_pet: 'Augintinis (šuo, katė)',
+        opt_item: 'Asmeninis daiktas (lagaminas, raktai, piniginė)',
+        opt_sos: 'SOS / Medicininė apsauga (vaikui, senjorui)',
+        label_name: 'Vardas / Pavadinimas',
+        placeholder_name: 'Pvz., Reksas arba Kelioninis lagaminas',
+        label_email: 'Jūsų el. pašto adresas (pranešimams gauti)',
+        hint_email: 'Čia gausite įspėjimus, kai pakabukas bus nuskaitytas ar gausite žinutę.',
+        label_phone1: 'Pagrindinis telefono numeris (skambučio peradresavimui)',
+        hint_phone1: 'Šis numeris niekada nebus viešai rodomas radėjui.',
+        label_phone2: 'Antras / Atsarginis telefono numeris (nebūtina)',
+        hint_phone2: 'Atsarginis numeris, jei neatsiliepsite pirmuoju.',
+        label_pin: 'Apsauginis PIN kodas (4 skaitmenys sujungimui)',
+        label_details: 'Papildoma informacija / Požymiai (nebūtina)',
+        placeholder_details: 'Pvz., Bailus, turi mikroschemą arba atlygis radusiam...',
+        btn: 'Aktyvuoti pakabuką',
+        btn_loading: 'Aktyvuojama...',
+        footer: 'QR Hope © 2026. Saugus pamestų daiktų ir augintinių ryšys.',
+        success_msg: '🎉 Pakabukas sėkmingai aktyvuotas! Nukreipiama į peržiūrą...',
+        err_msg: 'Klaida aktyvuojant. Bandykite dar kartą.'
+      },
+      en: {
+        langBtn: 'LT',
+        homeLink: 'Back to Home',
+        badge: 'New Tag Activation',
+        title: 'Activate Your Smart Protection',
+        desc: 'Fill in details so the finder can contact you securely without seeing your personal number.',
+        label_id: 'Smart Tag ID Code',
+        label_type: 'Type',
+        opt_pet: 'Pet (Dog, Cat)',
+        opt_item: 'Personal Item (Luggage, Keys, Bag)',
+        opt_sos: 'SOS / Medical ID (Child, Senior)',
+        label_name: 'Name / Label',
+        placeholder_name: 'e.g., Rex or Travel Backpack',
+        label_email: 'Your Email Address (for instant alerts)',
+        hint_email: 'You will receive notifications here whenever the tag is scanned or messaged.',
+        label_phone1: 'Primary Phone Number (for call forwarding)',
+        hint_phone1: 'This number will remain 100% confidential and hidden from finders.',
+        label_phone2: 'Secondary / Backup Phone (Optional)',
+        hint_phone2: 'Fallback number in case the primary phone does not answer.',
+        label_pin: 'Security PIN (4 digits for call relay)',
+        label_details: 'Additional Notes / Instructions (Optional)',
+        placeholder_details: 'e.g., Shy, microchipped, or reward upon safe return...',
+        btn: 'Activate Smart Tag',
+        btn_loading: 'Activating...',
+        footer: 'QR Hope © 2026. Secure connection for lost property and pets.',
+        success_msg: '🎉 Tag successfully activated! Redirecting...',
+        err_msg: 'Activation error. Please try again.'
+      }
+    };
+
+    function renderLanguage() {
+      const d = I18N[currentLang];
+      document.getElementById('langBtn').innerText = d.langBtn;
+      document.getElementById('t_homeLink').innerText = d.homeLink;
+      document.getElementById('t_badge').innerText = d.badge;
+      document.getElementById('t_title').innerText = d.title;
+      document.getElementById('t_desc').innerText = d.desc;
+      document.getElementById('t_label_id').innerText = d.label_id;
+      document.getElementById('t_label_type').innerText = d.label_type;
+      document.getElementById('opt_pet').innerText = d.opt_pet;
+      document.getElementById('opt_item').innerText = d.opt_item;
+      document.getElementById('opt_sos').innerText = d.opt_sos;
+      document.getElementById('t_label_name').innerText = d.label_name;
+      document.getElementById('tagName').placeholder = d.placeholder_name;
+      document.getElementById('t_label_email').innerText = d.label_email;
+      document.getElementById('t_hint_email').innerText = d.hint_email;
+      document.getElementById('t_label_phone1').innerText = d.label_phone1;
+      document.getElementById('t_hint_phone1').innerText = d.hint_phone1;
+      document.getElementById('t_label_phone2').innerText = d.label_phone2;
+      document.getElementById('t_hint_phone2').innerText = d.hint_phone2;
+      document.getElementById('t_label_pin').innerText = d.label_pin;
+      document.getElementById('t_label_details').innerText = d.label_details;
+      document.getElementById('tagDetails').placeholder = d.placeholder_details;
+      document.getElementById('t_btn').innerText = d.btn;
+      document.getElementById('t_footer').innerText = d.footer;
+    }
+
+    function toggleLanguage() {
+      currentLang = (currentLang === 'lt') ? 'en' : 'lt';
+      localStorage.setItem('qrhope_lang', currentLang);
+      renderLanguage();
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
     const existingId = urlParams.get('id');
     if (existingId) {
-      document.getElementById('tagId').value = existingId.trim().toUpperCase();
+      document.getElementById('tagId').value = existingId.split(']')[0].split('(')[0].trim().toUpperCase();
     }
 
     async function handleActivation(e) {
       e.preventDefault();
+      const d = I18N[currentLang];
       const btn = document.getElementById('submitBtn');
       const status = document.getElementById('statusMsg');
       btn.disabled = true;
-      btn.innerText = "Aktyvuojama...";
+      document.getElementById('t_btn').innerText = d.btn_loading;
 
       const targetId = document.getElementById('tagId').value.trim().toUpperCase();
 
@@ -135,21 +235,23 @@
           localStorage.setItem('qrhope_current_tag', payload.id);
 
           status.className = "bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs p-3 rounded-xl text-center block";
-          status.innerHTML = "🎉 Pakabukas sėkmingai aktyvuotas! Nukreipiama į peržiūrą...";
+          status.innerHTML = d.success_msg;
           
           setTimeout(() => {
             window.location.href = `s.html?id=${encodeURIComponent(payload.id)}`;
           }, 1200);
         } else {
-          throw new Error("Nepavyko išsaugoti duomenų.");
+          throw new Error("Activation failed");
         }
       } catch (err) {
         status.className = "bg-rose-50 border border-rose-200 text-rose-800 text-xs p-3 rounded-xl text-center block";
-        status.innerText = "Klaida aktyvuojant. Bandykite dar kartą.";
+        status.innerText = d.err_msg;
         btn.disabled = false;
-        btn.innerText = "Aktyvuoti pakabuką";
+        document.getElementById('t_btn').innerText = d.btn;
       }
     }
+
+    renderLanguage();
   </script>
 </body>
 </html>
