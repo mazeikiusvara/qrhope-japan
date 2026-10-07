@@ -3,127 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Hope – Skubios pagalbos kortelė</title>
+  <title>QR Hope – Skubus kontaktas</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .chat-scroll { max-height: 240px; overflow-y: auto; }
+  </style>
 </head>
-<body class="bg-slate-100 min-h-screen flex flex-col items-center justify-start p-4 font-sans text-slate-800">
+<body class="bg-[#fcfdfc] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-4 sm:p-6">
 
-  <div class="w-full max-w-sm mx-auto">
+  <header class="max-w-md mx-auto w-full py-3 flex justify-between items-center border-b border-slate-100">
+    <a href="index.html" class="flex items-center space-x-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-700"></span>
+      <span class="text-xl font-bold tracking-tight text-slate-900">QR Hope</span>
+    </a>
+    <span id="tagIdDisplay" class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md font-mono">#ID</span>
+  </header>
 
-    <!-- Viršutinė navigacija -->
-    <div class="mb-3 flex justify-between items-center px-1">
-      <a href="index.html" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-sm transition">
-        <span>←</span> Pagrindinis puslapis
-      </a>
-      <span class="text-xs font-mono text-slate-400 font-bold" id="tagIdDisplay"></span>
-    </div>
-
-    <!-- Krovimo indikatorius -->
-    <div id="loader" class="bg-white rounded-3xl p-8 text-center shadow-lg border border-slate-200 my-4">
-      <div class="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-      <p class="text-sm font-bold text-slate-700">Kraunami duomenys...</p>
-      <p class="text-xs text-slate-400 mt-1">Prašome palaukti</p>
-    </div>
-
-    <!-- Klaidos vaizdas -->
-    <div id="errorView" class="hidden bg-white rounded-3xl p-6 text-center shadow-lg border border-red-200 my-4">
-      <div class="text-3xl mb-2">⚠️</div>
-      <h3 class="font-bold text-red-600 text-base">Pakabukas nerastas</h3>
-      <p class="text-xs text-slate-500 mt-1">Neteisingas ID arba pakabukas dar neaktyvuotas.</p>
-      <div class="mt-4">
-        <a href="register.html" class="inline-block bg-emerald-600 text-white text-xs font-bold py-2 px-4 rounded-xl">
-          Aktyvuoti šį pakabuką dabar
-        </a>
-      </div>
-      <p id="debugError" class="text-[10px] text-red-400 mt-2 font-mono break-all"></p>
-    </div>
-
-    <!-- Pagrindinė kortelė -->
-    <div id="mainCard" class="hidden bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200 mb-6">
-      
-      <!-- 1. SOS Medicininis vaizdas -->
-      <div id="sosView" class="hidden">
-        <div class="bg-red-600 text-white p-5 text-center">
-          <h2 class="text-base font-black tracking-wide uppercase">🚨 Skubi medicininė informacija (SOS)</h2>
-          <p class="text-[11px] text-red-100 font-bold tracking-wider mt-0.5">QR HOPE PAGALBOS SISTEMA</p>
-        </div>
-
-        <div class="p-5 space-y-4">
-          <div class="flex justify-between items-baseline border-b pb-3">
-            <div>
-              <span class="text-[10px] uppercase font-bold text-slate-400 block">Vardas, Pavardė</span>
-              <span class="text-xl font-black text-slate-900" id="sosName">---</span>
-            </div>
-            <div class="text-right">
-              <span class="text-[10px] uppercase font-bold text-slate-400 block">Amžius</span>
-              <span class="text-sm font-bold text-slate-700" id="sosAge">---</span>
-            </div>
-          </div>
-
-          <div class="bg-red-50 border border-red-200 rounded-2xl p-3.5 space-y-2 text-xs">
-            <div>
-              <span class="text-slate-500 font-bold block mb-0.5">Būklė / Diagnozė:</span>
-              <span class="font-bold text-slate-900" id="sosDetails">---</span>
-            </div>
-            <div class="border-t border-red-100 pt-2">
-              <span class="text-slate-500 font-bold block mb-0.5">Kritiniai medicinos duomenys:</span>
-              <span class="font-medium text-slate-800" id="sosCritical">---</span>
-            </div>
-          </div>
-
-          <div class="space-y-2 pt-1">
-            <button onclick="triggerCall()" class="w-full bg-emerald-600 active:bg-emerald-700 text-white py-3.5 px-4 rounded-2xl font-bold text-sm shadow flex items-center justify-center gap-2">
-              <span>📞 Skambinti artimiesiems</span>
-            </button>
-            <button onclick="sendLocation()" id="gpsBtn" class="w-full bg-slate-900 active:bg-slate-800 text-white py-3 px-4 rounded-2xl font-semibold text-xs flex items-center justify-center gap-2">
-              <span>📍 Siųsti dabartinę vietą (GPS)</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2. Gyvūno / Daikto vaizdas -->
-      <div id="petView" class="hidden">
-        <div class="bg-amber-500 text-slate-950 p-5 text-center">
-          <div class="text-3xl mb-1">🐾</div>
-          <h2 class="text-lg font-black uppercase tracking-wide">Aš pasiklydau!</h2>
-          <p class="text-xs font-bold text-amber-950">Ieškau savo šeimininko</p>
-        </div>
-
-        <div class="p-5 space-y-4">
-          <div class="text-center">
-            <h3 class="text-2xl font-black text-slate-900" id="petName">---</h3>
-            <p class="text-xs text-slate-500 mt-0.5" id="petDetails">---</p>
-            <div class="inline-block bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold px-3 py-1 rounded-full mt-2.5" id="petRewardBadge">
-              🎁 Atlygis: <span id="petReward">---</span>
-            </div>
-          </div>
-
-          <div class="space-y-2 pt-2">
-            <button onclick="triggerCall()" class="w-full bg-emerald-600 active:bg-emerald-700 text-white py-3.5 px-4 rounded-2xl font-bold text-sm shadow flex items-center justify-center gap-2">
-              <span>📞 Skambinti šeimininkui</span>
-            </button>
-            <button onclick="sendLocation()" id="petGpsBtn" class="w-full bg-slate-900 active:bg-slate-800 text-white py-3 px-4 rounded-2xl font-semibold text-xs flex items-center justify-center gap-2">
-              <span>📍 Siųsti radimo vietą (GPS)</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Pranešimas apie išsiųstą vietą -->
-      <div id="gpsSuccessBox" class="hidden p-3 bg-emerald-50 border-t border-emerald-200 text-center">
-        <p class="text-xs font-bold text-emerald-800">✅ Vieta sėkmingai nusiųsta šeimai!</p>
-      </div>
-
-      <!-- Poraštė -->
-      <div class="p-3 text-center border-t bg-slate-50">
-        <p class="text-[10px] text-slate-400">🛡️ Privatumo apsaugos sistema • Telefono numeris yra saugus</p>
-      </div>
-
-    </div>
-
+  <div id="loader" class="my-auto text-center py-16">
+    <i class="fa-solid fa-circle-notch fa-spin text-3xl text-emerald-700 mb-3"></i>
+    <p class="text-xs text-slate-500">Ieškoma informacijos...</p>
   </div>
 
-  <script src="s.js"></script>
-</body>
-</html>
+  <div id="errorView" class="hidden max-w-md mx-auto w-full my-6 bg-rose-50 border border-rose-200 text-rose-800 p-5 rounded-2xl text-center space-y-2">
+    <i class="fa-solid fa-triangle-exclamation text-2xl text-rose-600"></i>
+    <p class="text-sm font-bold">Pakabukas nerastas arba dar neaktyvuotas.</p>
+    <a id="registerLink" href="register.html" class="inline-block mt-2 bg-slate-900 text-white text-xs font-semibold px-4 py-2 rounded-xl">
+      Aktyvuoti šį pakabuką
+    </a>
+  </div>
+
+  <main id="mainCard" class="hidden max-w-md mx-auto w-full my-4 bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm space-y-5">
+    
+    <!-- Lost Mode įspėjimas -->
+    <div id="lostBanner" class="hidden bg-rose-50 border border-rose-200 p-3.5 rounded-xl space-y-1">
+      <div class="flex items-center space-x-2 text-rose-700 font-bold text-xs uppercase tracking-wider">
+        <i class="fa-solid fa-triangle-exclamation text-sm animate-pulse"></i>
+        <span>Paskelbta paieška!</span>
+      </div>
+      <p class="text-xs text-rose-900 leading-tight">Šeimininkas skubiai ieško šio objekto. Padėkite jam sugrįžti namo.</p>
+    </div>
+
+    <!-- Profilio informacija -->
+    <div class="flex justify-between items-start border-b border-slate-100 pb-4">
+      <div>
+        <span id="tagBadge" class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Apsaugotas objektas</span>
+        <h1 id="tagName" class="text-2xl font-extrabold text-slate-950 mt-0.5">Kraunama...</h1>
+        <p id="tagDetails" class="text-xs text-slate-500 mt-0.5"></p>
+      </div>
+      <div id="rewardBox" class="hidden bg-amber-50 border border-amber-200 text-amber-900 text-xs px-2.5 py-1.5 rounded-xl text-right">
+        <span class="block text-[9px] uppercase font-bold text-amber-700">Atlygis</span>
+        <span id="rewardAmount" class="font-bold"></span>
+      </div>
+    </div>
+
+    <!-- Veiksmų mygtukai -->
+    <div class="space-y-2.5">
+      <button onclick="triggerCall()" class="w-full bg-emerald-800 hover:bg-emerald-900 active:scale-[0.99] transition text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center space-x-2 shadow-sm text-sm">
+        <i class="fa-solid fa-phone"></i>
+        <span>Skambinti savininkui (Anonimiškai)</span>
+      </button>
+
+      <button id="gpsBtn" onclick="sendLocation()" class="w-full bg-slate-50 hover:bg-slate-100 active:scale-[0.99] transition text-slate-700 font-semibold py-3 px-4 rounded-xl flex items-center justify-center space-x-2 border border-slate-200 text-xs">
+        <i class="fa-solid fa-location-crosshairs text-emerald-700"></i>
+        <span>Nusiųsti radimo vietą (GPS)</span>
+      </button>
+
+      <div id="gpsSuccessBox" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs p-2.5 rounded-xl text-center">
+        <i class="fa-solid fa-check mr-1 text-emerald-700"></i> Koordinatės perduotos savininkui.
+      </div>
+    </div>
+
+    <!-- Anoniminis susirašinėjimas -->
+    <div class="border-t border-slate-100 pt-4 space-y-3">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Saugi žinutė savininkui</h2>
+        <span class="text-[10px] text-emerald-700 flex items-center">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 mr-1 animate-pulse"></span> Tiesioginis ryšys
+        </span>
+      </div>
+
+      <div id="chatBox" class="chat-scroll bg-slate-50 border border-slate-200/70 rounded-xl p-3 space-y-2 text-xs">
+        <p class="text-slate-400 text-center text-[11px] py-2">Kraunamos žinutės...</p>
+      </div>
+
+      <div class="flex space-x-2">
+        <input id="messageInput" type="text" placeholder="Parašykite kur palikote daiktą..." class="flex-1 bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-emerald-600" />
+        <button id="sendMsgBtn" onclick="sendMessage()" class="bg-emerald-800 hover:bg-emerald-900 text-white font-bold px-3.5 py-2 rounded-xl text-xs flex
