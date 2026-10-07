@@ -14,7 +14,7 @@
     </div>
     <div class="flex items-center space-x-2">
       <a href="index.html" class="bg-white border border-slate-300 font-bold px-2 py-1 rounded">Pradžia</a>
-      <button id="logoutBtn" onclick="logout()" class="hidden text-rose-600 font-bold">Atsijungti</button>
+      <button id="logoutBtn" onclick="logout()" class="hidden text-rose-600 font-bold cursor-pointer">Atsijungti</button>
     </div>
   </header>
 
@@ -25,7 +25,7 @@
       <form onsubmit="handleAuth(event)" class="space-y-2">
         <input id="partnerId" type="text" required placeholder="Partneris (pvz. BALTICBAGS)" class="w-full bg-slate-50 border p-2 rounded-xl font-bold" />
         <input id="partnerSecret" type="password" required placeholder="Slaptažodis (1234)" class="w-full bg-slate-50 border p-2 rounded-xl" />
-        <button type="submit" class="w-full bg-slate-900 text-white font-bold py-2 rounded-xl">Prisijungti</button>
+        <button type="submit" class="w-full bg-slate-900 text-white font-bold py-2 rounded-xl cursor-pointer">Prisijungti</button>
       </form>
       <p id="authErr" class="hidden text-rose-600 text-center font-bold"></p>
     </div>
@@ -37,7 +37,7 @@
           <h2 class="font-black text-slate-900 text-sm">Partijų pultas</h2>
           <span id="partnerNameText" class="text-[11px] text-slate-500 font-bold"></span>
         </div>
-        <button onclick="loadTags()" class="bg-slate-100 hover:bg-slate-200 font-bold px-2.5 py-1 rounded-lg border">
+        <button onclick="loadTags()" class="bg-slate-100 hover:bg-slate-200 font-bold px-2.5 py-1 rounded-lg border cursor-pointer">
           <i class="fa-solid fa-rotate"></i> Atnaujinti
         </button>
       </div>
@@ -70,7 +70,7 @@
             <label class="font-bold text-slate-600 block mb-0.5">Kiekis (vnt.)</label>
             <input id="qtyInput" type="number" min="1" max="150" value="10" required class="w-full bg-slate-50 border p-2 rounded-xl font-bold" />
           </div>
-          <button id="genBtn" type="submit" class="col-span-2 bg-indigo-900 text-white font-bold py-2.5 rounded-xl">
+          <button id="genBtn" type="submit" class="col-span-2 bg-indigo-900 text-white font-bold py-2.5 rounded-xl cursor-pointer">
             Generuoti ir išsaugoti
           </button>
         </form>
@@ -81,7 +81,7 @@
       <div class="bg-white border rounded-2xl p-4 space-y-2">
         <div class="flex justify-between items-center border-b pb-1.5">
           <span class="font-bold text-slate-900">Sukurtos žymos (<span id="tagCount">0</span> vnt.)</span>
-          <button onclick="downloadCSV()" class="bg-emerald-800 text-white font-bold px-2.5 py-1 rounded-lg">
+          <button onclick="downloadCSV()" class="bg-emerald-800 text-white font-bold px-2.5 py-1 rounded-lg cursor-pointer">
             <i class="fa-solid fa-file-csv"></i> CSV
           </button>
         </div>
@@ -110,7 +110,7 @@
     <div class="bg-white rounded-2xl p-4 max-w-xs w-full space-y-2.5">
       <div class="flex justify-between items-center border-b pb-1">
         <span class="font-bold text-slate-900">Redaguoti <span id="editTagId" class="text-emerald-700 font-mono"></span></span>
-        <button onclick="closeEdit()"><i class="fa-solid fa-xmark"></i></button>
+        <button onclick="closeEdit()" class="cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <form onsubmit="saveEdit(event)" class="space-y-2">
         <input id="editName" type="text" required placeholder="Gaminio pavadinimas" class="w-full bg-slate-50 border p-2 rounded-xl" />
@@ -121,8 +121,8 @@
         </select>
         <input id="editSecret" type="text" maxlength="6" placeholder="Pakuotės kodas" class="w-full bg-slate-50 border p-2 rounded-xl uppercase font-mono font-bold" />
         <div class="flex space-x-1 pt-1">
-          <button type="button" onclick="closeEdit()" class="flex-1 bg-slate-100 py-1.5 rounded-xl font-bold">Atšaukti</button>
-          <button type="submit" class="flex-1 bg-emerald-800 text-white py-1.5 rounded-xl font-bold">Išsaugoti</button>
+          <button type="button" onclick="closeEdit()" class="flex-1 bg-slate-100 py-1.5 rounded-xl font-bold cursor-pointer">Atšaukti</button>
+          <button type="submit" class="flex-1 bg-emerald-800 text-white py-1.5 rounded-xl font-bold cursor-pointer">Išsaugoti</button>
         </div>
       </form>
     </div>
@@ -143,7 +143,8 @@
       var id = document.getElementById('partnerId').value.trim();
       var p = document.getElementById('partnerSecret').value.trim();
       if (p === 'admin' || p === '1234' || id.length > 2) {
-        sessionStorage.setItem('qrhope_p', id.toUpperCase());
+        // IŠSAUGOMA ILGALAIKĖJE ATMINTYJE (localStorage)
+        localStorage.setItem('qrhope_partner_auth', id.toUpperCase());
         openDashboard(id.toUpperCase());
       } else {
         document.getElementById('authErr').innerText = "Neteisingi duomenys";
@@ -180,8 +181,8 @@
             <td class="p-1.5 font-bold text-emerald-700">${t.activation_secret || '-'}</td>
             <td class="p-1.5 text-right space-x-1 font-sans">
               <a href="s.html?id=${t.id}&preview=1" target="_blank" class="bg-slate-100 p-1 rounded font-bold" title="Tik gaminys"><i class="fa-solid fa-eye"></i></a>
-              <button onclick="editModal('${t.id}')" class="bg-indigo-50 text-indigo-700 p-1 rounded font-bold"><i class="fa-solid fa-pen"></i></button>
-              <button onclick="delTag('${t.id}')" class="bg-rose-50 text-rose-700 p-1 rounded font-bold"><i class="fa-solid fa-trash"></i></button>
+              <button onclick="editModal('${t.id}')" class="bg-indigo-50 text-indigo-700 p-1 rounded font-bold cursor-pointer"><i class="fa-solid fa-pen"></i></button>
+              <button onclick="delTag('${t.id}')" class="bg-rose-50 text-rose-700 p-1 rounded font-bold cursor-pointer"><i class="fa-solid fa-trash"></i></button>
             </td>
           </tr>`;
         }).join('');
@@ -255,11 +256,17 @@
       a.click();
     }
 
-    function logout() { sessionStorage.removeItem('qrhope_p'); window.location.reload(); }
+    function logout() { 
+      localStorage.removeItem('qrhope_partner_auth'); 
+      window.location.reload(); 
+    }
 
+    // AUTOMATINIS PRISIJUNGIMAS PERKROVUS PUSLAPĮ
     document.addEventListener("DOMContentLoaded", function() {
-      var p = sessionStorage.getItem('qrhope_p');
-      if (p) openDashboard(p);
+      var saved = localStorage.getItem('qrhope_partner_auth');
+      if (saved) {
+        openDashboard(saved);
+      }
     });
   </script>
 </body>
