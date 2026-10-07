@@ -1,145 +1,213 @@
-<!DOCTYPE html><html lang="lt"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>QR Hope – Savininkas</title><script src="https://cdn.tailwindcss.com"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}</style></head>
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Hope – Savininko pultas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }</style>
+</head>
 <body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-3 sm:p-5">
-<header class="max-w-4xl mx-auto w-full py-2.5 flex justify-between items-center border-b border-slate-200">
-<div class="flex items-center space-x-2"><a href="index.html" class="flex items-center space-x-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-700"></span><span class="text-lg font-black tracking-tight text-slate-900">QR<span class="text-emerald-800">HOPE</span></span></a><span class="text-[10px] bg-slate-900 text-white font-bold px-2 py-0.5 rounded">SAVININKAS</span></div>
-<div class="flex items-center space-x-2"><a href="index.html" class="text-xs font-bold bg-white text-slate-700 border border-slate-300 px-2.5 py-1 rounded-md">Pradžia</a><button id="logoutBtn" onclick="logout()" class="hidden text-xs text-rose-600 font-bold hover:underline cursor-pointer">Atsijungti</button></div>
-</header>
-<main class="max-w-4xl mx-auto w-full my-4">
-<div id="authBox" class="max-w-sm mx-auto bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3">
-<div><h1 class="text-lg font-black text-slate-900">Prisijungimas prie žymos</h1><p class="text-[11px] text-slate-500 mt-0.5">Įveskite žymos ID ir slaptažodį.</p></div>
-<form onsubmit="handleAuth(event)" class="space-y-3 text-xs">
-<div><label class="block font-bold text-slate-700 mb-1">Žymos ID</label><input id="loginTagId" type="text" required placeholder="FREE-9973" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 font-mono uppercase font-bold text-slate-900"/></div>
-<div><label class="block font-bold text-slate-700 mb-1">Slaptažodis</label><input id="loginPass" type="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold"/></div>
-<button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl transition text-xs cursor-pointer">Atidaryti pultą</button>
-</form>
-<div class="text-center pt-1"><button onclick="openResetModal()" type="button" class="text-xs text-indigo-700 hover:underline font-bold cursor-pointer">Pamiršote slaptažodį?</button></div>
-<div id="loginErr" class="hidden bg-rose-50 border border-rose-200 text-rose-800 text-xs p-2.5 rounded-xl text-center font-bold"></div>
-</div>
-<div id="dashContent" class="hidden space-y-4">
-<div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-<div><div class="flex items-center space-x-2 flex-wrap gap-y-1"><h1 id="tagTitle" class="text-xl font-black text-slate-900"></h1><span id="tagIdBadge" class="text-xs font-mono font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded"></span></div><p id="ownerEmailText" class="text-[11px] text-slate-500 mt-0.5"></p></div>
-<div class="flex items-center space-x-2"><button onclick="openQrModal()" type="button" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-xl border border-emerald-300 cursor-pointer"><i class="fa-solid fa-qrcode mr-1"></i> Atsisiųsti QR</button><a id="previewBtn" href="#" class="bg-slate-100 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-300">Radėjo vaizdas</a></div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
-<div class="flex items-center justify-between border-b pb-2"><h2 class="text-xs font-bold text-slate-900">Paieškos režimas (Lost Mode)</h2><label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" id="lostModeToggle" onchange="toggleLostMode()" class="sr-only peer"><div class="w-10 h-5 bg-slate-200 rounded-full peer peer-checked:bg-rose-600 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div></label></div>
-<div class="space-y-2 text-xs"><textarea id="lostMsgInput" rows="2" placeholder="Pranešimas radėjui..." class="w-full bg-slate-50 border rounded-xl p-2"></textarea><input id="rewardInput" type="text" placeholder="Siūlomas atlygis" class="w-full bg-slate-50 border rounded-xl p-2"/><button onclick="saveLostModeSettings()" class="bg-slate-900 text-white font-bold py-2 px-3 rounded-xl cursor-pointer">Išsaugoti</button><span id="lostStatusText" class="text-[10px] font-bold block text-emerald-700"></span></div>
-</div>
-<div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
-<h2 class="text-xs font-bold text-slate-900 border-b pb-2">Kontaktai</h2>
-<form onsubmit="handleUpdateContacts(event)" class="space-y-2 text-xs"><input id="editName" type="text" required placeholder="Vardas" class="w-full bg-slate-50 border rounded-xl p-2"/><input id="editPhone" type="tel" required placeholder="Telefonas" class="w-full bg-slate-50 border rounded-xl p-2"/><button type="submit" class="bg-emerald-800 text-white font-bold py-2 px-3 rounded-xl cursor-pointer">Atnaujinti</button><span id="contactStatusText" class="text-[10px] font-bold block text-emerald-700"></span></form>
-</div></div></div></main>
 
-<!-- MODAL: KORTELĖ IR QR SPAUDAI -->
-<div id="qrModal" class="hidden fixed inset-0 bg-slate-950/60 flex items-center justify-center p-4 z-50">
-<div class="bg-white rounded-3xl p-5 max-w-xs w-full text-center space-y-4 shadow-2xl">
-<div class="flex justify-between items-center border-b pb-2">
-<span class="text-xs font-black text-slate-900">Apsaugos kortelė</span>
-<button onclick="closeQrModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
-</div>
-<div id="printCardPreview" class="bg-white border-2 border-slate-900 rounded-2xl p-4 space-y-3 shadow-inner">
-  <div class="flex justify-between items-center text-[10px] font-black uppercase text-slate-500">
-    <span>QR<b class="text-emerald-700">HOPE</b></span>
-    <span id="modalCardId" class="font-mono text-slate-900"></span>
-  </div>
-  <div id="qrcodeCanvas" class="flex justify-center py-1"></div>
-  <div class="space-y-0.5">
-    <div id="modalCardTitle" class="text-xs font-black text-slate-900 truncate"></div>
-    <p class="text-[9px] text-slate-500 font-semibold leading-tight">Jei radote – nuskenuokite kameros programėle</p>
-  </div>
-</div>
-<div class="space-y-2 text-xs">
-<button onclick="downloadTagCard()" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-2.5 rounded-xl transition flex items-center justify-center space-x-1.5 cursor-pointer">
-<i class="fa-solid fa-download"></i><span>Atsisiųsti kortelę (PNG)</span>
-</button>
-<button onclick="window.print()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2 rounded-xl transition cursor-pointer">
-<i class="fa-solid fa-print mr-1"></i>Spausdinti
-</button>
-</div>
-</div></div>
+  <header class="max-w-2xl mx-auto w-full py-2.5 flex justify-between items-center border-b border-slate-200">
+    <div class="flex items-center space-x-2">
+      <a href="index.html" class="flex items-center space-x-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+        <span class="text-lg font-black tracking-tight text-slate-900">QR<span class="text-emerald-700">HOPE</span></span>
+      </a>
+      <span class="text-[10px] bg-slate-200 text-slate-800 font-bold px-2 py-0.5 rounded">SAVININKAS</span>
+    </div>
+    <div class="flex items-center space-x-2">
+      <a href="index.html" class="text-xs font-bold bg-white text-slate-700 border border-slate-300 px-3 py-1.5 rounded-xl hover:bg-slate-50 transition">Pradžia</a>
+      <button onclick="logout()" class="text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-xl hover:bg-rose-100 transition">Atsijungti</button>
+    </div>
+  </header>
 
-<!-- MODAL: SLAPTAŽODŽIO KEITIMAS -->
-<div id="resetModal" class="hidden fixed inset-0 bg-slate-950/60 flex items-center justify-center p-4 z-50">
-<div class="bg-white rounded-3xl p-5 max-w-xs w-full text-left space-y-3">
-<div class="flex justify-between items-center border-b pb-2"><h3 class="text-xs font-black text-slate-900">Slaptažodžio keitimas</h3><button onclick="closeResetModal()" class="text-slate-400 cursor-pointer"><i class="fa-solid fa-xmark"></i></button></div>
-<div id="step1Box" class="space-y-2 text-xs">
-<p class="text-[11px] text-slate-500">Gaukite patvirtinimo kodą į savo el. paštą.</p>
-<div><label class="block font-bold text-slate-700 mb-0.5">Žymos ID</label><input id="resetTagId" type="text" required placeholder="FREE-9973" class="w-full bg-slate-50 border rounded-xl p-2 font-mono uppercase font-bold"/></div>
-<div><label class="block font-bold text-slate-700 mb-0.5">El. paštas</label><input id="resetEmail" type="email" required placeholder="vardas@pastas.lt" class="w-full bg-slate-50 border rounded-xl p-2"/></div>
-<button onclick="requestResetCode()" id="sendCodeBtn" type="button" class="w-full bg-indigo-900 hover:bg-indigo-950 text-white font-bold py-2.5 rounded-xl cursor-pointer">Gauti kodą į el. paštą</button>
-</div>
-<form id="step2Form" onsubmit="verifyAndSaveNewPass(event)" class="hidden space-y-2 text-xs">
-<div class="bg-indigo-50 text-indigo-900 p-2 rounded-xl text-[11px]">Kodas išsiųstas! Tikrinkite paštą.</div>
-<div><label class="block font-bold text-slate-700 mb-0.5">6 skaitmenų kodas</label><input id="resetCodeInput" type="text" maxlength="6" required placeholder="123456" class="w-full bg-slate-50 border rounded-xl p-2 font-mono text-center tracking-widest font-black text-sm"/></div>
-<div><label class="block font-bold text-slate-700 mb-0.5">Naujas slaptažodis</label><input id="resetNewPass" type="password" minlength="6" required placeholder="••••••••" class="w-full bg-slate-50 border rounded-xl p-2 font-bold"/></div>
-<button type="submit" id="savePassBtn" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-2.5 rounded-xl cursor-pointer">Patvirtinti ir pakeisti</button>
-</form>
-<div id="resetMsg" class="hidden text-xs p-2 rounded-xl text-center font-bold"></div>
-</div></div>
+  <main class="max-w-2xl mx-auto w-full my-6 space-y-4">
+    <div id="loadingBox" class="bg-white border rounded-3xl p-6 text-center text-xs font-bold text-slate-500">Kraunama...</div>
+    
+    <div id="dashboardContent" class="hidden space-y-4">
+      
+      <!-- ŽYMOS PAGRINDINĖ INFORMACIJA -->
+      <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div>
+          <h1 id="tagNameDisplay" class="text-xl font-black text-slate-950"></h1>
+          <p id="tagEmailDisplay" class="text-xs text-slate-500 font-medium"></p>
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <span id="tagIdBadge" class="text-xs font-mono font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-xl"></span>
+          <a id="previewBtn" href="#" target="_blank" class="flex-1 sm:flex-none text-center text-xs font-bold bg-slate-900 text-white px-3.5 py-2 rounded-xl hover:bg-slate-800 transition shadow-sm">
+            Radėjo vaizdas
+          </a>
+        </div>
+      </div>
 
-<footer class="max-w-4xl mx-auto w-full text-center text-[10px] text-slate-400 py-3">QR Hope &copy; 2026.</footer>
-<script>
-var SUPABASE_URL="https://nhnyvztyvovgxbbwmlxx.supabase.co",SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A",currentTag=null;
-async function handleAuth(e){e.preventDefault();var id=document.getElementById('loginTagId').value.trim().toUpperCase(),pass=document.getElementById('loginPass').value.trim(),err=document.getElementById('loginErr');err.classList.add('hidden');try{var res=await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(id)}&select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}}),data=await res.json();if(!data||!data.length){err.innerText="Žyma nerasta.";err.classList.remove('hidden');return;}var tag=data[0];if(tag.locked_until&&new Date(tag.locked_until)>new Date()){var m=Math.ceil((new Date(tag.locked_until)-new Date())/60000);err.innerText=`⛔ Užblokuota. Bandykite po ${m} min.`;err.classList.remove('hidden');return;}if(tag.pin_code===pass){await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(id)}`,{method:'PATCH',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({failed_attempts:0,locked_until:null})});currentTag=tag;localStorage.setItem('qrhope_current_active_tag',JSON.stringify(currentTag));showDashboard(tag);}else{var a=(tag.failed_attempts||0)+1,up={failed_attempts:a};if(a>=5){up.locked_until=new Date(Date.now()+900000).toISOString();err.innerText="⛔ 5 nesėkmingi bandymai. Užblokuota 15 min!";}else{err.innerText=`Neteisingas slaptažodis. Liko bandymų: ${5-a}`;}await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(id)}`,{method:'PATCH',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},body:JSON.stringify(up)});err.classList.remove('hidden');}}catch(x){err.innerText="Klaida: "+x.message;err.classList.remove('hidden');}}
-function openResetModal(){var c=document.getElementById('loginTagId').value.trim();if(c)document.getElementById('resetTagId').value=c;document.getElementById('step1Box').classList.remove('hidden');document.getElementById('step2Form').classList.add('hidden');document.getElementById('resetMsg').classList.add('hidden');document.getElementById('resetModal').classList.remove('hidden');}
-function closeResetModal(){document.getElementById('resetModal').classList.add('hidden');}
-async function requestResetCode(){var id=document.getElementById('resetTagId').value.trim().toUpperCase(),em=document.getElementById('resetEmail').value.trim().toLowerCase(),btn=document.getElementById('sendCodeBtn'),msg=document.getElementById('resetMsg');if(!id||!em){alert("Užpildykite visus laukus");return;}btn.disabled=true;btn.innerText="Siunčiama...";msg.classList.add('hidden');try{var res=await fetch(`${SUPABASE_URL}/functions/v1/send-reset-code`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tag_id:id,email:em})}),d=await res.json();if(!res.ok)throw new Error(d.error||"Nepavyko išsiųsti");document.getElementById('step1Box').classList.add('hidden');document.getElementById('step2Form').classList.remove('hidden');}catch(x){msg.className="bg-rose-50 text-rose-800 text-xs p-2 rounded-xl block font-bold";msg.innerText=x.message;msg.classList.remove('hidden');}finally{btn.disabled=false;btn.innerText="Gauti kodą į el. paštą";}}
-async function verifyAndSaveNewPass(e){e.preventDefault();var id=document.getElementById('resetTagId').value.trim().toUpperCase(),code=document.getElementById('resetCodeInput').value.trim(),np=document.getElementById('resetNewPass').value.trim(),msg=document.getElementById('resetMsg'),btn=document.getElementById('savePassBtn');btn.disabled=true;msg.classList.add('hidden');try{var res=await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(id)}&select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}}),d=await res.json();if(!d||!d.length)throw new Error("Žyma nerasta");var t=d[0];if(!t.reset_code||t.reset_code!==code)throw new Error("Neteisingas patvirtinimo kodas!");if(t.reset_expires_at&&new Date(t.reset_expires_at)<new Date())throw new Error("Kodo laikas baigėsi.");await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(id)}`,{method:'PATCH',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({pin_code:np,reset_code:null,reset_expires_at:null,failed_attempts:0,locked_until:null})});msg.className="bg-emerald-50 text-emerald-800 text-xs p-2 rounded-xl block font-bold";msg.innerText="✅ Slaptažodis pakeistas! Prisijunkite.";msg.classList.remove('hidden');document.getElementById('loginPass').value=np;setTimeout(closeResetModal,1500);}catch(x){msg.className="bg-rose-50 text-rose-800 text-xs p-2 rounded-xl block font-bold";msg.innerText=x.message;msg.classList.remove('hidden');}finally{btn.disabled=false;}}
-function showDashboard(t){document.getElementById('authBox').classList.add('hidden');document.getElementById('dashContent').classList.remove('hidden');document.getElementById('logoutBtn').classList.remove('hidden');document.getElementById('tagTitle').innerText=t.name||'Gaminys';document.getElementById('tagIdBadge').innerText='#'+t.id;document.getElementById('ownerEmailText').innerText=t.user_email||'';document.getElementById('previewBtn').href=`s.html?id=${t.id}&preview=1`;document.getElementById('lostModeToggle').checked=!!t.lost_mode;document.getElementById('lostMsgInput').value=t.lost_message||'';document.getElementById('rewardInput').value=t.reward||'';document.getElementById('editName').value=t.name||'';document.getElementById('editPhone').value=t.emergency_phone||'';}
-function openQrModal(){
-  var b=document.getElementById('qrcodeCanvas');b.innerHTML='';
-  document.getElementById('modalCardId').innerText='#'+currentTag.id;
-  document.getElementById('modalCardTitle').innerText=currentTag.name||'Objektas';
-  new QRCode(b,{text:window.location.origin+'/s.html?id='+currentTag.id,width:160,height:160,correctLevel:QRCode.CorrectLevel.H});
-  document.getElementById('qrModal').classList.remove('hidden');
-}
-function closeQrModal(){document.getElementById('qrModal').classList.add('hidden');}
+      <!-- NAUJIENA: RADĖJO ŽINUČIŲ IR GPS POKALBIŲ LANGAS -->
+      <div id="messagesCard" class="bg-emerald-950 text-emerald-100 border border-emerald-800 rounded-3xl p-5 shadow-lg space-y-3">
+        <div class="flex items-center justify-between border-b border-emerald-900 pb-2">
+          <h2 class="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+            <i class="fa-solid fa-satellite-dish text-emerald-400 animate-pulse"></i> Radėjo pranešimai ir GPS vieta
+          </h2>
+          <span class="text-[10px] bg-emerald-900 text-emerald-300 px-2 py-0.5 rounded-full font-bold">Tiesioginis ryšys</span>
+        </div>
+        <div id="messagesContent" class="text-xs font-medium bg-emerald-900/60 p-3.5 rounded-2xl border border-emerald-800/80 leading-relaxed min-h-[60px] flex items-center">
+          Kol kas radėjo pranešimų nėra. Kai kas nors nuskanuos jūsų kodą ir parašys – žinutė bei GPS nuoroda akimirksniu atsiras čia.
+        </div>
+      </div>
 
-function downloadTagCard(){
-  var visibleImg=document.querySelector('#qrcodeCanvas img');
-  var visibleCanvas=document.querySelector('#qrcodeCanvas canvas');
+      <!-- PAIEŠKOS REŽIMAS (LOST MODE) -->
+      <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+          <div>
+            <h2 class="text-sm font-black text-slate-900">Paieškos režimas (Lost Mode)</h2>
+            <p class="text-[11px] text-slate-500">Įjungus šį režimą, radėjas pamatys jūsų pranešimą ir atlygį.</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="lostModeToggle" onchange="updateLostMode()" class="sr-only peer">
+            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+          </label>
+        </div>
 
-  function renderCard(source){
-    var cvs=document.createElement('canvas');cvs.width=600;cvs.height=700;
-    var ctx=cvs.getContext('2d');
-    ctx.fillStyle='#ffffff';ctx.fillRect(0,0,600,700);
-    ctx.strokeStyle='#0f172a';ctx.lineWidth=10;ctx.strokeRect(20,20,560,660);
-    ctx.fillStyle='#0f172a';ctx.font='bold 30px sans-serif';ctx.textAlign='left';ctx.fillText('QRHOPE',50,75);
-    ctx.fillStyle='#047857';ctx.font='bold 26px monospace';ctx.textAlign='right';ctx.fillText('#'+currentTag.id,550,75);
-    ctx.drawImage(source,110,110,380,380);
-    ctx.textAlign='center';ctx.fillStyle='#0f172a';ctx.font='bold 34px sans-serif';ctx.fillText(currentTag.name||'Objektas',300,560);
-    ctx.fillStyle='#64748b';ctx.font='600 20px sans-serif';ctx.fillText('Jei radote – nuskenuokite kameros programėle',300,610);
-    var link=document.createElement('a');link.download=`QRHope-${currentTag.id}.png`;link.href=cvs.toDataURL('image/png');
-    document.body.appendChild(link);link.click();document.body.removeChild(link);
-  }
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Pranešimas radėjui</label>
+            <textarea id="lostMessageInput" rows="2" placeholder="Pvz., Pamesta mieste, prašau grąžinti!" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 font-medium text-slate-900 focus:outline-none focus:border-emerald-600"></textarea>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Siūlomas atlygis (nebūtina)</label>
+            <input id="rewardInput" type="text" placeholder="Pvz., 50€" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 font-medium text-slate-900 focus:outline-none focus:border-emerald-600" />
+          </div>
+          <button onclick="saveLostModeDetails()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-sm cursor-pointer">
+            Išsaugoti paieškos nustatymus
+          </button>
+        </div>
+      </div>
 
-  if(visibleCanvas && visibleCanvas.width > 0){
-    renderCard(visibleCanvas);
-  } else if(visibleImg && visibleImg.src && visibleImg.complete){
-    renderCard(visibleImg);
-  } else if(visibleImg && visibleImg.src){
-    var tempImg = new Image();
-    tempImg.onload = function(){ renderCard(tempImg); };
-    tempImg.src = visibleImg.src;
-  } else {
-    alert("Palaukite sekundę, kol pilnai pasikraus QR kodas, ir spauskite dar kartą.");
-  }
-}
+      <!-- KONTAKTAI -->
+      <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-3">
+        <h2 class="text-sm font-black text-slate-900 border-b border-slate-100 pb-2">Kontaktai</h2>
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Skambučių telefonas</label>
+            <input id="phoneInput" type="tel" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 font-bold text-slate-900 focus:outline-none focus:border-emerald-600" />
+          </div>
+          <button onclick="updateContacts()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-sm cursor-pointer">
+            Atnaujinti kontaktus
+          </button>
+        </div>
+      </div>
 
-async function toggleLostMode(){await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(currentTag.id)}`,{method:'PATCH',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({lost_mode:document.getElementById('lostModeToggle').checked})});}
-async function saveLostModeSettings(){await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(currentTag.id)}`,{method:'PATCH',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({lost_message:document.getElementById('lostMsgInput').value,reward:document.getElementById('rewardInput').value})});document.getElementById('lostStatusText').innerText="✅ Išsaugota!";setTimeout(()=>document.getElementById('lostStatusText').innerText="",2000);}
-async function handleUpdateContacts(e){e.preventDefault();await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(currentTag.id)}`,{method:'PATCH',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({name:document.getElementById('editName').value,emergency_phone:document.getElementById('editPhone').value})});document.getElementById('contactStatusText').innerText="✅ Atnaujinta!";setTimeout(()=>document.getElementById('contactStatusText').innerText="",2000);}
-function logout(){localStorage.removeItem('qrhope_current_active_tag');window.location.href='dashboard.html';}
-document.addEventListener("DOMContentLoaded",function(){
-var urlId=new URLSearchParams(window.location.search).get('id');
-var saved=localStorage.getItem('qrhope_current_active_tag');
-if(saved){
-  currentTag=JSON.parse(saved);
-  if(!urlId||urlId.toUpperCase()===currentTag.id.toUpperCase()){
-    showDashboard(currentTag);
-    return;
-  }
-}
-if(urlId){document.getElementById('loginTagId').value=urlId.toUpperCase();}
-});
-</script></body></html>
+    </div>
+  </main>
+
+  <footer class="max-w-2xl mx-auto w-full text-center text-[10px] text-slate-400 py-3">
+    QR Hope &copy; 2026.
+  </footer>
+
+  <script>
+    var SUPABASE_URL = "https://nhnyvztyvovgxbbwmlxx.supabase.co";
+    var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A";
+    var currentTag = null;
+
+    document.addEventListener("DOMContentLoaded", async function() {
+      var params = new URLSearchParams(window.location.search);
+      var id = params.get('id');
+      if (!id) {
+        var saved = localStorage.getItem('qrhope_current_active_tag');
+        if (saved) {
+          try { currentTag = JSON.parse(saved); id = currentTag.id; } catch(e){}
+        }
+      }
+      if (!id) {
+        window.location.href = "index.html";
+        return;
+      }
+      id = id.toUpperCase();
+
+      try {
+        var res = await fetch(SUPABASE_URL + "/rest/v1/tags?id=eq." + encodeURIComponent(id) + "&select=*", {
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+        });
+        var data = await res.json();
+        if (!data || !data.length) {
+          alert("Žyma nerasta");
+          window.location.href = "index.html";
+          return;
+        }
+        currentTag = data[0];
+        renderDashboard();
+      } catch(e) {
+        document.getElementById('loadingBox').innerText = "Klaida: " + e.message;
+      }
+    });
+
+    function renderDashboard() {
+      document.getElementById('loadingBox').classList.add('hidden');
+      document.getElementById('dashboardContent').classList.remove('hidden');
+
+      document.getElementById('tagNameDisplay').innerText = currentTag.name || 'Mano gaminys';
+      document.getElementById('tagEmailDisplay').innerText = currentTag.user_email || '';
+      document.getElementById('tagIdBadge').innerText = '#' + currentTag.id;
+      document.getElementById('previewBtn').href = "s.html?id=" + currentTag.id + "&preview=1";
+
+      // Pranešimų / žinučių laukelis
+      var msgBox = document.getElementById('messagesContent');
+      if (currentTag.lost_message && currentTag.lost_message.includes("🚨 RADĖJAS")) {
+        msgBox.innerHTML = '<div class="text-white font-bold whitespace-pre-wrap">' + currentTag.lost_message + '</div>';
+      } else {
+        msgBox.innerHTML = '<span class="text-emerald-300">Kol kas radėjo pranešimų nėra. Kai kas nors nuskanuos kodą ir parašys, pranešimas ir GPS vieta pasirodys čia.</span>';
+      }
+
+      document.getElementById('lostModeToggle').checked = currentTag.lost_mode || false;
+      document.getElementById('lostMessageInput').value = currentTag.lost_mode ? (currentTag.lost_message || '') : '';
+      document.getElementById('rewardInput').value = currentTag.reward || '';
+      document.getElementById('phoneInput').value = currentTag.emergency_phone || '';
+    }
+
+    async function updateLostMode() {
+      var isLost = document.getElementById('lostModeToggle').checked;
+      var msg = document.getElementById('lostMessageInput').value;
+      var reward = document.getElementById('rewardInput').value;
+
+      try {
+        await fetch(SUPABASE_URL + "/rest/v1/tags?id=eq." + encodeURIComponent(currentTag.id), {
+          method: 'PATCH',
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lost_mode: isLost, lost_message: msg, reward: reward })
+        });
+        currentTag.lost_mode = isLost;
+        currentTag.lost_message = msg;
+        currentTag.reward = reward;
+        alert("Paieškos režimas sėkmingai atnaujintas!");
+      } catch(e) {
+        alert("Klaida: " + e.message);
+      }
+    }
+
+    async function saveLostModeDetails() {
+      await updateLostMode();
+    }
+
+    async function updateContacts() {
+      var phone = document.getElementById('phoneInput').value;
+      try {
+        await fetch(SUPABASE_URL + "/rest/v1/tags?id=eq." + encodeURIComponent(currentTag.id), {
+          method: 'PATCH',
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ emergency_phone: phone })
+        });
+        currentTag.emergency_phone = phone;
+        alert("Kontaktai atnaujinti!");
+      } catch(e) {
+        alert("Klaida: " + e.message);
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('qrhope_current_active_tag');
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
