@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Hope – Prisijungimas prie valdymo pulto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }</style>
+</head>
+<body class="bg-[#fcfdfc] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-4 sm:p-6">
+
+  <header class="max-w-md mx-auto w-full py-4 flex justify-between items-center border-b border-slate-100">
+    <a href="index.html" class="flex items-center space-x-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-700"></span>
+      <span class="text-xl font-bold tracking-tight text-slate-900">QR Hope</span>
+    </a>
+    <a href="index.html" class="text-xs text-slate-500 hover:text-slate-800">Grįžti į pradžią</a>
+  </header>
+
+  <main class="max-w-md mx-auto w-full my-8 bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+    <div>
+      <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Savininko erdvė</span>
+      <h1 class="text-2xl font-black text-slate-950 mt-1">Prisijungti prie pulto</h1>
+      <p class="text-xs text-slate-500 mt-1">Įveskite savo pakabuko ID ir apsaugos PIN kodą:</p>
+    </div>
+
+    <form onsubmit="handleLogin(event)" class="space-y-4 text-xs">
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">Pakabuko ID kodas</label>
+        <input id="loginTagId" type="text" required placeholder="Pvz., SOS-001" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 font-mono text-slate-800 uppercase focus:outline-none focus:border-emerald-700 font-bold" />
+      </div>
+
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">Apsauginis PIN kodas</label>
+        <input id="loginPin" type="password" maxlength="6" required placeholder="••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 font-mono text-slate-800 tracking-widest focus:outline-none focus:border-emerald-700 font-bold" />
+      </div>
+
+      <button id="loginBtn" type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3.5 rounded-xl transition shadow-sm text-sm">
+        Prisijungti
+      </button>
+    </form>
+
+    <div id="loginError" class="hidden text-center text-xs p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800"></div>
+
+    <div class="border-t border-slate-100 pt-4 text-center">
+      <p class="text-xs text-slate-500">Gavote naują pakabuką? <a href="register.html" class="text-emerald-800 font-bold hover:underline">Aktyvuokite jį čia</a></p>
+    </div>
+  </main>
+
+  <footer class="max-w-md mx-auto w-full text-center text-[11px] text-slate-400 py-4">
+    QR Hope &copy; 2026. Apsaugota prieiga.
+  </footer>
+
+  <script>
+    const SUPABASE_URL = "https://nhnyvztyvovgxbbwmlxx.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A";
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const id = document.getElementById('loginTagId').value.trim().toUpperCase();
+      const pin = document.getElementById('loginPin').value.trim();
+      const errBox = document.getElementById('loginError');
+      const btn = document.getElementById('loginBtn');
+
+      errBox.classList.add('hidden');
+      btn.disabled = true;
+      btn.innerText = "Tikrinama...";
+
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(id)}&pin_code=eq.${encodeURIComponent(pin)}&select=id`, {
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          }
+        });
+        const data = await res.json();
+
+        if (data && data.length > 0) {
+          // Išsaugome sesiją naršyklėje
+          localStorage.setItem('qrhope_current_tag', id);
+          window.location.href = `dashboard.html?id=${encodeURIComponent(id)}`;
+        } else {
+          errBox.innerText = "Neteisingas pakabuko ID arba PIN kodas!";
+          errBox.classList.remove('hidden');
+          btn.disabled = false;
+          btn.innerText = "Prisijungti";
+        }
+      } catch (err) {
+        errBox.innerText = "Sistemos ryšio klaida. Bandykite dar kartą.";
+        errBox.classList.remove('hidden');
+        btn.disabled = false;
+        btn.innerText = "Prisijungti";
+      }
+    }
+  </script>
+</body>
+</html>
