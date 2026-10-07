@@ -1,36 +1,31 @@
 const SUPABASE_URL = "https://nhnyvztyvovgxbbwmlxx.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A";
 
-const TG_BOT_TOKEN = "8716784258:AAESHrfQS77RWGDbZhbnBMmOGlkUYNMJbeU";
-const TG_CHAT_ID = "8840219972";
-
-// Jūsų aktyvuotas Twilio numeris anoniminiams skambučiams
-const SYSTEM_DISPATCH_PHONE = "+14432413909";
+const SYSTEM_DISPATCH_PHONE = "+37044337200";
 
 let currentTag = null;
+let chatInterval = null;
 
 async function loadData() {
   const urlParams = new URLSearchParams(window.location.search);
   const tagId = urlParams.get('id') || 'SOS-001';
-  const tagDisplay = document.getElementById('tagIdDisplay');
-  if (tagDisplay) tagDisplay.innerText = '#' + tagId;
+  document.getElementById('tagIdDisplay').innerText = '#' + tagId;
+
+  const regLink = document.getElementById('registerLink');
+  if (regLink) regLink.href = `register.html?id=${encodeURIComponent(tagId)}`;
 
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(tagId)}&select=*`, {
-      method: 'GET',
       headers: {
         'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Accept': 'application/json'
+        'Authorization': `Bearer ${SUPABASE_KEY}`
       }
     });
-
-    if (!res.ok) throw new Error('HTTP klaida: ' + res.status);
 
     const data = await res.json();
     document.getElementById('loader').classList.add('hidden');
 
-    if (!data || data.length === 0) {
+    if (!data || data.length === 0 || !data[0].emergency_phone) {
       document.getElementById('errorView').classList.remove('hidden');
       return;
     }
@@ -38,59 +33,55 @@ async function loadData() {
     currentTag = data[0];
     document.getElementById('mainCard').classList.remove('hidden');
 
+    document.getElementById('tagName').innerText = currentTag.name || 'Pamestas daiktas';
+    document.getElementById('tagDetails').innerText = currentTag.details || '';
+
     if (currentTag.type === 'pet') {
-      document.getElementById('petView').classList.remove('hidden');
-      document.getElementById('petName').innerText = currentTag.name || '';
-      document.getElementById('petDetails').innerText = (currentTag.details || '') + (currentTag.age ? ' • ' + currentTag.age : '');
-      if (currentTag.reward) {
-        document.getElementById('petReward').innerText = currentTag.reward;
-      } else {
-        document.getElementById('petRewardBadge').classList.add('hidden');
-      }
+      document.getElementById('tagBadge').innerText = 'Pamestas augintinis';
+    } else if (currentTag.type === 'sos') {
+      document.getElementById('tagBadge').innerText = 'SOS / Medicininė apsauga';
     } else {
-      document.getElementById('sosView').classList.remove('hidden');
-      document.getElementById('sosName').innerText = currentTag.name || '';
-      document.getElementById('sosAge').innerText = currentTag.age || '';
-      document.getElementById('sosDetails').innerText = currentTag.details || 'Nenurodyta';
-      document.getElementById('sosCritical').innerText = currentTag.critical_info || 'Nenurodyta';
+      document.getElementById('tagBadge').innerText = 'Asmeninis daiktas';
     }
+
+    if (currentTag.is_lost) {
+      document.getElementById('lostBanner').classList.remove('hidden');
+    }
+
+    if (currentTag.reward) {
+      document.getElementById('rewardAmount').innerText = currentTag.reward;
+      document.getElementById('rewardBox').classList.remove('hidden');
+    }
+
+    loadMessages();
+    if (!chatInterval) {
+      chatInterval = setInterval(loadMessages, 4000);
+    }
+
   } catch (err) {
     document.getElementById('loader').classList.add('hidden');
     document.getElementById('errorView').classList.remove('hidden');
-    document.getElementById('debugError').innerText = err.message;
   }
 }
 
 function triggerCall() {
   const pin = currentTag && currentTag.pin_code ? currentTag.pin_code : '1024';
-  
-  // Automatinis rinkimas per Twilio šliuzą su 2 sek. pauze ir PIN kodu
-  const dialString = `${SYSTEM_DISPATCH_PHONE},,${pin}#`;
-  
-  window.location.href = `tel:${dialString}`;
+  window.location.href = `tel:${SYSTEM_DISPATCH_PHONE},,${pin}#`;
 }
 
 function sendLocation() {
-  const confirmText = "Ar sutinkate nusiųsti savo buvimo vietą šeimai / šeimininkui, kad jie galėtų atvykti?";
-  if (!confirm(confirmText)) {
-    return;
-  }
+  if (!confirm("Ar sutinkate nusiųsti radimo vietą savininkui?")) return;
 
   if (!navigator.geolocation) {
-    alert("Geolokacija nepalaikoma jūsų naršyklėje.");
+    alert("Geolokacija nepalaikoma naršyklėje.");
     return;
   }
 
-  const activeBtn = currentTag.type === 'pet' ? document.getElementById('petGpsBtn') : document.getElementById('gpsBtn');
-  const originalText = activeBtn.innerHTML;
-  activeBtn.innerText = "Nustatoma vieta...";
+  const btn = document.getElementById('gpsBtn');
+  const oldText = btn.innerHTML;
+  btn.innerText = "Nustatoma vieta...";
 
   navigator.geolocation.getCurrentPosition(async (pos) => {
-    const lat = pos.coords.latitude;
-    const lon = pos.coords.longitude;
-    const mapsLink = `https://maps.google.com/?q=${lat},${lon}`;
-
-    // 1. Įrašymas į Supabase scan_logs
     try {
       await fetch(`${SUPABASE_URL}/rest/v1/scan_logs`, {
         method: 'POST',
@@ -101,39 +92,89 @@ function sendLocation() {
         },
         body: JSON.stringify({
           tag_id: currentTag.id,
-          latitude: lat,
-          longitude: lon
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude
         })
       });
+      document.getElementById('gpsSuccessBox').classList.remove('hidden');
     } catch (e) {
-      console.error("Klaida įrašant į Supabase:", e);
+      console.error(e);
+    } finally {
+      btn.innerHTML = oldText;
     }
-
-    // 2. Automatinis Telegram pranešimas
-    try {
-      const typeLabel = currentTag.type === 'pet' ? '🐾 Rastas gyvūnas / daiktas' : '🚨 SKUBI PAGALBA (SOS)';
-      const pinInfo = currentTag.pin_code ? `\nSaugus PIN: ${currentTag.pin_code}` : '';
-      const text = `${typeLabel}\n\nPakabukas: #${currentTag.id}${pinInfo}\nVardas: ${currentTag.name || 'Nenurodyta'}\n\n📍 Vieta žemėlapyje:\n${mapsLink}`;
-
-      await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: TG_CHAT_ID,
-          text: text
-        })
-      });
-    } catch (e) {
-      console.error("Klaida siunčiant į Telegram:", e);
-    }
-
-    activeBtn.innerHTML = originalText;
-    document.getElementById('gpsSuccessBox').classList.remove('hidden');
-
-  }, (err) => {
-    activeBtn.innerHTML = originalText;
-    alert("Vietos nustatymas atmestas arba neprieinamas.");
+  }, () => {
+    btn.innerHTML = oldText;
+    alert("Nepavyko gauti koordinačių.");
   }, { enableHighAccuracy: true, timeout: 10000 });
+}
+
+async function loadMessages() {
+  if (!currentTag) return;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/messages?tag_id=eq.${encodeURIComponent(currentTag.id)}&order=created_at.asc`, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`
+      }
+    });
+    const msgs = await res.json();
+    const chatBox = document.getElementById('chatBox');
+
+    if (!msgs || msgs.length === 0) {
+      chatBox.innerHTML = '<p class="text-slate-400 text-center text-[11px] py-2">Žinučių nėra. Parašykite radimo detales savininkui.</p>';
+      return;
+    }
+
+    chatBox.innerHTML = msgs.map(m => {
+      const isFinder = m.sender_role === 'finder';
+      return `
+        <div class="flex flex-col ${isFinder ? 'items-end' : 'items-start'}">
+          <div class="max-w-[85%] rounded-xl px-3 py-2 ${isFinder ? 'bg-emerald-800 text-white' : 'bg-white border border-slate-200 text-slate-800 shadow-2xs'}">
+            <p>${m.message_text}</p>
+          </div>
+          <span class="text-[9px] text-slate-400 mt-0.5">${isFinder ? 'Jūs (Radėjas)' : 'Savininkas'}</span>
+        </div>
+      `;
+    }).join('');
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function sendMessage() {
+  const input = document.getElementById('messageInput');
+  const text = input.value.trim();
+  if (!text || !currentTag) return;
+
+  const btn = document.getElementById('sendMsgBtn');
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/messages`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        tag_id: currentTag.id,
+        sender_role: 'finder',
+        message_text: text
+      })
+    });
+
+    if (res.ok) {
+      input.value = '';
+      loadMessages();
+    }
+  } catch (e) {
+    console.error(e);
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 loadData();
