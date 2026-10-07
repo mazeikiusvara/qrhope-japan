@@ -8,10 +8,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }</style>
 </head>
-<body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-4 sm:p-6">
+<body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-3 sm:p-6">
 
-  <!-- Navigacija su grįžimo mygtuku ir kalbos pasirinkimu -->
-  <header class="max-w-4xl mx-auto w-full py-3 flex justify-between items-center border-b border-slate-200">
+  <!-- Navigacija -->
+  <header class="max-w-5xl mx-auto w-full py-3 flex justify-between items-center border-b border-slate-200">
     <div class="flex items-center space-x-2">
       <a href="index.html" class="flex items-center space-x-2">
         <span class="w-3 h-3 rounded-full bg-slate-900"></span>
@@ -20,18 +20,15 @@
     </div>
 
     <div class="flex items-center space-x-2">
-      <!-- Kalbos perjungiklis -->
       <button onclick="toggleLang()" id="langBtn" type="button" class="text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 px-2.5 py-1.5 rounded-lg hover:bg-emerald-100 cursor-pointer">
         EN
       </button>
 
-      <!-- Grįžimo mygtukas -->
       <a href="index.html" class="text-xs font-bold bg-white text-slate-700 hover:text-slate-950 border border-slate-300 px-3 py-1.5 rounded-lg flex items-center space-x-1 shadow-2xs">
         <i class="fa-solid fa-arrow-left text-[10px]"></i>
         <span data-i18n="back_home">Grįžti į pradžią</span>
       </a>
 
-      <!-- Atsijungimas (prisijungus) -->
       <div id="authNav" class="hidden items-center space-x-2 ml-1">
         <span id="companyBadge" class="text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200"></span>
         <button onclick="logoutMfg()" class="text-xs text-rose-600 font-bold hover:underline cursor-pointer" data-i18n="logout_btn">Atsijungti</button>
@@ -39,20 +36,20 @@
     </div>
   </header>
 
-  <main class="max-w-4xl mx-auto w-full my-6">
+  <main class="max-w-5xl mx-auto w-full my-6">
 
     <!-- 1. Prisijungimo forma -->
     <div id="loginSection" class="max-w-md mx-auto bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm space-y-5">
       <div>
         <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider" data-i18n="mfg_badge">Gamintojo prieiga</span>
         <h1 class="text-2xl font-black text-slate-900 mt-1" data-i18n="mfg_title">Gamybos portalas</h1>
-        <p class="text-xs text-slate-500 mt-1" data-i18n="mfg_desc">Prisijunkite norėdami generuoti naujas žymų partijas ir atsisiųsti gamybos failus.</p>
+        <p class="text-xs text-slate-500 mt-1" data-i18n="mfg_desc">Prisijunkite norėdami generuoti, peržiūrėti ir valdyti žymų partijas.</p>
       </div>
 
       <form onsubmit="handleMfgLogin(event)" class="space-y-4 text-xs">
         <div>
           <label class="block font-bold text-slate-700 mb-1" data-i18n="lbl_prefix">Serijos prefiksas (3–6 raidės)</label>
-          <input id="mfgPrefix" type="text" required placeholder="Pvz., BAGG" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 font-mono text-slate-900 font-bold uppercase focus:outline-none focus:border-slate-800" />
+          <input id="mfgPrefix" type="text" required placeholder="Pvz., BAGS" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 font-mono text-slate-900 font-bold uppercase focus:outline-none focus:border-slate-800" />
         </div>
 
         <div>
@@ -67,14 +64,14 @@
       <div id="loginErr" class="hidden bg-rose-50 border border-rose-200 text-rose-800 text-xs p-3 rounded-xl text-center"></div>
     </div>
 
-    <!-- 2. Partijų generavimo valdymo pultas -->
+    <!-- 2. Partijų valdymo pultas -->
     <div id="mfgDashboard" class="hidden space-y-6">
 
       <!-- Informacinis skydelis -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 id="dashTitle" class="text-xl font-black text-slate-900">Gamybos valdymo pultas</h2>
-          <p id="dashSub" class="text-xs text-slate-500 mt-1"></p>
+          <p id="dashSub" class="text-xs text-slate-500 mt-0.5"></p>
         </div>
         <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-3.5 py-2 rounded-xl text-xs font-bold flex items-center space-x-2">
           <i class="fa-solid fa-industry"></i>
@@ -82,17 +79,17 @@
         </div>
       </div>
 
-      <!-- Naujos partijos generavimo forma -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+      <!-- Naujos partijos generavimas -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
         <h3 class="text-sm font-bold text-slate-900 flex items-center">
           <i class="fa-solid fa-barcode mr-2 text-slate-700"></i>
           <span data-i18n="batch_title">Generuoti naują žymų partiją</span>
         </h3>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
           <div>
             <label class="block font-semibold text-slate-700 mb-1" data-i18n="lbl_qty">Kiekis (vnt.)</label>
-            <input id="batchQty" type="number" min="1" max="5000" value="50" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:outline-none focus:border-slate-800" />
+            <input id="batchQty" type="number" min="1" max="1000" value="10" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:outline-none focus:border-slate-800" />
           </div>
 
           <div>
@@ -118,11 +115,48 @@
         <p id="genStatus" class="text-xs font-mono"></p>
       </div>
 
+      <!-- Sukurtų žymų sąrašas ir valdymas -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-3">
+          <div>
+            <h3 class="text-sm font-bold text-slate-900 flex items-center">
+              <i class="fa-solid fa-list-check mr-2 text-slate-700"></i>
+              <span data-i18n="list_title">Šio gamintojo sukurtos žymos</span>
+            </h3>
+            <p class="text-[11px] text-slate-500" data-i18n="list_desc">Čia matote visas išleistas žymas, jų aktyvavimo raktus ir galite jas valdyti.</p>
+          </div>
+          <button onclick="loadMfgTags()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-bold flex items-center space-x-1 cursor-pointer">
+            <i class="fa-solid fa-rotate-right text-[10px]"></i>
+            <span data-i18n="btn_refresh">Atnaujinti sąrašą</span>
+          </button>
+        </div>
+
+        <!-- Žymų lentelė -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="border-b border-slate-200 text-slate-500 bg-slate-50/70">
+                <th class="py-2.5 px-3 font-bold">ID Kodas</th>
+                <th class="py-2.5 px-3 font-bold" data-i18n="th_secret">Aktyvavimo raktas</th>
+                <th class="py-2.5 px-3 font-bold" data-i18n="th_type">Tipas</th>
+                <th class="py-2.5 px-3 font-bold" data-i18n="th_status">Būsena</th>
+                <th class="py-2.5 px-3 font-bold text-right" data-i18n="th_actions">Veiksmai</th>
+              </tr>
+            </thead>
+            <tbody id="tagsTableBody" class="divide-y divide-slate-100 font-mono">
+              <tr>
+                <td colspan="5" class="py-4 text-center text-slate-400 font-sans" data-i18n="loading_tags">Kraunamos žymos...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
 
   </main>
 
-  <footer class="max-w-4xl mx-auto w-full text-center text-[11px] text-slate-400 py-4">
+  <footer class="max-w-5xl mx-auto w-full text-center text-[11px] text-slate-400 py-4">
     <span data-i18n="footer_text">QR Hope &copy; 2026. Gamintojų API ir serijų valdymo platforma.</span>
   </footer>
 
@@ -140,7 +174,7 @@
         logout_btn: "Atsijungti",
         mfg_badge: "Gamintojo prieiga",
         mfg_title: "Gamybos portalas",
-        mfg_desc: "Prisijunkite norėdami generuoti naujas žymų partijas ir atsisiųsti gamybos failus.",
+        mfg_desc: "Prisijunkite norėdami generuoti, peržiūrėti ir valdyti žymų partijas.",
         lbl_prefix: "Serijos prefiksas (3–6 raidės)",
         lbl_key: "Gamybos prieigos raktas",
         btn_login: "Prisijungti prie gamybos",
@@ -158,6 +192,20 @@
         btn_gen: "Generuoti ir atsisiųsti gamybos CSV",
         status_preparing: "Ruošiama partija ir registruojama sistemoje...",
         status_done: "✅ Sėkmingai sugeneruota! CSV failas paruoštas.",
+        list_title: "Šio gamintojo sukurtos žymos",
+        list_desc: "Čia matote visas išleistas žymas, jų aktyvavimo raktus ir galite jas valdyti.",
+        btn_refresh: "Atnaujinti",
+        th_secret: "Aktyvavimo raktas",
+        th_type: "Tipas",
+        th_status: "Būsena",
+        th_actions: "Veiksmai",
+        loading_tags: "Kraunamos žymos...",
+        empty_tags: "Šis gamintojas dar neturi sugeneruotų žymų.",
+        status_ready: "Gamyboje (Laukia pirkėjo)",
+        status_active: "Aktyvuota šeimininko",
+        btn_preview: "Peržiūra",
+        btn_del: "Ištrinti",
+        confirm_del: "Ar tikrai norite ištrinti šią žymą iš sistemos?",
         footer_text: "QR Hope © 2026. Gamintojų API ir serijų valdymo platforma."
       },
       en: {
@@ -166,7 +214,7 @@
         logout_btn: "Sign Out",
         mfg_badge: "Manufacturer Access",
         mfg_title: "B2B Production Portal",
-        mfg_desc: "Sign in to generate new smart tag batches and download production engraving files.",
+        mfg_desc: "Sign in to generate, review and manage production batches.",
         lbl_prefix: "Series Prefix (3–6 letters)",
         lbl_key: "Production Access Key",
         btn_login: "Access Production",
@@ -184,6 +232,20 @@
         btn_gen: "Generate & Download CSV",
         status_preparing: "Generating batch and registering tags...",
         status_done: "✅ Batch generated successfully! CSV file downloaded.",
+        list_title: "Tags Generated by This Manufacturer",
+        list_desc: "List of all produced tags, their activation secrets and live status.",
+        btn_refresh: "Refresh",
+        th_secret: "Secret Key",
+        th_type: "Type",
+        th_status: "Status",
+        th_actions: "Actions",
+        loading_tags: "Loading tags...",
+        empty_tags: "No tags created for this manufacturer yet.",
+        status_ready: "In Production (Unclaimed)",
+        status_active: "Active by Owner",
+        btn_preview: "Preview",
+        btn_del: "Delete",
+        confirm_del: "Are you sure you want to permanently delete this tag?",
         footer_text: "QR Hope © 2026. B2B Manufacturing & Serial Management Portal."
       }
     };
@@ -198,13 +260,12 @@
 
       document.querySelectorAll("[data-i18n]").forEach(function(el) {
         var key = el.getAttribute("data-i18n");
-        if (data[key]) {
-          el.innerText = data[key];
-        }
+        if (data[key]) el.innerText = data[key];
       });
 
       if (currentMfg) {
         updateDashSubText();
+        loadMfgTags();
       }
     }
 
@@ -246,6 +307,8 @@
 
         if (data && data.length > 0) {
           currentMfg = data[0];
+          sessionStorage.setItem('qrhope_mfg', JSON.stringify(currentMfg));
+
           document.getElementById('loginSection').classList.add('hidden');
           document.getElementById('mfgDashboard').classList.remove('hidden');
           document.getElementById('authNav').classList.remove('hidden');
@@ -254,6 +317,8 @@
           document.getElementById('companyBadge').innerText = `${currentMfg.company_name} [${currentMfg.prefix}]`;
           document.getElementById('dashTitle').innerText = `${currentMfg.company_name} – ${currentMfg.prefix}`;
           updateDashSubText();
+
+          loadMfgTags();
         } else {
           errBox.innerText = t.err_invalid;
           errBox.classList.remove('hidden');
@@ -267,7 +332,78 @@
       }
     }
 
-    function makeSecret(len = 6) {
+    // Užkrauna gamintojo žymas iš Supabase
+    async function loadMfgTags() {
+      if (!currentMfg) return;
+      var tbody = document.getElementById('tagsTableBody');
+      var t = DICT[activeLang];
+
+      try {
+        var res = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=like.${encodeURIComponent(currentMfg.prefix + '-%')}&order=id.asc`, {
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          }
+        });
+
+        var tags = await res.json();
+
+        if (!tags || tags.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400 font-sans">${t.empty_tags}</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = tags.map(function(item) {
+          var isReady = !item.user_email || item.status === 'batch_ready';
+          var statusHtml = isReady 
+            ? `<span class="bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.5 rounded text-[10px] font-sans font-bold">${t.status_ready}</span>`
+            : `<span class="bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded text-[10px] font-sans font-bold">${t.status_active}</span>`;
+
+          return `
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="py-2.5 px-3 font-bold text-slate-900">${item.id}</td>
+              <td class="py-2.5 px-3 text-slate-600">${item.activation_secret || '—'}</td>
+              <td class="py-2.5 px-3 uppercase text-[11px] text-slate-500">${item.type || 'item'}</td>
+              <td class="py-2.5 px-3">${statusHtml}</td>
+              <td class="py-2.5 px-3 text-right space-x-2 font-sans">
+                <a href="s.html?id=${encodeURIComponent(item.id)}" target="_blank" class="text-xs text-emerald-700 hover:underline font-bold">${t.btn_preview}</a>
+                <button onclick="deleteTag('${item.id}')" class="text-xs text-rose-600 hover:underline font-bold cursor-pointer">${t.btn_del}</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-rose-600 font-sans">Klaida kraunant žymas: ${err.message}</td></tr>`;
+      }
+    }
+
+    // Ištrina žymą
+    async function deleteTag(id) {
+      var t = DICT[activeLang];
+      if (!confirm(`${t.confirm_del} (${id})`)) return;
+
+      try {
+        var res = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(id)}`, {
+          method: 'DELETE',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          }
+        });
+
+        if (res.ok) {
+          loadMfgTags();
+        } else {
+          alert("Nepavyko ištrinti. Patikrinkite Supabase DELETE leidimą.");
+        }
+      } catch (err) {
+        alert("Ryšio klaida: " + err.message);
+      }
+    }
+
+    function makeSecret(len) {
+      len = len || 6;
       var chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
       var res = "";
       for (var i = 0; i < len; i++) {
@@ -343,6 +479,9 @@
         status.className = "text-xs text-emerald-700 font-mono font-bold";
         document.getElementById('batchStartNum').value = startNum + qty;
 
+        // Iškart atnaujiname lentelę
+        loadMfgTags();
+
       } catch (err) {
         status.innerText = "❌ Klaida: " + err.message;
         status.className = "text-xs text-rose-600 font-mono";
@@ -352,6 +491,7 @@
     }
 
     function logoutMfg() {
+      sessionStorage.removeItem('qrhope_mfg');
       window.location.reload();
     }
 
@@ -362,6 +502,23 @@
           activeLang = saved;
         }
       } catch(e){}
+
+      // Patikriname, ar jau buvome prisijungę šioje sesijoje
+      var cached = sessionStorage.getItem('qrhope_mfg');
+      if (cached) {
+        try {
+          currentMfg = JSON.parse(cached);
+          document.getElementById('loginSection').classList.add('hidden');
+          document.getElementById('mfgDashboard').classList.remove('hidden');
+          document.getElementById('authNav').classList.remove('hidden');
+          document.getElementById('authNav').classList.add('flex');
+          document.getElementById('companyBadge').innerText = `${currentMfg.company_name} [${currentMfg.prefix}]`;
+          document.getElementById('dashTitle').innerText = `${currentMfg.company_name} – ${currentMfg.prefix}`;
+          updateDashSubText();
+          loadMfgTags();
+        } catch(e){}
+      }
+
       setLanguage(activeLang);
     });
   </script>
