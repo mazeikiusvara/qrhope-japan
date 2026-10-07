@@ -1,91 +1,157 @@
 <!DOCTYPE html>
-<html lang="lt">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Hope – Išmanioji pagalbos ir apsaugos sistema</title>
+  <title>QR Hope – Privacy-First Recovery Layer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans">
+<body class="bg-[#fcfdfc] text-slate-800 antialiased min-h-screen flex flex-col justify-between">
 
   <!-- Navigacija -->
-  <header class="bg-white border-b border-slate-200">
-    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <div class="w-9 h-9 bg-emerald-600 rounded-xl flex items-center justify-center text-white font-black text-lg shadow-sm">
-          QR
-        </div>
-        <span class="text-xl font-extrabold tracking-tight text-slate-900">QR<span class="text-emerald-600">HOPE</span></span>
-      </div>
-      <a href="register.html" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3.5 py-1.5 rounded-full transition shadow-sm">
-        + Aktyvuoti pakabuką
-      </a>
+  <header class="max-w-5xl mx-auto w-full px-6 py-6 flex justify-between items-center border-b border-slate-100">
+    <div class="flex items-center space-x-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+      <span class="text-xl font-bold tracking-tight text-slate-900">QR Hope</span>
+    </div>
+    <div class="space-x-3 text-sm">
+      <a href="#how-it-works" class="text-slate-600 hover:text-slate-900 px-3 py-2">Kaip veikia</a>
+      <a href="s.html?id=SOS-001" class="bg-emerald-800 hover:bg-emerald-900 text-white font-medium px-4 py-2 rounded-lg transition">Išbandyti demonstraciją</a>
     </div>
   </header>
 
-  <!-- Pagrindinis turinys -->
-  <main class="flex-1 max-w-2xl mx-auto px-4 py-8 w-full">
-    <div class="text-center space-y-3 mb-8">
-      <span class="inline-block bg-slate-200 text-slate-700 text-xs font-bold px-3 py-1 rounded-full">
-        NFC × QR Kodas × Tiesioginis GPS
-      </span>
-      <h1 class="text-3xl sm:text-4xl font-black text-slate-900 leading-tight">
-        Apsaugokite savo artimuosius, <br>
-        <span class="text-emerald-600">augintinius ir daiktus</span>
-      </h1>
-      <p class="text-slate-600 text-sm sm:text-base">
-        Saugus būdas susisiekti nelaimės atveju. Radęs asmuo gali akimirksniu paskambinti arba nusiųsti tikslią buvimo vietą šeimai.
-      </p>
-    </div>
+  <!-- Hero sekcija -->
+  <main class="max-w-5xl mx-auto w-full px-6 py-16 space-y-20">
+    
+    <div class="max-w-2xl space-y-6">
+      <div class="inline-flex items-center space-x-2 bg-emerald-50 border border-emerald-200/60 text-emerald-800 text-xs px-2.5 py-1 rounded">
+        <i class="fa-solid fa-shield-halved text-[11px]"></i>
+        <span class="font-semibold uppercase tracking-wider text-[10px]">Privacy-First Recovery</span>
+      </div>
 
-    <!-- Pagrindiniai veiksmai -->
-    <div class="space-y-4">
-      
-      <!-- Naujo pakabuko registracija -->
-      <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-3xl p-6 text-white shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>
-          <h2 class="font-black text-lg">Turite naują pakabuką?</h2>
-          <p class="text-xs text-emerald-100 mt-1">Pririškite savo kontaktus ir informaciją per 1 minutę.</p>
-        </div>
-        <a href="register.html" class="bg-white text-emerald-800 hover:bg-slate-100 font-bold py-2.5 px-6 rounded-xl text-xs shadow transition whitespace-nowrap">
-          Aktyvuoti dabar
+      <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight text-slate-950 leading-[1.15]">
+        Bring lost things <span class="text-emerald-800">home</span> without giving privacy away.
+      </h1>
+
+      <p class="text-slate-600 text-base leading-relaxed">
+        QR Hope paverčia greitą QR ar NFC nuskaitymą saugiu, anoniminiu pokalbiu. Jokių privalomų programėlių, jokio atskleisto telefono numerio – tik tiesus ir saugus kelias atgal pas savininką.
+      </p>
+
+      <div class="flex flex-wrap gap-4 pt-2">
+        <a href="#demo" class="bg-emerald-800 hover:bg-emerald-900 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition inline-flex items-center space-x-2">
+          <span>Sužinoti daugiau</span>
+          <i class="fa-solid fa-arrow-down text-xs"></i>
         </a>
       </div>
 
-      <!-- Testavimo / demonstracijos blokas -->
-      <div class="bg-white rounded-3xl p-6 shadow-md border border-slate-200 space-y-4">
-        <h3 class="font-extrabold text-sm text-slate-700">Kaip mato praeivis (Pavyzdžiai):</h3>
+      <div class="flex flex-wrap gap-y-2 gap-x-6 text-xs text-slate-500 pt-2">
+        <span class="flex items-center"><i class="fa-regular fa-circle-check text-emerald-700 mr-1.5"></i> Kontaktai lieka nematomi</span>
+        <span class="flex items-center"><i class="fa-regular fa-circle-check text-emerald-700 mr-1.5"></i> Veikia bet kurioje naršyklėje</span>
+        <span class="flex items-center"><i class="fa-regular fa-circle-check text-emerald-700 mr-1.5"></i> Tinka tarptautinėms kelionėms</span>
+      </div>
+    </div>
 
-        <!-- 1. SOS Medicininis pavyzdys -->
-        <div class="p-4 bg-red-50 border border-red-200 rounded-2xl flex items-center justify-between gap-3">
-          <div>
-            <div class="font-black text-sm text-red-700">🚨 SOS • Skubi medicininė pagalba</div>
-            <div class="text-xs text-slate-500">Senjoro, vaiko ar ligonio kortelė su ligų istorija</div>
+    <!-- Interaktyvaus ryšio pavyzdys (Kaip ekrane) -->
+    <div id="demo" class="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+      <div class="flex justify-between items-start border-b border-slate-100 pb-4">
+        <div>
+          <span class="text-[11px] font-semibold text-emerald-700 uppercase tracking-wider">Apsaugos grandinė aktyvi</span>
+          <h2 class="text-lg font-semibold text-slate-900 mt-0.5">Nuskaitymas virsta saugiu pokalbiu</h2>
+          <p class="text-xs text-slate-500 mt-1">Radėjas susisiekia tiesiai naršyklėje, o jūsų tikrieji kontaktai lieka paslėpti.</p>
+        </div>
+        <span class="text-xs font-mono bg-slate-100 text-slate-600 px-2.5 py-1 rounded">ID: SOS-001</span>
+      </div>
+
+      <!-- Pokalbio simuliacija -->
+      <div class="bg-slate-50 border border-slate-200/60 rounded-xl p-4 space-y-3">
+        <div class="flex flex-col items-start space-y-1">
+          <div class="bg-white border border-slate-200 text-slate-800 text-xs px-3.5 py-2 rounded-xl shadow-2xs max-w-sm">
+            „Sveiki, radau šį daiktą prie 4 vartų. Kur galėčiau saugiai perduoti?“
           </div>
-          <a href="s.html?id=SOS-001" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl text-xs shadow-sm transition whitespace-nowrap">
-            Peržiūrėti
-          </a>
+          <span class="text-[10px] text-slate-400 pl-1">Radėjas • Prieš 2 min</span>
         </div>
 
-        <!-- 2. Gyvūno pavyzdys -->
-        <div class="p-4 bg-amber-50 border border-amber-200 rounded-2xl flex items-center justify-between gap-3">
-          <div>
-            <div class="font-black text-sm text-amber-800">🐾 Pasiklydęs augintinis / Daiktas</div>
-            <div class="text-xs text-slate-500">Kortelė su šeimininko kontaktais ir atlygiu</div>
+        <div class="flex flex-col items-end space-y-1">
+          <div class="bg-emerald-800 text-white text-xs px-3.5 py-2 rounded-xl shadow-2xs max-w-sm">
+            „Ačiū! Prašau palikite oro uosto informacijos centre ir parašykite kvito numerį čia.“
           </div>
-          <a href="s.html?id=PET-001" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded-xl text-xs shadow-sm transition whitespace-nowrap">
-            Peržiūrėti
-          </a>
+          <span class="text-[10px] text-slate-400 pr-1">Savininkas (Saugi žinutė) • Ką tik</span>
         </div>
       </div>
 
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-2 text-xs text-slate-500">
+        <span class="flex items-center"><i class="fa-solid fa-lock text-emerald-700 mr-2"></i> Asmeninis numeris ir el. paštas niekada nerodomi</span>
+        <a href="s.html?id=SOS-001" class="text-emerald-800 font-semibold hover:underline flex items-center">
+          Atverti tikrą radėjo kortelę <i class="fa-solid fa-arrow-up-right-from-square ml-1.5 text-[11px]"></i>
+        </a>
+      </div>
     </div>
+
+    <!-- Pritaikymas organizacijoms (B2B) -->
+    <div class="space-y-8">
+      <div>
+        <span class="text-xs font-semibold text-emerald-700 uppercase tracking-wider">Organizacijoms ir verslui</span>
+        <h2 class="text-2xl sm:text-3xl font-semibold text-slate-900 mt-1">Vieninga atkūrimo sistema viskam, kas juda</h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-white border border-slate-200/70 p-5 rounded-xl space-y-2">
+          <i class="fa-solid fa-suitcase-rolling text-emerald-700 text-lg"></i>
+          <h3 class="font-semibold text-slate-900 text-sm">Kelionės ir lagaminai</h3>
+          <p class="text-xs text-slate-500 leading-relaxed">Lagaminai, oro uostų registratūros ir ilga kelionė namo be rizikos prarasti kontaktą.</p>
+        </div>
+
+        <div class="bg-white border border-slate-200/70 p-5 rounded-xl space-y-2">
+          <i class="fa-solid fa-school text-emerald-700 text-lg"></i>
+          <h3 class="font-semibold text-slate-900 text-sm">Mokyklos ir darželiai</h3>
+          <p class="text-xs text-slate-500 leading-relaxed">Žymos vaikų daiktams, uniformoms ir kuprinėms su greitu pranešimu tėvams.</p>
+        </div>
+
+        <div class="bg-white border border-slate-200/70 p-5 rounded-xl space-y-2">
+          <i class="fa-solid fa-hotel text-emerald-700 text-lg"></i>
+          <h3 class="font-semibold text-slate-900 text-sm">Viešbučiai ir svečiai</h3>
+          <p class="text-xs text-slate-500 leading-relaxed">Aukštesnio lygio pamestų daiktų grąžinimo patirtis viešbučių lankytojams.</p>
+        </div>
+
+        <div class="bg-white border border-slate-200/70 p-5 rounded-xl space-y-2">
+          <i class="fa-solid fa-briefcase text-emerald-700 text-lg"></i>
+          <h3 class="font-semibold text-slate-900 text-sm">Darbo vietos ir įranga</h3>
+          <p class="text-xs text-slate-500 leading-relaxed">Paprastas grąžinimo kelias bendro naudojimo įrankiams, raktams ir IT technikai.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Žalias Call To Action blokas apačioje -->
+    <div class="bg-emerald-800 rounded-2xl p-8 sm:p-10 text-white space-y-6">
+      <div class="inline-block bg-emerald-900/60 border border-emerald-700 text-emerald-200 text-[11px] px-2.5 py-1 rounded">
+        A better way back
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight">
+        Suteikite kiekvienam daiktui saugesnę kryptį namo.
+      </h2>
+      <p class="text-emerald-100/80 text-sm max-w-xl leading-relaxed">
+        QR Hope kuria privatumą saugantį tiltą tarp pamesto daikto ir žmogaus, kuris gali jį sugrąžinti.
+      </p>
+      <div>
+        <a href="s.html?id=SOS-001" class="bg-white hover:bg-emerald-50 text-emerald-950 font-semibold text-sm px-5 py-3 rounded-xl transition inline-block">
+          Peržiūrėti nuskaitymo kortelę
+        </a>
+      </div>
+    </div>
+
   </main>
 
   <!-- Poraštė -->
-  <footer class="text-center py-6 text-xs text-slate-400 border-t bg-white">
-    © 2026 QR Hope. Visos teisės saugomos.
+  <footer class="max-w-5xl mx-auto w-full px-6 py-8 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400 gap-4">
+    <p>QR Hope &copy; 2026. Bring lost things home without giving privacy away.</p>
+    <div class="space-x-4">
+      <a href="#" class="hover:text-slate-600">Privatumas</a>
+      <a href="#" class="hover:text-slate-600">DUK</a>
+    </div>
   </footer>
 
 </body>
