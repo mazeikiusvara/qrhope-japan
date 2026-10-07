@@ -10,7 +10,6 @@
 </head>
 <body class="bg-[#fcfdfc] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-4 sm:p-6">
 
-  <!-- Navigacija su grįžimo mygtuku -->
   <header class="max-w-md mx-auto w-full py-2.5 flex justify-between items-center border-b border-slate-100">
     <a href="index.html" class="flex items-center space-x-2">
       <span class="w-2.5 h-2.5 rounded-full bg-emerald-700"></span>
@@ -29,13 +28,12 @@
 
   <main class="max-w-md mx-auto w-full my-6">
 
-    <!-- Krovimo būsena -->
     <div id="loadingState" class="text-center py-12 space-y-3">
       <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-800 border-t-transparent"></div>
       <p class="text-xs text-slate-500 font-medium">Tikrinama žymos informacija...</p>
     </div>
 
-    <!-- PIRKĖJO AKTYVAVIMAS (Naujas gaminys) -->
+    <!-- PIRKĖJO AKTYVAVIMAS -->
     <div id="batchActivationState" class="hidden bg-white border-2 border-emerald-700 rounded-2xl p-6 shadow-sm space-y-5">
       <div>
         <span class="text-[10px] font-black uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">Naujas gaminys</span>
@@ -88,7 +86,6 @@
         <span id="tagIdDisplay" class="text-xs font-mono font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded"></span>
       </div>
 
-      <!-- PAIEŠKOS REŽIMAS (LOST MODE) IR ATLYGIS -->
       <div id="lostModeBanner" class="hidden bg-rose-50 border border-rose-200 text-rose-900 rounded-xl p-3.5 space-y-2">
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-1.5 font-bold text-rose-800 text-xs">
@@ -100,7 +97,6 @@
         <p id="lostModeText" class="text-xs leading-relaxed text-rose-950 font-medium"></p>
       </div>
 
-      <!-- Pastabos -->
       <div id="tagDetailsBox" class="hidden bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-xs space-y-1">
         <span class="font-bold text-slate-700">Savininko pastabos:</span>
         <p id="tagDetailsText" class="text-slate-600 text-[11px] leading-relaxed"></p>
@@ -140,16 +136,8 @@
     var activeLang = "lt", currentTagData = null;
 
     var DICT = {
-      lt: {
-        btn: "EN", btn_dash: "Pultas", lost_alert: "Paskelbta paieška!",
-        btn_call: "Anoniminis skambutis savininkui", btn_gps: "Nusiųsti radimo vietą (GPS)",
-        reward_prefix: "Atlygis: "
-      },
-      en: {
-        btn: "LT", btn_dash: "Dashboard", lost_alert: "Lost Mode Active!",
-        btn_call: "Anonymous Call to Owner", btn_gps: "Send Found Location (GPS)",
-        reward_prefix: "Reward: "
-      }
+      lt: { btn: "EN", btn_dash: "Pultas", lost_alert: "Paskelbta paieška!", btn_call: "Anoniminis skambutis savininkui", btn_gps: "Nusiųsti radimo vietą (GPS)", reward_prefix: "Atlygis: " },
+      en: { btn: "LT", btn_dash: "Dashboard", lost_alert: "Lost Mode Active!", btn_call: "Anonymous Call to Owner", btn_gps: "Send Found Location (GPS)", reward_prefix: "Reward: " }
     };
 
     function setLanguage(l) {
@@ -168,20 +156,31 @@
     function toggleLang() { setLanguage(activeLang === "lt" ? "en" : "lt"); }
 
     function goBackToDashboard() {
-      var p = new URLSearchParams(window.location.search).get('id');
-      if (p) {
-        window.location.href = 'dashboard.html?id=' + encodeURIComponent(p.trim().toUpperCase());
+      if (currentTagData && currentTagData.id) {
+        window.location.href = 'dashboard.html?id=' + encodeURIComponent(currentTagData.id);
       } else {
         window.location.href = 'dashboard.html';
       }
+    }
+
+    // Lanksti paieška: suformuoja variantus su brūkšneliu ir be jo
+    function getCleanVariants(raw) {
+      if (!raw) return [];
+      var clean = raw.trim().toUpperCase().replace(/[\s]/g, '');
+      var noDash = clean.replace(/-/g, '');
+      var withDash = clean.includes('-') ? clean : clean.replace(/([A-Z]+)(\d+)/, '$1-$2');
+      return Array.from(new Set([clean, noDash, withDash]));
     }
 
     async function loadTag() {
       var p = new URLSearchParams(window.location.search).get('id');
       if (!p) { showState('notFound'); return; }
 
+      var variants = getCleanVariants(p);
+      var orFilter = variants.map(function(v){ return 'id.eq.' + encodeURIComponent(v); }).join(',');
+
       try {
-        var res = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(p.trim().toUpperCase())}&select=*`, {
+        var res = await fetch(`${SUPABASE_URL}/rest/v1/tags?or=(${orFilter})&select=*`, {
           headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
         });
         var data = await res.json();
