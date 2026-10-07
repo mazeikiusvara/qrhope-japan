@@ -6,9 +6,7 @@
   <title>QR Hope – Išmanioji daiktų ir augintinių apsauga</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-  </style>
+  <style>body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }</style>
 </head>
 <body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen flex flex-col justify-between">
 
@@ -21,14 +19,18 @@
     
     <div class="flex items-center space-x-2">
       <!-- Kalbos perjungiklis -->
-      <div class="flex bg-slate-100 p-0.5 rounded-xl border border-slate-200 text-xs font-bold">
+      <div class="hidden sm:flex bg-slate-100 p-0.5 rounded-xl border border-slate-200 text-xs font-bold">
         <button onclick="setLang('lt')" id="lang-lt" class="px-2 py-1 rounded-lg bg-white shadow-sm text-slate-900">LT</button>
         <button onclick="setLang('en')" id="lang-en" class="px-2 py-1 rounded-lg text-slate-500 hover:text-slate-900">EN</button>
         <button onclick="setLang('ja')" id="lang-ja" class="px-2 py-1 rounded-lg text-slate-500 hover:text-slate-900">JA</button>
       </div>
 
-      <a href="dashboard.html" class="text-xs font-bold bg-slate-900 text-white px-3 py-1.5 rounded-xl hover:bg-slate-800 transition shadow-sm">
-        <i class="fa-solid fa-user-shield mr-1"></i><span data-i18n="nav_dashboard">Pultas</span>
+      <a href="manufacturer.html" class="text-xs font-bold bg-slate-900 text-emerald-400 border border-slate-800 px-3 py-1.5 rounded-xl hover:bg-slate-800 transition shadow-sm">
+        <i class="fa-solid fa-industry mr-1"></i>Gamintojai
+      </a>
+
+      <a href="dashboard.html" class="text-xs font-bold bg-white text-slate-800 border border-slate-300 px-3 py-1.5 rounded-xl hover:bg-slate-50 transition shadow-sm">
+        <i class="fa-solid fa-user-shield mr-1 text-emerald-700"></i>Pultas
       </a>
     </div>
   </header>
@@ -128,7 +130,7 @@
       <div id="regMsg" class="hidden text-xs p-2.5 rounded-xl text-center font-bold"></div>
     </section>
 
-    <!-- GAMINTIS IR B2B INTEGRACIJA -->
+    <!-- GAMINTOJAMS IR VERSLUI -->
     <section class="bg-gradient-to-br from-slate-900 to-slate-950 text-white rounded-3xl p-6 sm:p-8 space-y-4 shadow-xl">
       <div class="max-w-2xl space-y-2">
         <span class="text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded-md border border-emerald-800/50" data-i18n="b2b_tag">
@@ -138,13 +140,13 @@
           Integruokite QR Hope į savo produkciją
         </h2>
         <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium" data-i18n="b2b_desc">
-          Gaminate lagaminus, kuprines, apykakles augintiniams ar drabužius? Pridėkite išmaniąją QR Hope apsaugą tiesiai į savo gaminius su unikaliu prekių ženklo dizainu, API prieiga ir masiniu žymų aktyvavimu.
+          Gaminate lagaminus, kuprines, apykakles augintiniams ar drabužius? Pridėkite išmaniąją QR Hope apsaugą tiesiai į savo gaminius su masiniu žymų generavimu.
         </p>
       </div>
 
-      <div class="pt-2 flex flex-wrap gap-3">
-        <a href="mailto:info@qrhope.lt?subject=B2B%20Partnerystė" class="bg-white text-slate-900 font-bold px-4 py-2.5 rounded-xl text-xs hover:bg-slate-100 transition shadow-md">
-          <i class="fa-solid fa-envelope mr-1 text-emerald-700"></i><span data-i18n="b2b_btn">Susisiekti dėl partnerystės</span>
+      <div class="pt-2">
+        <a href="manufacturer.html" class="inline-flex items-center bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition shadow-md">
+          <i class="fa-solid fa-industry mr-1.5"></i> Atidaryti gamintojo pultą
         </a>
       </div>
     </section>
@@ -175,25 +177,15 @@
             Ne, jokių programėlių diegti nereikia. Radėjas tiesiog atidaro telefono kamerą QR skenavimui arba priglaudžia telefoną prie NFC pakabuko.
           </p>
         </details>
-
-        <details class="bg-white border border-slate-200 rounded-2xl p-3.5 group cursor-pointer">
-          <summary class="font-bold text-slate-900 flex justify-between items-center list-none">
-            <span data-i18n="faq_3_q">Ar radėjas matys mano valdymo pultą?</span>
-            <i class="fa-solid fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <p class="text-slate-600 mt-2 font-medium leading-relaxed" data-i18n="faq_3_a">
-            Ne. Radėjui atsidaro speciali saugi sąsaja, kurioje rodomas tik objekto pavadinimas, pranešimas ir skambučio bei GPS siuntimo mygtukai. Prie valdymo pulto prieigą turite tik jūs su savo slaptažodžiu.
-          </p>
-        </details>
       </div>
     </section>
 
   </main>
 
-  <!-- APATINĖ JUOSTA -->
   <footer class="max-w-5xl mx-auto w-full px-4 py-4 border-t border-slate-200 flex flex-col sm:flex-row justify-between items-center text-[11px] text-slate-500 gap-2">
     <div>QR Hope &copy; 2026. Visos teisės saugomos.</div>
     <div class="flex items-center space-x-3 font-semibold">
+      <a href="manufacturer.html" class="hover:text-slate-900">Gamintojai</a>
       <a href="dashboard.html" class="hover:text-slate-900" data-i18n="footer_dash">Savininko pultas</a>
     </div>
   </footer>
@@ -202,19 +194,17 @@
     var SUPABASE_URL = "https://nhnyvztyvovgxbbwmlxx.supabase.co";
     var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A";
 
-    // KALBŲ ŽODYNAS (LT, EN, JA)
     var translations = {
       lt: {
-        nav_dashboard: "Pultas",
         hero_badge: "Išmanioji atgavimo platforma",
         hero_title: "Niekada nepraraskite to, kas jums brangiausia",
-        hero_desc: "Sujungiame žmones ir pamestus daiktus per vieną akimirką. Radėjui tereikia priglausti telefoną arba nuskenuoti kameros programėle – be jokių programėlių diegimo.",
+        hero_desc: "Sujungiame žmones ir pamestus daiktus per vieną akimirką. Radėjui tereikia priglausti telefoną arba nuskenuoti kameros programėle.",
         feat_safe_title: "Saugumas be kompromisų",
-        feat_safe_desc: "Jūsų kontaktai paslėpti už dvigubos apsaugos. Radėjas susisiekia anonimiškai arba vienu mygtuku nusiunčia GPS lokaciją.",
+        feat_safe_desc: "Jūsų kontaktai paslėpti už dvigubos apsaugos. Radėjas susisiekia anonimiškai arba nusiunčia GPS lokaciją.",
         feat_nfc_title: "NFC ir QR sinergija",
-        feat_nfc_desc: "Kiekviena žyma veikia tiek per QR vizualinį kodą, tiek per momentinį bekontaktį NFC prilietimą bet kokiu šiuolaikiniu telefonu.",
+        feat_nfc_desc: "Kiekviena žyma veikia tiek per QR vizualinį kodą, tiek per momentinį bekontaktį NFC prilietimą.",
         feat_lost_title: "Momentinis „Lost Mode“",
-        feat_lost_desc: "Pametus daiktą ar augintinį, pulte įjunkite paieškos režimą, pranešimą ir nurodykite siūlomą atlygį radėjui.",
+        feat_lost_desc: "Pametus daiktą ar augintinį, pulte įjunkite paieškos režimą, pranešimą ir atlygį radėjui.",
         reg_title: "Aktyvuokite nemokamą žymą",
         reg_subtitle: "Sukurkite apsaugos žymą per 30 sekundžių.",
         reg_field_name: "Objekto pavadinimas",
@@ -228,86 +218,75 @@
         reg_submit: "Sukurti žymą ir atidaryti pultą",
         b2b_tag: "Gamintojams ir Verslui",
         b2b_title: "Integruokite QR Hope į savo produkciją",
-        b2b_desc: "Gaminate lagaminus, kuprines, apykakles augintiniams ar drabužius? Pridėkite išmaniąją QR Hope apsaugą tiesiai į savo gaminius su unikaliu prekių ženklo dizainu, API prieiga ir masiniu žymų aktyvavimu.",
-        b2b_btn: "Susisiekti dėl partnerystės",
+        b2b_desc: "Gaminate lagaminus, kuprines ar drabužius? Pridėkite išmaniąją apsaugą su masiniu žymų generavimu.",
         faq_heading: "Dažniausiai užduodami klausimai",
         faq_1_q: "Ar tikrai viena žyma yra visiškai nemokama?",
-        faq_1_a: "Taip! Viena skaitmeninė žyma suteikiama visiškai nemokamai visam laikui. Galite sugeneruoti ir atsisiųsti paruoštą spaudai kortelę su QR kodu, valdyti pranešimus ir keisti kontaktus bet kada.",
+        faq_1_a: "Taip! Viena skaitmeninė žyma suteikiama visiškai nemokamai visam laikui.",
         faq_2_q: "Ar radėjui reikia specialios programėlės?",
-        faq_2_a: "Ne, jokių programėlių diegti nereikia. Radėjas tiesiog atidaro telefono kamerą QR skenavimui arba priglaudžia telefoną prie NFC pakabuko.",
-        faq_3_q: "Ar radėjas matys mano valdymo pultą?",
-        faq_3_a: "Ne. Radėjui atsidaro speciali saugi sąsaja, kurioje rodomas tik objekto pavadinimas, pranešimas ir skambučio bei GPS siuntimo mygtukai. Prie valdymo pulto prieigą turite tik jūs su savo slaptažodžiu.",
+        faq_2_a: "Ne, jokių programėlių diegti nereikia.",
         footer_dash: "Savininko pultas"
       },
       en: {
-        nav_dashboard: "Dashboard",
         hero_badge: "Smart Recovery Platform",
-        hero_title: "Never lose what matters most to you",
-        hero_desc: "Reconnecting people with lost items instantly. Finders just tap NFC or scan the QR code with their phone camera – no app required.",
+        hero_title: "Never lose what matters most",
+        hero_desc: "Reconnecting people with lost items instantly via NFC or QR scan.",
         feat_safe_title: "Uncompromising Privacy",
-        feat_safe_desc: "Your details stay protected. The finder connects anonymously or shares GPS location with a single tap.",
+        feat_safe_desc: "Your details stay protected. The finder connects anonymously.",
         feat_nfc_title: "NFC & QR Synergy",
-        feat_nfc_desc: "Every tag supports both high-res QR codes and instant tap-and-go NFC chip reading on any modern phone.",
+        feat_nfc_desc: "Every tag supports both QR codes and instant NFC chip reading.",
         feat_lost_title: "Instant Lost Mode",
-        feat_lost_desc: "Lost your item or pet? Activate Lost Mode remotely, add a custom message, and specify a return reward.",
+        feat_lost_desc: "Activate Lost Mode remotely and add a custom message.",
         reg_title: "Activate Free Tag",
-        reg_subtitle: "Set up your protection tag in 30 seconds.",
+        reg_subtitle: "Set up in 30 seconds.",
         reg_field_name: "Item / Pet Name",
         reg_field_type: "Category",
-        opt_item: "Item (Phone, Wallet, Keys, Luggage)",
+        opt_item: "Item (Phone, Wallet, Keys)",
         opt_pet: "Pet (Dog, Cat)",
-        opt_sos: "SOS / Emergency Contacts",
+        opt_sos: "SOS / Emergency",
         reg_field_phone: "Contact Phone Number",
-        reg_field_email: "Email (for recovery OTP)",
-        reg_field_pass: "Password (min 6 chars)",
+        reg_field_email: "Email",
+        reg_field_pass: "Password",
         reg_submit: "Create Tag & Open Dashboard",
-        b2b_tag: "For Manufacturers & Brands",
-        b2b_title: "Integrate QR Hope into Your Products",
-        b2b_desc: "Manufacturing luggage, backpacks, pet collars, or apparel? Embed QR Hope smart recovery tags directly into your physical products.",
-        b2b_btn: "Contact for Partnership",
-        faq_heading: "Frequently Asked Questions",
-        faq_1_q: "Is one tag really completely free?",
-        faq_1_a: "Yes! One digital recovery tag is free forever with high-resolution printable cards, custom contacts, and Lost Mode support.",
-        faq_2_q: "Does the finder need an app?",
-        faq_2_a: "No apps required. The finder simply opens their phone camera or taps the NFC tag.",
-        faq_3_q: "Can the finder access my dashboard?",
-        faq_3_a: "No. The finder gets a safe interface with contact and GPS buttons only. Your dashboard remains locked behind your password.",
+        b2b_tag: "For Manufacturers",
+        b2b_title: "Integrate QR Hope into Products",
+        b2b_desc: "Embed smart recovery tags directly into your physical products.",
+        faq_heading: "FAQ",
+        faq_1_q: "Is one tag free?",
+        faq_1_a: "Yes, forever free.",
+        faq_2_q: "Does finder need an app?",
+        faq_2_a: "No apps required.",
         footer_dash: "Owner Dashboard"
       },
       ja: {
-        nav_dashboard: "管理画面",
         hero_badge: "スマート発見プラットフォーム",
-        hero_title: "大切なものを、もう二度と失わない",
-        hero_desc: "落とし物と持ち主を瞬時につなぎます。発見者はアプリ不要でカメラでQRを読み取るか、NFCをかざすだけ。",
-        feat_safe_title: "万全のプライバシー保護",
-        feat_safe_desc: "連絡先は安全に保護。発見者は匿名で連絡するか、ワンタップで現在地(GPS)を送信できます。",
+        hero_title: "大切なものを失わない",
+        hero_desc: "NFCやQRコードで落とし物を瞬時に発見。",
+        feat_safe_title: "プライバシー保護",
+        feat_safe_desc: "連絡先は安全に保護されます。",
         feat_nfc_title: "NFC & QRコード両対応",
-        feat_nfc_desc: "すべてのタグはQRコードのスキャンとNFCのタッチに標準対応しています。",
-        feat_lost_title: "紛失モード (Lost Mode)",
-        feat_lost_desc: "紛失時に管理画面から即座に紛失モードを有効化し、発見者へのメッセージや謝礼を設定可能。",
+        feat_nfc_desc: "すべてのタグが標準対応。",
+        feat_lost_title: "紛失モード",
+        feat_lost_desc: "遠隔で紛失モードを有効化。",
         reg_title: "無料タグを有効化",
-        reg_subtitle: "わずか30秒でセットアップ完了。",
-        reg_field_name: "持ち物・ペットの名前",
+        reg_subtitle: "30秒でセットアップ。",
+        reg_field_name: "名前",
         reg_field_type: "カテゴリー",
-        opt_item: "持ち物 (スマホ、財布、鍵、スーツケース)",
-        opt_pet: "ペット (犬、猫)",
-        opt_sos: "SOS / 緊急連絡先",
-        reg_field_phone: "連絡先電話番号",
-        reg_field_email: "メールアドレス (復旧用)",
-        reg_field_pass: "パスワード (6文字以上)",
-        reg_submit: "タグを作成して管理画面へ",
-        b2b_tag: "メーカー・法人向け",
-        b2b_title: "製品にQR Hopeを標準搭載",
-        b2b_desc: "バッグ、スーツケース、ペット用品、アパレル製品にQR Hopeの追跡・保護機能を組み込むことができます。",
-        b2b_btn: "法人連携のお問い合わせ",
+        opt_item: "持ち物",
+        opt_pet: "ペット",
+        opt_sos: "SOS",
+        reg_field_phone: "電話番号",
+        reg_field_email: "メール",
+        reg_field_pass: "パスワード",
+        reg_submit: "タグを作成",
+        b2b_tag: "メーカー向け",
+        b2b_title: "製品に標準搭載",
+        b2b_desc: "製品にQR Hope機能を組み込む。",
         faq_heading: "よくあるご質問",
-        faq_1_q: "本当に1つ目のタグは無料ですか？",
-        faq_1_a: "はい、1つのデジタルタグは永久に無料です。印刷用カードの生成、紛失モードの利用が可能です。",
-        faq_2_q: "発見者に専用アプリは必要ですか？",
-        faq_2_a: "いいえ、専用アプリは不要です。スマートフォンの標準カメラやNFCで瞬時に読み取れます。",
-        faq_3_q: "発見者に管理画面が見られる心配はありませんか？",
-        faq_3_a: "ありません。発見者には連絡・GPS送信用画面のみが表示され、管理画面はパスワードで保護されます。",
-        footer_dash: "オーナー管理画面"
+        faq_1_q: "1つ目は無料ですか？",
+        faq_1_a: "はい、永久無料です。",
+        faq_2_q: "アプリは必要ですか？",
+        faq_2_a: "不要です。",
+        footer_dash: "管理画面"
       }
     };
 
@@ -320,21 +299,18 @@
       });
       ['lt', 'en', 'ja'].forEach(function(l) {
         var btn = document.getElementById('lang-' + l);
-        if (l === lang) {
-          btn.className = "px-2 py-1 rounded-lg bg-white shadow-sm text-slate-900";
-        } else {
-          btn.className = "px-2 py-1 rounded-lg text-slate-500 hover:text-slate-900";
+        if(btn){
+          btn.className = (l === lang) ? "px-2 py-1 rounded-lg bg-white shadow-sm text-slate-900" : "px-2 py-1 rounded-lg text-slate-500 hover:text-slate-900";
         }
       });
       localStorage.setItem('qrhope_lang', lang);
     }
 
     function generateTagId() {
-      var num = Math.floor(1000 + Math.random() * 9000);
-      return "FREE-" + num;
+      return "FREE-" + Math.floor(1000 + Math.random() * 9000);
     }
 
-        async function handleQuickRegister(e) {
+    async function handleQuickRegister(e) {
       e.preventDefault();
       var name = document.getElementById('regName').value.trim();
       var type = document.getElementById('regType').value;
@@ -349,7 +325,6 @@
       msg.classList.add('hidden');
 
       var newId = generateTagId();
-
       var newTag = {
         id: newId,
         name: name,
@@ -382,7 +357,7 @@
 
         localStorage.setItem('qrhope_current_active_tag', JSON.stringify(newTag));
         msg.className = "bg-emerald-50 text-emerald-800 text-xs p-2.5 rounded-xl block font-bold";
-        msg.innerText = `✅ Žyma #${newId} sukurta! Nukreipiama į pultą...`;
+        msg.innerText = `✅ Žyma #${newId} sukurta! Nukreipiama į pultas...`;
 
         setTimeout(function() {
           window.location.href = `dashboard.html?id=${newId}`;
@@ -398,8 +373,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", function() {
-      var savedLang = localStorage.getItem('qrhope_lang') || 'lt';
-      setLang(savedLang);
+      setLang(localStorage.getItem('qrhope_lang') || 'lt');
     });
   </script>
 </body>
