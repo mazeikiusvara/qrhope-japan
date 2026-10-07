@@ -10,292 +10,200 @@
 </head>
 <body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen flex flex-col justify-between">
 
-  <!-- HEADER -->
-  <header class="max-w-5xl mx-auto w-full p-4 flex justify-between items-center border-b border-slate-200">
+  <!-- VIRŠUTINĖ JUOSTA -->
+  <header class="max-w-4xl mx-auto w-full px-4 py-3 flex justify-between items-center border-b border-slate-200">
     <div class="flex items-center space-x-2">
       <span class="w-3 h-3 rounded-full bg-emerald-600"></span>
       <span class="text-xl font-black tracking-tight text-slate-900">QR<span class="text-emerald-700">HOPE</span></span>
     </div>
-    <div class="flex items-center space-x-2 text-xs font-bold">
-      <a href="dashboard.html" class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-1.5 rounded-lg border border-slate-300">
-        <i class="fa-solid fa-lock mr-1"></i>Savininko pultas
-      </a>
-      <a href="manufacturer.html" class="bg-indigo-900 hover:bg-indigo-950 text-white px-3 py-1.5 rounded-lg">
-        B2B Gamyba
+    <div class="flex items-center space-x-2">
+      <a href="dashboard.html" class="text-xs font-bold bg-white text-slate-800 border border-slate-300 px-3 py-1.5 rounded-xl hover:bg-slate-50 transition shadow-sm">
+        <i class="fa-solid fa-user-shield mr-1 text-emerald-700"></i>Savininko pultas
       </a>
     </div>
   </header>
 
-  <main class="max-w-5xl mx-auto w-full px-4 py-8 space-y-14">
+  <main class="max-w-4xl mx-auto w-full px-4 py-6 space-y-10">
 
-    <!-- HERO SEKCIJA SU NEMOKAMA FORMA -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-      <div class="lg:col-span-7 space-y-4 text-center lg:text-left">
-        <span class="text-[11px] font-black uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full inline-block">
-          🎁 Išbandykite nemokamai
-        </span>
-        <h1 class="text-3xl sm:text-4xl font-black text-slate-950 leading-tight">
-          Apsaugokite savo daiktus ir augintinius su <span class="text-emerald-700">QR Hope</span>
-        </h1>
-        <p class="text-sm text-slate-600 leading-relaxed max-w-xl">
-          Radęs žmogus nuskenuoja QR arba priglaudžia telefoną (NFC) – gali saugiai paskambinti savininkui arba vienu paspaudimu nusiųsti radimo vietą žemėlapyje. Jokių baterijų, jokių programėlių radėjui.
-        </p>
+    <!-- HERO SEKCIJA -->
+    <section class="text-center space-y-3 pt-2">
+      <span class="inline-block text-[11px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">
+        Išmanioji saugumo platforma
+      </span>
+      <h1 class="text-2xl sm:text-4xl font-black text-slate-950 tracking-tight leading-tight">
+        Apsaugokite savo daiktus ir augintinius akimirksniu
+      </h1>
+      <p class="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto font-medium">
+        Radėjas nuskaito QR kodą arba priglaudžia telefoną (NFC) – susisiekia su jumis anonimiškai arba nusiunčia GPS radimo vietą.
+      </p>
+    </section>
 
-        <div class="flex flex-wrap gap-4 pt-2 justify-center lg:justify-start text-xs text-slate-600 font-semibold">
-          <div class="flex items-center space-x-1.5"><i class="fa-solid fa-check text-emerald-600"></i><span>1 Nemokamas skaitmeninis kodas</span></div>
-          <div class="flex items-center space-x-1.5"><i class="fa-solid fa-check text-emerald-600"></i><span>Privatus ryšys be viešo numerio</span></div>
-          <div class="flex items-center space-x-1.5"><i class="fa-solid fa-check text-emerald-600"></i><span>Lost Mode režimas</span></div>
-        </div>
+    <!-- NEMOKAMA REGISTRACIJA -->
+    <section class="max-w-md mx-auto bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
+      <div class="border-b border-slate-100 pb-3">
+        <h2 class="text-base font-black text-slate-900 flex items-center gap-1.5">
+          <i class="fa-solid fa-bolt text-emerald-600"></i> Aktyvuokite nemokamą žymą
+        </h2>
+        <p class="text-[11px] text-slate-500 mt-0.5">Visiškai nemokama skaitmeninė apsauga jūsų pasirinktam daiktui.</p>
       </div>
 
-      <!-- NEMOKAMA REGISTRACIJA -->
-      <div class="lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+      <form onsubmit="handleQuickRegister(event)" class="space-y-3 text-xs">
         <div>
-          <h2 class="text-base font-black text-slate-900">Gauti nemokamą QR apsaugą</h2>
-          <p class="text-[11px] text-slate-500">Užpildykite duomenis ir iškart gaukite kodą spaudai.</p>
+          <label class="block font-bold text-slate-700 mb-1">Kas tai per objektas?</label>
+          <input id="regName" type="text" required placeholder="Pvz., Raktų ryšulys, Kuprinė, Šuo Maksas" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 font-bold text-slate-900 focus:outline-none focus:border-emerald-600" />
         </div>
 
-        <form id="freeForm" onsubmit="handleClaimFreeTag(event)" class="space-y-3 text-xs">
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">El. paštas <span class="text-slate-400 font-normal">(1 kodas paskyrai)</span></label>
-            <input id="freeEmail" type="email" required placeholder="vardas@pastas.lt" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold" />
-          </div>
-
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Telefono numeris anoniminiam ryšiui</label>
-            <input id="freePhone" type="tel" required placeholder="+37060000000" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold" />
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">Tipas</label>
-              <select id="freeType" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-2 py-2 font-bold text-xs">
-                <option value="item">Lagaminas / Krepšys</option>
-                <option value="pet">Augintinis</option>
-                <option value="item">Raktai / Įrenginys</option>
-                <option value="sos">SOS Apyrankė</option>
-              </select>
-            </div>
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">Pavadinimas</label>
-              <input id="freeName" type="text" required placeholder="Pvz., Kelioninis lagaminas" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold" />
-            </div>
-          </div>
-
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Valdymo slaptažodis <span class="text-slate-400 font-normal">(bent 6 simboliai)</span></label>
-            <input id="freePass" type="password" minlength="6" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold" />
-          </div>
-
-          <button id="submitFreeBtn" type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm cursor-pointer">
-            Sukurti nemokamą QR apsaugą
-          </button>
-        </form>
-
-        <div id="freeStatusMsg" class="hidden text-xs p-3 rounded-xl text-center font-bold"></div>
-      </div>
-    </div>
-
-    <!-- TIKRI FAKTAI IR SKAIČIAI -->
-    <div class="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 space-y-6">
-      <div class="text-center max-w-xl mx-auto space-y-1">
-        <h2 class="text-xl sm:text-2xl font-black">Kodėl standartiniai sprendimai nebeveikia?</h2>
-        <p class="text-xs text-slate-400">Statistika rodo, kad didžioji dalis pamestų daiktų negrįžta dėl kontakto trūkumo.</p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
-        <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 space-y-1">
-          <div class="text-3xl font-black text-amber-400">1 iš 3</div>
-          <div class="text-xs font-bold text-slate-200">Augintinių pasimeta per gyvenimą</div>
-          <p class="text-[11px] text-slate-400 leading-tight">Paprastas poodinis mikroschemos lustas neturi ekrano – radėjui reikia specialaus skaitytuvo veterinarijos klinikoje.</p>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Objekto kategorija</label>
+          <select id="regType" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 font-bold text-slate-900 focus:outline-none focus:border-emerald-600">
+            <option value="item">Daiktas (Telefonas, piniginė, raktai, bagažas)</option>
+            <option value="pet">Augintinis (Šuo, katė)</option>
+            <option value="sos">SOS / Medicininė informacija</option>
+          </select>
         </div>
 
-        <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 space-y-1">
-          <div class="text-3xl font-black text-emerald-400">26 mln.</div>
-          <div class="text-xs font-bold text-slate-200">Lagaminų prarandama oro uostuose</div>
-          <p class="text-[11px] text-slate-400 leading-tight">Popierinės kortelės nusitrina arba nukrenta krovos metu, o viešai užrašyti duomenys kelia privatumo pavojų.</p>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Jūsų telefonas radėjo skambučiui</label>
+          <input id="regPhone" type="tel" required placeholder="+37060000000" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 font-bold text-slate-900 focus:outline-none focus:border-emerald-600" />
         </div>
 
-        <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 space-y-1">
-          <div class="text-3xl font-black text-indigo-400">&lt; 24 val.</div>
-          <div class="text-xs font-bold text-slate-200">Vidutinis grąžinimo laikas su QR Hope</div>
-          <p class="text-[11px] text-slate-400 leading-tight">Radėjas priglaudžia telefoną ir susisiekia akimirksniu, neatskleisdamas jūsų asmeninių adresų ar pavardės.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- PALYGINIMO LENTELĖ -->
-    <div class="space-y-4">
-      <div class="text-center space-y-1">
-        <h2 class="text-2xl font-black text-slate-950">Kaip QR Hope lyginasi su alternatyvomis?</h2>
-        <p class="text-xs text-slate-500">Palyginimas tarp tradicinių ir išmaniųjų apsaugos priemonių.</p>
-      </div>
-
-      <div class="overflow-x-auto bg-white border border-slate-200 rounded-3xl shadow-sm">
-        <table class="w-full text-left text-xs border-collapse">
-          <thead>
-            <tr class="bg-slate-50 text-slate-500 text-[11px] uppercase border-b border-slate-200">
-              <th class="p-3.5 font-bold">Funkcija</th>
-              <th class="p-3.5 font-bold text-emerald-800 bg-emerald-50/50">QR Hope (QR / NFC)</th>
-              <th class="p-3.5 font-bold">Bluetooth sekikliai (AirTag)</th>
-              <th class="p-3.5 font-bold">Paprasta lentelė / Pakabukas</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-100 text-slate-700">
-            <tr>
-              <td class="p-3.5 font-bold text-slate-900">Baterijos ir krovimas</td>
-              <td class="p-3.5 bg-emerald-50/30 font-bold text-emerald-700"><i class="fa-solid fa-check mr-1.5"></i>Baterijų nereikia (veikia visada)</td>
-              <td class="p-3.5 text-slate-500">Reikia keisti / krauti kas metus</td>
-              <td class="p-3.5 text-slate-500">Nereikia</td>
-            </tr>
-            <tr>
-              <td class="p-3.5 font-bold text-slate-900">Veikia su bet kokiu telefonu</td>
-              <td class="p-3.5 bg-emerald-50/30 font-bold text-emerald-700"><i class="fa-solid fa-check mr-1.5"></i>Taip (Android ir iPhone)</td>
-              <td class="p-3.5 text-slate-500">Dažnai apribota viena ekosistema</td>
-              <td class="p-3.5 text-slate-500">Reikia rankiniu būdu rinkti numerį</td>
-            </tr>
-            <tr>
-              <td class="p-3.5 font-bold text-slate-900">Radėjo veiksmas</td>
-              <td class="p-3.5 bg-emerald-50/30 font-bold text-emerald-700"><i class="fa-solid fa-check mr-1.5"></i>Prilietimas (NFC) arba fotoaparatas</td>
-              <td class="p-3.5 text-slate-500">Radėjas turi mokėti nuskaityti sekiklį</td>
-              <td class="p-3.5 text-slate-500">Tik tekstas akimis</td>
-            </tr>
-            <tr>
-              <td class="p-3.5 font-bold text-slate-900">Privatumas ir apsauga</td>
-              <td class="p-3.5 bg-emerald-50/30 font-bold text-emerald-700"><i class="fa-solid fa-check mr-1.5"></i>Anoniminis skambutis, keičiami duomenys</td>
-              <td class="p-3.5 text-slate-500">Gali perspėti apie sekimą</td>
-              <td class="p-3.5 text-rose-600 font-bold"><i class="fa-solid fa-xmark mr-1.5"></i>Viešai matomas numeris ir adresas</td>
-            </tr>
-            <tr>
-              <td class="p-3.5 font-bold text-slate-900">Kaina</td>
-              <td class="p-3.5 bg-emerald-50/30 font-bold text-emerald-700"><i class="fa-solid fa-check mr-1.5"></i>Nuo 0 € (Free) iki 9.99 €</td>
-              <td class="p-3.5 text-slate-500">35 € – 45 € už vnt.</td>
-              <td class="p-3.5 text-slate-500">2 € – 5 €</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- KAINODAROS PLANAI -->
-    <div id="pricingSection" class="pt-6 border-t border-slate-200 space-y-6">
-      <div class="text-center space-y-1">
-        <h2 class="text-2xl font-black text-slate-950">Pasirinkite sau tinkantį planą</h2>
-        <p class="text-xs text-slate-500">Nuo nemokamo kodo iki patvarių metalinių fizinių NFC pakabukų.</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- PLANAS 1: FREE -->
-        <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-4 flex flex-col justify-between">
-          <div class="space-y-3">
-            <span class="text-[10px] font-black uppercase text-slate-500 bg-slate-100 px-2 py-0.5 rounded">Pradinis</span>
-            <h3 class="text-lg font-black text-slate-900">Nemokamas (Free)</h3>
-            <div class="text-3xl font-black text-slate-950">0 € <span class="text-xs font-normal text-slate-400">/ visam laikui</span></div>
-            <p class="text-xs text-slate-500">Puikiai tinka išbandyti vienam asmeniniam daiktui ar kuprinei.</p>
-            <ul class="text-xs space-y-2 text-slate-600 font-medium pt-2 border-t border-slate-100">
-              <li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i> 1 Skaitmeninis QR kodas</li>
-              <li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i> Savininko valdymo pultas</li>
-              <li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i> Lost Mode (paieškos režimas)</li>
-              <li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i> GPS radėjo vietos gavimas</li>
-            </ul>
-          </div>
-          <button onclick="document.getElementById('freeEmail').focus()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2.5 rounded-xl text-xs transition cursor-pointer">
-            Gauti nemokamai (0 €)
-          </button>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">El. paštas (paskyros valdymui ir atkūrimui)</label>
+          <input id="regEmail" type="email" required placeholder="vardas@pastas.lt" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 font-bold text-slate-900 focus:outline-none focus:border-emerald-600" />
         </div>
 
-        <!-- PLANAS 2: FAMILY 3 QR -->
-        <div class="bg-white border-2 border-indigo-900 rounded-3xl p-5 shadow-md space-y-4 flex flex-col justify-between relative">
-          <span class="absolute -top-3 right-6 bg-indigo-900 text-white font-bold text-[10px] uppercase px-3 py-0.5 rounded-full">Populiariausias</span>
-          <div class="space-y-3">
-            <span class="text-[10px] font-black uppercase text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">Šeimai ir kelionėms</span>
-            <h3 class="text-lg font-black text-slate-900">Šeimos paketas (3 QR)</h3>
-            <div class="text-3xl font-black text-slate-950">4.99 € <span class="text-xs font-normal text-slate-400">/ vienkartinis</span></div>
-            <p class="text-xs text-slate-500">Pilna apsauga 3 šeimos lagaminams, raktams ar augintiniams.</p>
-            <ul class="text-xs space-y-2 text-slate-600 font-medium pt-2 border-t border-slate-100">
-              <li><i class="fa-solid fa-check text-indigo-700 mr-1.5"></i> <b>3 Skaitmeniniai QR kodai</b></li>
-              <li><i class="fa-solid fa-check text-indigo-700 mr-1.5"></i> Atskiri slaptažodžiai kiekvienam objektui</li>
-              <li><i class="fa-solid fa-check text-indigo-700 mr-1.5"></i> Neriboti kontaktų pakeitimai</li>
-              <li><i class="fa-solid fa-check text-indigo-700 mr-1.5"></i> Spaudai paruošti didelės raiškos formatai</li>
-            </ul>
-          </div>
-          <button onclick="alert('Mokėjimų integracija bus aktyvuota netrukus.')" class="w-full bg-indigo-900 hover:bg-indigo-950 text-white font-bold py-2.5 rounded-xl text-xs transition cursor-pointer">
-            Užsakyti 3 kodus
-          </button>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Sukurkite slaptažodį (bent 6 simb.)</label>
+          <input id="regPin" type="password" minlength="6" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 font-bold text-slate-900 focus:outline-none focus:border-emerald-600" />
         </div>
 
-        <!-- PLANAS 3: NFC FIZINIS PAKABUKAS -->
-        <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-4 flex flex-col justify-between">
-          <div class="space-y-3">
-            <span class="text-[10px] font-black uppercase text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded">Fizinis gaminys</span>
-            <h3 class="text-lg font-black text-slate-900">Fizinis NFC Pakabukas</h3>
-            <div class="text-3xl font-black text-slate-950">9.99 € <span class="text-xs font-normal text-slate-400">/ vnt. su siuntimu</span></div>
-            <p class="text-xs text-slate-500">Patvarus, vandeniui atsparus fizinis pakabukas su NFC lustu ir QR kodu.</p>
-            <ul class="text-xs space-y-2 text-slate-600 font-medium pt-2 border-t border-slate-100">
-              <li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i> <b>Fizinis NFC + QR pakabukas paštu</b></li>
-              <li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i> Veikia tiesiog prilietus telefoną</li>
-              <li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i> Atsparus vandeniui ir trinčiai</li>
-              <li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i> Pristatymas į paštomatą įskaičiuotas</li>
-            </ul>
-          </div>
-          <button onclick="alert('Fizinių pakabukų užsakymai bus priimami netrukus.')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs transition cursor-pointer">
-            Užsakyti fizinį pakabuką
-          </button>
+        <button type="submit" id="regBtn" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-black py-3 rounded-xl transition text-xs shadow-md cursor-pointer">
+          Sukurti žymą ir atidaryti pultą
+        </button>
+      </form>
+
+      <div id="regMsg" class="hidden text-xs p-2.5 rounded-xl text-center font-bold"></div>
+    </section>
+
+    <!-- KAIP TAI VEIKIA -->
+    <section class="space-y-4">
+      <h3 class="text-sm font-black text-center uppercase tracking-wider text-slate-500">Kaip veikia apsauga?</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="bg-white border border-slate-200 rounded-2xl p-4 text-center space-y-1.5 shadow-sm">
+          <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-800 flex items-center justify-center mx-auto text-base font-black">1</div>
+          <h4 class="text-xs font-bold text-slate-900">Užregistruojate daiktą</h4>
+          <p class="text-[11px] text-slate-500 leading-relaxed">Gaunate unikalų ID ir nemokamą skaitmeninį QR kodą.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-2xl p-4 text-center space-y-1.5 shadow-sm">
+          <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-800 flex items-center justify-center mx-auto text-base font-black">2</div>
+          <h4 class="text-xs font-bold text-slate-900">Pritvirtinate prie daikto</h4>
+          <p class="text-[11px] text-slate-500 leading-relaxed">Atsispausdinate paruoštą kortelę arba užsisakote fizinį NFC pakabuką.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-2xl p-4 text-center space-y-1.5 shadow-sm">
+          <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-800 flex items-center justify-center mx-auto text-base font-black">3</div>
+          <h4 class="text-xs font-bold text-slate-900">Radėjas susisiekia</h4>
+          <p class="text-[11px] text-slate-500 leading-relaxed">Nuskaitęs QR ar priglaudęs telefoną, atsiunčia GPS vietą arba paskambina.</p>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- DUK SEKCIJA -->
+    <section class="max-w-2xl mx-auto space-y-3">
+      <h3 class="text-sm font-black text-center uppercase tracking-wider text-slate-500">Dažniausiai užduodami klausimai</h3>
+      
+      <div class="space-y-2 text-xs">
+        <details class="bg-white border border-slate-200 rounded-2xl p-3.5 group cursor-pointer">
+          <summary class="font-bold text-slate-900 flex justify-between items-center list-none">
+            <span>Ar tikrai viena žyma yra visiškai nemokama?</span>
+            <i class="fa-solid fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="text-slate-600 mt-2 font-medium leading-relaxed">
+            Taip! Viena skaitmeninė žyma suteikiama visiškai nemokamai visam laikui. Galite sugeneruoti ir atsisiųsti paruoštą spaudai kortelę, valdyti „Lost Mode“ režimą ir keisti kontaktus.
+          </p>
+        </details>
+
+        <details class="bg-white border border-slate-200 rounded-2xl p-3.5 group cursor-pointer">
+          <summary class="font-bold text-slate-900 flex justify-between items-center list-none">
+            <span>Ar radėjui reikia turėti specialią programėlę?</span>
+            <i class="fa-solid fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="text-slate-600 mt-2 font-medium leading-relaxed">
+            Ne, jokių programėlių diegti nereikia. Radėjas tiesiog atidaro savo išmaniojo telefono kamerą QR kodo skenavimui arba priglaudžia telefoną prie NFC pakabuko.
+          </p>
+        </details>
+
+        <details class="bg-white border border-slate-200 rounded-2xl p-3.5 group cursor-pointer">
+          <summary class="font-bold text-slate-900 flex justify-between items-center list-none">
+            <span>Ar radėjas matys mano valdymo pultą ar slaptažodį?</span>
+            <i class="fa-solid fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="text-slate-600 mt-2 font-medium leading-relaxed">
+            Ne. Radėjui atsidaro speciali saugi sąsaja, kurioje rodomas tik objekto pavadinimas, pranešimas radėjui ir skambučio bei GPS siuntimo mygtukai. Prie valdymo pulto prieigą turite tik jūs su savo slaptažodžiu.
+          </p>
+        </details>
+
+        <details class="bg-white border border-slate-200 rounded-2xl p-3.5 group cursor-pointer">
+          <summary class="font-bold text-slate-900 flex justify-between items-center list-none">
+            <span>Ką daryti, jei pamiršiu slaptažodį?</span>
+            <i class="fa-solid fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="text-slate-600 mt-2 font-medium leading-relaxed">
+            Prisijungimo lange paspauskite „Pamiršote slaptažodį?“ – į jūsų registruotą el. paštą atkeliaus vienkartinis 6 skaitmenų saugumo kodas, kuriuo galėsite nustatyti naują slaptažodį.
+          </p>
+        </details>
+      </div>
+    </section>
 
   </main>
 
-  <footer class="max-w-5xl mx-auto w-full p-4 text-center text-xs text-slate-400 border-t border-slate-200 mt-6">
-    QR Hope &copy; 2026. Apsaugota daiktų ir augintinių identifikavimo platforma.
+  <!-- APATINĖ JUOSTA -->
+  <footer class="max-w-4xl mx-auto w-full px-4 py-4 border-t border-slate-200 flex flex-col sm:flex-row justify-between items-center text-[11px] text-slate-500 gap-2">
+    <div>QR Hope &copy; 2026. Visos teisės saugomos.</div>
+    <div class="flex items-center space-x-3 font-semibold">
+      <a href="dashboard.html" class="hover:text-slate-900">Savininko prisijungimas</a>
+    </div>
   </footer>
 
   <script>
     var SUPABASE_URL = "https://nhnyvztyvovgxbbwmlxx.supabase.co";
     var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A";
 
-    async function handleClaimFreeTag(e) {
+    function generateTagId() {
+      var num = Math.floor(1000 + Math.random() * 9000);
+      return "FREE-" + num;
+    }
+
+    async function handleQuickRegister(e) {
       e.preventDefault();
-      var email = document.getElementById('freeEmail').value.trim().toLowerCase();
-      var phone = document.getElementById('freePhone').value.trim();
-      var type = document.getElementById('freeType').value;
-      var name = document.getElementById('freeName').value.trim();
-      var pass = document.getElementById('freePass').value.trim();
-      var btn = document.getElementById('submitFreeBtn');
-      var status = document.getElementById('freeStatusMsg');
+      var name = document.getElementById('regName').value.trim();
+      var type = document.getElementById('regType').value;
+      var phone = document.getElementById('regPhone').value.trim();
+      var email = document.getElementById('regEmail').value.trim().toLowerCase();
+      var pin = document.getElementById('regPin').value.trim();
+      var btn = document.getElementById('regBtn');
+      var msg = document.getElementById('regMsg');
 
       btn.disabled = true;
-      btn.innerText = "Kuriama...";
-      status.classList.add('hidden');
+      btn.innerText = "Kuriama žyma...";
+      msg.classList.add('hidden');
+
+      var newId = generateTagId();
+
+      var newTag = {
+        id: newId,
+        name: name,
+        type: type,
+        emergency_phone: phone,
+        user_email: email,
+        pin_code: pin,
+        lost_mode: false,
+        lost_message: "",
+        reward: "",
+        failed_attempts: 0
+      };
 
       try {
-        var checkRes = await fetch(`${SUPABASE_URL}/rest/v1/tags?user_email=eq.${encodeURIComponent(email)}&select=id`, {
-          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-        });
-        var existing = await checkRes.json();
-
-        if (existing && existing.length > 0) {
-          status.className = "bg-amber-50 border border-amber-200 text-amber-900 text-xs p-3 rounded-xl block font-bold";
-          status.innerHTML = `⚠️ Su šiuo el. paštu jau sukurtas nemokamas kodas (#${existing[0].id}).<br>Nemokamas limitas: 1 kodas. Daugiau kodų galite užsisakyti pasirinkę planą žemiau!`;
-          btn.disabled = false;
-          btn.innerText = "Sukurti nemokamą QR apsaugą";
-          return;
-        }
-
-        var tagId = "FREE-" + Math.floor(1000 + Math.random() * 9000);
-        var payload = {
-          id: tagId,
-          type: type,
-          name: name,
-          user_email: email,
-          emergency_phone: phone,
-          pin_code: pass,
-          tag_technology: 'qr',
-          status: 'active'
-        };
-
-        var createRes = await fetch(`${SUPABASE_URL}/rest/v1/tags`, {
+        var res = await fetch(`${SUPABASE_URL}/rest/v1/tags`, {
           method: 'POST',
           headers: {
             'apikey': SUPABASE_KEY,
@@ -303,23 +211,29 @@
             'Content-Type': 'application/json',
             'Prefer': 'return=representation'
           },
-          body: JSON.stringify([payload])
+          body: JSON.stringify(newTag)
         });
 
-        if (!createRes.ok) throw new Error("Nepavyko sukurti kodo");
+        if (!res.ok) {
+          var errData = await res.json();
+          throw new Error(errData.message || "Nepavyko sukurti žymos");
+        }
 
-        status.className = "bg-emerald-50 text-emerald-800 text-xs p-3 rounded-xl block font-bold";
-        status.innerText = `✅ Žyma sukurta! Nukreipiama į pultą...`;
+        // Išsaugome sesiją ir nukreipiame tiesiai į pultą
+        localStorage.setItem('qrhope_current_active_tag', JSON.stringify(newTag));
+        msg.className = "bg-emerald-50 text-emerald-800 text-xs p-2.5 rounded-xl block font-bold";
+        msg.innerText = `✅ Žyma #${newId} sukurta! Nukreipiama į pultą...`;
 
         setTimeout(function() {
-          window.location.href = `dashboard.html?id=${tagId}`;
+          window.location.href = `dashboard.html?id=${newId}`;
         }, 1000);
 
-      } catch(err) {
-        status.className = "bg-rose-50 text-rose-800 text-xs p-3 rounded-xl block font-bold";
-        status.innerText = "Klaida: " + err.message;
+      } catch (err) {
+        msg.className = "bg-rose-50 text-rose-800 text-xs p-2.5 rounded-xl block font-bold";
+        msg.innerText = "Klaida: " + err.message;
+        msg.classList.remove('hidden');
         btn.disabled = false;
-        btn.innerText = "Sukurti nemokamą QR apsaugą";
+        btn.innerText = "Sukurti žymą ir atidaryti pultą";
       }
     }
   </script>
