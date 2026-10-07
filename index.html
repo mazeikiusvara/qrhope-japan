@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }</style>
   
-  <!-- SEO / Schema.org struktūrizuoti duomenys -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -31,11 +30,11 @@
     </div>
     
     <div class="flex items-center space-x-2">
-      <!-- Kalbos perjungiklis -->
-      <div class="hidden sm:flex bg-slate-100 p-0.5 rounded-xl border border-slate-200 text-xs font-bold">
-        <button onclick="setLang('lt')" id="lang-lt" class="px-2 py-1 rounded-lg bg-white shadow-sm text-slate-900">LT</button>
-        <button onclick="setLang('en')" id="lang-en" class="px-2 py-1 rounded-lg text-slate-500 hover:text-slate-900">EN</button>
-        <button onclick="setLang('ja')" id="lang-ja" class="px-2 py-1 rounded-lg text-slate-500 hover:text-slate-900">JA</button>
+      <!-- Kalbos perjungiklis (ATSTATYTAS) -->
+      <div class="flex bg-slate-100 p-0.5 rounded-xl border border-slate-200 text-xs font-bold">
+        <button onclick="setLang('lt')" id="lang-lt" class="px-2 py-1 rounded-lg bg-white shadow-sm text-slate-900 cursor-pointer">LT</button>
+        <button onclick="setLang('en')" id="lang-en" class="px-2 py-1 rounded-lg text-slate-500 hover:text-slate-900 cursor-pointer">EN</button>
+        <button onclick="setLang('ja')" id="lang-ja" class="px-2 py-1 rounded-lg text-slate-500 hover:text-slate-900 cursor-pointer">JA</button>
       </div>
 
       <a href="manufacturer.html" class="text-xs font-bold bg-slate-900 text-emerald-400 border border-slate-800 px-3 py-1.5 rounded-xl hover:bg-slate-800 transition shadow-sm">
@@ -320,7 +319,7 @@
       ['lt', 'en', 'ja'].forEach(function(l) {
         var btn = document.getElementById('lang-' + l);
         if(btn){
-          btn.className = (l === lang) ? "px-2 py-1 rounded-lg bg-white shadow-sm text-slate-900" : "px-2 py-1 rounded-lg text-slate-500 hover:text-slate-900";
+          btn.className = (l === lang) ? "px-2 py-1 rounded-lg bg-white shadow-sm text-slate-900 cursor-pointer" : "px-2 py-1 rounded-lg text-slate-500 hover:text-slate-900 cursor-pointer";
         }
       });
       localStorage.setItem('qrhope_lang', lang);
