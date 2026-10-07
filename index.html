@@ -22,18 +22,21 @@
 
       <!-- Nuorodos -->
       <nav class="hidden md:flex items-center space-x-6 text-xs font-bold text-slate-600">
-        <a href="#kaip-veikia" class="hover:text-emerald-800 transition">Kaip veikia</a>
-        <a href="#privalumai" class="hover:text-emerald-800 transition">Privalumai</a>
-        <a href="#kainos" class="hover:text-emerald-800 transition">Kainos</a>
-        <a href="#duk" class="hover:text-emerald-800 transition">DUK</a>
+        <a href="#kaip-veikia" id="nav_how" class="hover:text-emerald-800 transition">Kaip veikia</a>
+        <a href="#privalumai" id="nav_why" class="hover:text-emerald-800 transition">Privalumai</a>
+        <a href="#kainos" id="nav_pricing" class="hover:text-emerald-800 transition">Kainos</a>
+        <a href="#duk" id="nav_faq" class="hover:text-emerald-800 transition">DUK</a>
       </nav>
 
-      <!-- Veiksmai -->
+      <!-- Veiksmai ir kalba -->
       <div class="flex items-center space-x-2">
-        <a href="login.html" class="text-xs font-bold text-slate-700 hover:text-emerald-800 px-3 py-2 transition rounded-xl hover:bg-slate-100">
+        <button onclick="toggleLanguage()" id="langBtn" class="text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1.5 rounded-xl hover:bg-emerald-100 transition">
+          EN
+        </button>
+        <a href="login.html" id="nav_login" class="text-xs font-bold text-slate-700 hover:text-emerald-800 px-3 py-2 transition rounded-xl hover:bg-slate-100">
           Prisijungti
         </a>
-        <a href="register.html" class="bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm whitespace-nowrap">
+        <a href="register.html" id="nav_activate" class="bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm whitespace-nowrap">
           Aktyvuoti žymą
         </a>
       </div>
@@ -48,32 +51,32 @@
       <div class="lg:col-span-7 space-y-5">
         <div class="inline-flex items-center space-x-2 bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs px-3 py-1.5 rounded-full font-bold">
           <i class="fa-solid fa-shield-halved text-[11px] text-emerald-700"></i>
-          <span>MOMENTINIS RYŠYS • 100% PRIVATUS SKAMBUTIS</span>
+          <span id="h_badge">MOMENTINIS RYŠYS • 100% PRIVATUS SKAMBUTIS</span>
         </div>
 
-        <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-slate-950 leading-[1.15]">
+        <h1 id="h_title" class="text-3xl sm:text-5xl font-black tracking-tight text-slate-950 leading-[1.15]">
           Sugrąžinkite daiktus ir augintinius <span class="text-emerald-800 underline decoration-emerald-300">namo</span> neatskleisdami savo numerio.
         </h1>
 
-        <p class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl">
+        <p id="h_desc" class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl">
           Pažangus QR ir NFC atpažinimas su šifruotu skambučių nukreipimu. Radėjas susisiekia tiesiogiai naršyklėje arba skambučiu, o jūsų asmeninis numeris lieka 100% apsaugotas.
         </p>
 
         <div class="flex flex-wrap gap-3 pt-2">
-          <a href="#kainos" class="bg-emerald-800 hover:bg-emerald-900 text-white text-xs sm:text-sm font-bold px-5 py-3 rounded-xl transition shadow-md inline-flex items-center space-x-2">
+          <a href="#kainos" id="h_orderBtn" class="bg-emerald-800 hover:bg-emerald-900 text-white text-xs sm:text-sm font-bold px-5 py-3 rounded-xl transition shadow-md inline-flex items-center space-x-2">
             <span>Užsakyti pakabuką</span>
             <i class="fa-solid fa-arrow-down text-xs"></i>
           </a>
           <a href="s.html?id=SOS-001" target="_blank" class="bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 text-xs sm:text-sm font-bold px-5 py-3 rounded-xl transition shadow-2xs inline-flex items-center">
-            <span>Radėjo kortelės demo</span>
+            <span id="h_demoBtn">Radėjo kortelės demo</span>
             <i class="fa-solid fa-arrow-up-right-from-square ml-2 text-[11px] text-slate-500"></i>
           </a>
         </div>
 
         <div class="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 text-[11px] text-slate-600">
-          <div class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-700 mr-1.5"></i> Paslėptas numeris</div>
-          <div class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-700 mr-1.5"></i> Be programėlių</div>
-          <div class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-700 mr-1.5"></i> Veikia visur</div>
+          <div class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-700 mr-1.5"></i> <span id="feat_1">Paslėptas numeris</span></div>
+          <div class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-700 mr-1.5"></i> <span id="feat_2">Be programėlių</span></div>
+          <div class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-700 mr-1.5"></i> <span id="feat_3">Veikia visur</span></div>
         </div>
       </div>
 
@@ -81,26 +84,26 @@
       <div class="lg:col-span-5 bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
         <div class="flex justify-between items-start border-b border-slate-100 pb-3">
           <div>
-            <span class="text-[9px] font-extrabold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded">Demonstracija</span>
-            <h2 class="text-base font-bold text-slate-900 mt-1">Radėjo vaizdas ekrane</h2>
+            <span id="demo_badge" class="text-[9px] font-extrabold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded">Demonstracija</span>
+            <h2 id="demo_title" class="text-base font-bold text-slate-900 mt-1">Radėjo vaizdas ekrane</h2>
           </div>
           <span class="text-xs font-mono text-slate-500 bg-slate-100 px-2 py-1 rounded">#SOS-001</span>
         </div>
 
         <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3.5 space-y-2 text-xs">
           <div class="flex justify-between items-center">
-            <span class="font-bold text-slate-800 text-sm">🐾 Šuo Reksas</span>
-            <span class="bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded text-[10px]">Atlygis: 50 €</span>
+            <span id="demo_petName" class="font-bold text-slate-800 text-sm">🐾 Šuo Reksas</span>
+            <span id="demo_reward" class="bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded text-[10px]">Atlygis: 50 €</span>
           </div>
-          <p class="text-slate-500 text-[11px]">Labradoro retriveris • Draugiškas, turi mikroschemą.</p>
+          <p id="demo_petDesc" class="text-slate-500 text-[11px]">Labradoro retriveris • Draugiškas, turi mikroschemą.</p>
         </div>
 
         <div class="space-y-2 text-xs">
-          <a href="s.html?id=SOS-001" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3 rounded-xl flex items-center justify-center space-x-2 transition">
+          <a href="s.html?id=SOS-001" id="demo_callBtn" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3 rounded-xl flex items-center justify-center space-x-2 transition">
             <i class="fa-solid fa-phone"></i>
             <span>Anoniminis skambutis savininkui</span>
           </a>
-          <a href="s.html?id=SOS-001" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 rounded-xl flex items-center justify-center space-x-2 transition text-center">
+          <a href="s.html?id=SOS-001" id="demo_openBtn" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 rounded-xl flex items-center justify-center space-x-2 transition text-center">
             <i class="fa-solid fa-location-crosshairs text-emerald-700"></i>
             <span>Atverti pilną radėjo puslapį</span>
           </a>
@@ -111,27 +114,27 @@
     <!-- Kaip veikia -->
     <section id="kaip-veikia" class="space-y-8 pt-4">
       <div class="text-center max-w-xl mx-auto space-y-1">
-        <span class="text-xs font-extrabold uppercase tracking-widest text-emerald-800">Procesas</span>
-        <h2 class="text-2xl sm:text-3xl font-black text-slate-950">Kaip veikia sistema</h2>
+        <span id="step_tag" class="text-xs font-extrabold uppercase tracking-widest text-emerald-800">Procesas</span>
+        <h2 id="step_header" class="text-2xl sm:text-3xl font-black text-slate-950">Kaip veikia sistema</h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
         <div class="bg-white border border-slate-200/80 p-5 rounded-2xl space-y-2.5 shadow-2xs">
           <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center font-black">1</div>
-          <h3 class="font-bold text-slate-900 text-sm">Aktyvuojate žymą</h3>
-          <p class="text-xs text-slate-500 leading-relaxed">Suveskite savo daikto ar gyvūno vardą, PIN kodą ir telefono numerį skambučio nukreipimui.</p>
+          <h3 id="step_1_title" class="font-bold text-slate-900 text-sm">Aktyvuojate žymą</h3>
+          <p id="step_1_desc" class="text-xs text-slate-500 leading-relaxed">Suveskite savo daikto ar gyvūno vardą, PIN kodą ir telefono numerį skambučio nukreipimui.</p>
         </div>
 
         <div class="bg-white border border-slate-200/80 p-5 rounded-2xl space-y-2.5 shadow-2xs">
           <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center font-black">2</div>
-          <h3 class="font-bold text-slate-900 text-sm">Radėjas priglaudžia telefoną</h3>
-          <p class="text-xs text-slate-500 leading-relaxed">Telefonas automatiškai atveria radėjo kortelę – nereikia siųstis jokių papildomų programų.</p>
+          <h3 id="step_2_title" class="font-bold text-slate-900 text-sm">Radėjas priglaudžia telefoną</h3>
+          <p id="step_2_desc" class="text-xs text-slate-500 leading-relaxed">Telefonas automatiškai atveria radėjo kortelę – nereikia siųstis jokių papildomų programų.</p>
         </div>
 
         <div class="bg-white border border-slate-200/80 p-5 rounded-2xl space-y-2.5 shadow-2xs">
           <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center font-black">3</div>
-          <h3 class="font-bold text-slate-900 text-sm">Saugi komunikacija</h3>
-          <p class="text-xs text-slate-500 leading-relaxed">Radėjas skambina per apsaugotą šliuzą arba parašo žinutę tiesiai į jūsų valdymo pultą.</p>
+          <h3 id="step_3_title" class="font-bold text-slate-900 text-sm">Saugi komunikacija</h3>
+          <p id="step_3_desc" class="text-xs text-slate-500 leading-relaxed">Radėjas skambina per apsaugotą šliuzą arba parašo žinutę tiesiai į jūsų valdymo pultą.</p>
         </div>
       </div>
     </section>
@@ -139,38 +142,38 @@
     <!-- Privalumai -->
     <section id="privalumai" class="bg-slate-900 text-white rounded-3xl p-6 sm:p-10 space-y-6">
       <div class="max-w-xl space-y-1">
-        <span class="text-xs font-bold uppercase tracking-widest text-emerald-400">Palyginimas</span>
-        <h2 class="text-2xl sm:text-3xl font-black">Kodėl QR Hope?</h2>
+        <span id="comp_tag" class="text-xs font-bold uppercase tracking-widest text-emerald-400">Palyginimas</span>
+        <h2 id="comp_title" class="text-2xl sm:text-3xl font-black">Kodėl QR Hope?</h2>
       </div>
 
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs">
           <thead>
             <tr class="border-b border-slate-800 text-slate-400">
-              <th class="py-2.5 px-2 font-bold">Funkcija</th>
+              <th id="th_feature" class="py-2.5 px-2 font-bold">Funkcija</th>
               <th class="py-2.5 px-2 text-emerald-400 font-extrabold">QR Hope</th>
-              <th class="py-2.5 px-2 font-semibold">Paprastas QR</th>
-              <th class="py-2.5 px-2 font-semibold">AirTag / GPS</th>
+              <th id="th_qr" class="py-2.5 px-2 font-semibold">Paprastas QR</th>
+              <th id="th_airtag" class="py-2.5 px-2 font-semibold">AirTag / GPS</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-800 text-slate-300">
             <tr>
-              <td class="py-2.5 px-2">Paslėptas telefono numeris</td>
-              <td class="py-2.5 px-2 text-emerald-400 font-bold">Taip</td>
-              <td class="py-2.5 px-2 text-rose-400">Ne</td>
-              <td class="py-2.5 px-2">Tik režime</td>
+              <td id="td_f1" class="py-2.5 px-2">Paslėptas telefono numeris</td>
+              <td id="td_f1_yes" class="py-2.5 px-2 text-emerald-400 font-bold">Taip</td>
+              <td id="td_f1_no" class="py-2.5 px-2 text-rose-400">Ne</td>
+              <td id="td_f1_partial" class="py-2.5 px-2">Tik režime</td>
             </tr>
             <tr>
-              <td class="py-2.5 px-2">Nereikia baterijos</td>
-              <td class="py-2.5 px-2 text-emerald-400 font-bold">Taip</td>
-              <td class="py-2.5 px-2 text-emerald-400">Taip</td>
-              <td class="py-2.5 px-2 text-rose-400">Reikia</td>
+              <td id="td_f2" class="py-2.5 px-2">Nereikia baterijos</td>
+              <td id="td_f2_yes1" class="py-2.5 px-2 text-emerald-400 font-bold">Taip</td>
+              <td id="td_f2_yes2" class="py-2.5 px-2 text-emerald-400">Taip</td>
+              <td id="td_f2_no" class="py-2.5 px-2 text-rose-400">Reikia</td>
             </tr>
             <tr>
-              <td class="py-2.5 px-2">Tinka visiems telefonams</td>
-              <td class="py-2.5 px-2 text-emerald-400 font-bold">Taip</td>
-              <td class="py-2.5 px-2 text-emerald-400">Taip</td>
-              <td class="py-2.5 px-2 text-rose-400">Tik Apple</td>
+              <td id="td_f3" class="py-2.5 px-2">Tinka visiems telefonams</td>
+              <td id="td_f3_yes1" class="py-2.5 px-2 text-emerald-400 font-bold">Taip</td>
+              <td id="td_f3_yes2" class="py-2.5 px-2 text-emerald-400">Taip</td>
+              <td id="td_f3_no" class="py-2.5 px-2 text-rose-400">Tik Apple</td>
             </tr>
           </tbody>
         </table>
@@ -180,32 +183,32 @@
     <!-- Kainos -->
     <section id="kainos" class="space-y-8">
       <div class="text-center max-w-xl mx-auto space-y-1">
-        <span class="text-xs font-extrabold uppercase tracking-widest text-emerald-800">Užsakymas</span>
-        <h2 class="text-2xl sm:text-3xl font-black text-slate-950">Pasirinkite apsaugą</h2>
+        <span id="price_tag" class="text-xs font-extrabold uppercase tracking-widest text-emerald-800">Užsakymas</span>
+        <h2 id="price_title" class="text-2xl sm:text-3xl font-black text-slate-950">Pasirinkite apsaugą</h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
         <!-- 1 vnt. -->
         <div class="bg-white border border-slate-200/90 rounded-2xl p-6 space-y-4 shadow-sm flex flex-col justify-between">
           <div class="space-y-2">
-            <h3 class="font-bold text-slate-900 text-base">NFC / QR Pakabukas</h3>
+            <h3 id="plan_1_title" class="font-bold text-slate-900 text-base">NFC / QR Pakabukas</h3>
             <div class="text-3xl font-black text-slate-950">14.99 €</div>
-            <p class="text-xs text-slate-500">1 vnt. metalinis pakabukas antkakliui ar raktams.</p>
+            <p id="plan_1_desc" class="text-xs text-slate-500">1 vnt. metalinis pakabukas antkakliui ar raktams.</p>
           </div>
-          <a href="order.html?plan=single" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-center text-xs transition">
+          <a href="order.html?plan=single" id="plan_1_btn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-center text-xs transition">
             Užsakyti (14.99 €)
           </a>
         </div>
 
         <!-- 3 vnt. -->
         <div class="bg-white border-2 border-emerald-800 rounded-2xl p-6 space-y-4 shadow-lg flex flex-col justify-between relative">
-          <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-800 text-white text-[10px] font-extrabold px-3 py-0.5 rounded-full uppercase">Populiariausias</span>
+          <span id="plan_pop" class="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-800 text-white text-[10px] font-extrabold px-3 py-0.5 rounded-full uppercase">Populiariausias</span>
           <div class="space-y-2">
-            <h3 class="font-bold text-slate-900 text-base">Šeimos rinkinys (3 vnt.)</h3>
+            <h3 id="plan_2_title" class="font-bold text-slate-900 text-base">Šeimos rinkinys (3 vnt.)</h3>
             <div class="text-3xl font-black text-slate-950">34.99 €</div>
-            <p class="text-xs text-slate-500">3 vnt. pakabukai lagaminams, augintiniui ir kuprinei.</p>
+            <p id="plan_2_desc" class="text-xs text-slate-500">3 vnt. pakabukai lagaminams, augintiniui ir kuprinei.</p>
           </div>
-          <a href="order.html?plan=family" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3 rounded-xl text-center text-xs transition shadow-sm">
+          <a href="order.html?plan=family" id="plan_2_btn" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3 rounded-xl text-center text-xs transition shadow-sm">
             Užsakyti rinkinį (34.99 €)
           </a>
         </div>
@@ -213,11 +216,11 @@
         <!-- Skaitmeninis -->
         <div class="bg-white border border-slate-200/90 rounded-2xl p-6 space-y-4 shadow-sm flex flex-col justify-between">
           <div class="space-y-2">
-            <h3 class="font-bold text-slate-900 text-base">Skaitmeninis ID kodas</h3>
+            <h3 id="plan_3_title" class="font-bold text-slate-900 text-base">Skaitmeninis ID kodas</h3>
             <div class="text-3xl font-black text-slate-950">4.99 €</div>
-            <p class="text-xs text-slate-500">Suteikiamas unikalus kodas savo turimai NFC žymai.</p>
+            <p id="plan_3_desc" class="text-xs text-slate-500">Suteikiamas unikalus kodas savo turimai NFC žymai.</p>
           </div>
-          <a href="order.html?plan=digital" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 rounded-xl text-center text-xs transition">
+          <a href="order.html?plan=digital" id="plan_3_btn" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 rounded-xl text-center text-xs transition">
             Pirkti kodą (4.99 €)
           </a>
         </div>
@@ -227,18 +230,18 @@
     <!-- DUK -->
     <section id="duk" class="max-w-3xl mx-auto space-y-4">
       <div class="text-center space-y-1">
-        <span class="text-xs font-extrabold uppercase tracking-widest text-emerald-800">Atsakymai</span>
-        <h2 class="text-2xl font-black text-slate-950">Dažniausiai užduodami klausimai</h2>
+        <span id="faq_tag" class="text-xs font-extrabold uppercase tracking-widest text-emerald-800">Atsakymai</span>
+        <h2 id="faq_title" class="text-2xl font-black text-slate-950">Dažniausiai užduodami klausimai</h2>
       </div>
 
       <div class="space-y-2 text-xs">
         <details class="bg-white border border-slate-200 p-4 rounded-xl cursor-pointer">
-          <summary class="font-bold text-slate-900">Ar radėjui reikia turėti specialią programėlę?</summary>
-          <p class="text-slate-600 mt-2 leading-relaxed">Ne. Radėjas nuskaito QR kameros pagalba arba priglaudžia NFC telefoną. Viskas veikia įprastoje naršyklėje.</p>
+          <summary id="faq_q1" class="font-bold text-slate-900">Ar radėjui reikia turėti specialią programėlę?</summary>
+          <p id="faq_a1" class="text-slate-600 mt-2 leading-relaxed">Ne. Radėjas nuskaito QR kameros pagalba arba priglaudžia NFC telefoną. Viskas veikia įprastoje naršyklėje.</p>
         </details>
         <details class="bg-white border border-slate-200 p-4 rounded-xl cursor-pointer">
-          <summary class="font-bold text-slate-900">Kaip veikia anoniminis skambutis?</summary>
-          <p class="text-slate-600 mt-2 leading-relaxed">Radėjas sujungiamas per saugų sistemos numerį, todėl jūsų tikrasis telefono numeris niekada neatskleidžiamas.</p>
+          <summary id="faq_q2" class="font-bold text-slate-900">Kaip veikia anoniminis skambutis?</summary>
+          <p id="faq_a2" class="text-slate-600 mt-2 leading-relaxed">Radėjas sujungiamas per saugų sistemos numerį, todėl jūsų tikrasis telefono numeris niekada neatskleidžiamas.</p>
         </details>
       </div>
     </section>
@@ -247,14 +250,99 @@
 
   <!-- Poraštė -->
   <footer class="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400 gap-4">
-    <p>QR Hope &copy; 2026. Apsaugota privatumo platforma.</p>
+    <p id="foot_copy">QR Hope &copy; 2026. Apsaugota privatumo platforma.</p>
     <div class="flex items-center space-x-4">
-      <a href="index.html" class="hover:text-emerald-800 font-semibold">Pradžia</a>
-      <a href="login.html" class="hover:text-emerald-800 font-semibold">Prisijungti</a>
-      <a href="register.html" class="hover:text-emerald-800 font-semibold">Aktyvuoti žymą</a>
-      <a href="s.html?id=SOS-001" class="hover:text-emerald-800 font-semibold">Demo kortelė</a>
+      <a href="index.html" id="foot_home" class="hover:text-emerald-800 font-semibold">Pradžia</a>
+      <a href="login.html" id="foot_login" class="hover:text-emerald-800 font-semibold">Prisijungti</a>
+      <a href="register.html" id="foot_act" class="hover:text-emerald-800 font-semibold">Aktyvuoti žymą</a>
+      <a href="s.html?id=SOS-001" id="foot_demo" class="hover:text-emerald-800 font-semibold">Demo kortelė</a>
     </div>
   </footer>
 
-</body>
-</html>
+  <script>
+    let currentLang = localStorage.getItem('qrhope_lang') || 'lt';
+
+    const I18N = {
+      lt: {
+        langBtn: 'EN',
+        nav_how: 'Kaip veikia',
+        nav_why: 'Privalumai',
+        nav_pricing: 'Kainos',
+        nav_faq: 'DUK',
+        nav_login: 'Prisijungti',
+        nav_activate: 'Aktyvuoti žymą',
+        h_badge: 'MOMENTINIS RYŠYS • 100% PRIVATUS SKAMBUTIS',
+        h_title: 'Sugrąžinkite daiktus ir augintinius <span class="text-emerald-800 underline decoration-emerald-300">namo</span> neatskleisdami savo numerio.',
+        h_desc: 'Pažangus QR ir NFC atpažinimas su šifruotu skambučių nukreipimu. Radėjas susisiekia tiesiogiai naršyklėje arba skambučiu, o jūsų asmeninis numeris lieka 100% apsaugotas.',
+        h_orderBtn: 'Užsakyti pakabuką',
+        h_demoBtn: 'Radėjo kortelės demo',
+        feat_1: 'Paslėptas numeris',
+        feat_2: 'Be programėlių',
+        feat_3: 'Veikia visur',
+        demo_badge: 'Demonstracija',
+        demo_title: 'Radėjo vaizdas ekrane',
+        demo_petName: '🐾 Šuo Reksas',
+        demo_reward: 'Atlygis: 50 €',
+        demo_petDesc: 'Labradoro retriveris • Draugiškas, turi mikroschemą.',
+        demo_callBtn: 'Anoniminis skambutis savininkui',
+        demo_openBtn: 'Atverti pilną radėjo puslapį',
+        step_tag: 'Procesas',
+        step_header: 'Kaip veikia sistema',
+        step_1_title: 'Aktyvuojate žymą',
+        step_1_desc: 'Suveskite savo daikto ar gyvūno vardą, PIN kodą ir telefono numerį skambučio nukreipimui.',
+        step_2_title: 'Radėjas priglaudžia telefoną',
+        step_2_desc: 'Telefonas automatiškai atveria radėjo kortelę – nereikia siųstis jokių papildomų programų.',
+        step_3_title: 'Saugi komunikacija',
+        step_3_desc: 'Radėjas skambina per apsaugotą šliuzą arba parašo žinutę tiesiai į jūsų valdymo pultą.',
+        comp_tag: 'Palyginimas',
+        comp_title: 'Kodėl QR Hope?',
+        th_feature: 'Funkcija',
+        th_qr: 'Paprastas QR',
+        th_airtag: 'AirTag / GPS',
+        td_f1: 'Paslėptas telefono numeris',
+        td_f1_yes: 'Taip',
+        td_f1_no: 'Ne',
+        td_f1_partial: 'Tik režime',
+        td_f2: 'Nereikia baterijos',
+        td_f2_yes1: 'Taip',
+        td_f2_yes2: 'Taip',
+        td_f2_no: 'Reikia',
+        td_f3: 'Tinka visiems telefonams',
+        td_f3_yes1: 'Taip',
+        td_f3_yes2: 'Taip',
+        td_f3_no: 'Tik Apple',
+        price_tag: 'Užsakymas',
+        price_title: 'Pasirinkite apsaugą',
+        plan_1_title: 'NFC / QR Pakabukas',
+        plan_1_desc: '1 vnt. metalinis pakabukas antkakliui ar raktams.',
+        plan_1_btn: 'Užsakyti (14.99 €)',
+        plan_pop: 'Populiariausias',
+        plan_2_title: 'Šeimos rinkinys (3 vnt.)',
+        plan_2_desc: '3 vnt. pakabukai lagaminams, augintiniui ir kuprinei.',
+        plan_2_btn: 'Užsakyti rinkinį (34.99 €)',
+        plan_3_title: 'Skaitmeninis ID kodas',
+        plan_3_desc: 'Suteikiamas unikalus kodas savo turimai NFC žymai.',
+        plan_3_btn: 'Pirkti kodą (4.99 €)',
+        faq_tag: 'Atsakymai',
+        faq_title: 'Dažniausiai užduodami klausimai',
+        faq_q1: 'Ar radėjui reikia turėti specialią programėlę?',
+        faq_a1: 'Ne. Radėjas nuskaito QR kameros pagalba arba priglaudžia NFC telefoną. Viskas veikia įprastoje naršyklėje.',
+        faq_q2: 'Kaip veikia anoniminis skambutis?',
+        faq_a2: 'Radėjas sujungiamas per saugų sistemos numerį, todėl jūsų tikrasis telefono numeris niekada neatskleidžiamas.',
+        foot_copy: 'QR Hope © 2026. Apsaugota privatumo platforma.',
+        foot_home: 'Pradžia',
+        foot_login: 'Prisijungti',
+        foot_act: 'Aktyvuoti žymą',
+        foot_demo: 'Demo kortelė'
+      },
+      en: {
+        langBtn: 'LT',
+        nav_how: 'How it works',
+        nav_why: 'Benefits',
+        nav_pricing: 'Pricing',
+        nav_faq: 'FAQ',
+        nav_login: 'Sign In',
+        nav_activate: 'Activate Tag',
+        h_badge: 'INSTANT CONNECTION • 100% PRIVATE CALL',
+        h_title: 'Return lost items and pets <span class="text-emerald-800 underline decoration-emerald-300">home</span> without revealing your number.',
+        h_desc: 'Advanced QR an
