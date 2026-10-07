@@ -6,6 +6,7 @@
   <title>QR Hope – Savininko pultas</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- QR kodo generavimo biblioteka -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }</style>
 </head>
@@ -60,7 +61,7 @@
           <div class="flex items-center space-x-2 flex-wrap gap-y-1">
             <h1 id="tagTitle" class="text-xl font-black text-slate-900"></h1>
             <span id="tagIdBadge" class="text-xs font-mono font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded"></span>
-            <!-- ČIA RODOMAS NFC ARBA QR ŽENKLIUKAS -->
+            <!-- Technologijos ženkliukas (NFC / QR / Hybrid) -->
             <span id="techBadge" class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded tracking-wider"></span>
           </div>
           <p id="ownerEmailText" class="text-[11px] text-slate-500 mt-0.5"></p>
@@ -168,7 +169,7 @@
 
   </main>
 
-  <!-- MODAL: QR KODO SPAUSDINIMAS -->
+  <!-- MODAL: QR KODO SPAUSDINIMAS IR ATSISIUNTIMAS -->
   <div id="qrModal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
     <div class="bg-white rounded-3xl p-6 max-w-xs w-full shadow-2xl text-center space-y-4">
       <div class="flex justify-between items-center pb-2 border-b border-slate-100">
@@ -296,7 +297,7 @@
       document.getElementById('ownerEmailText').innerText = t.user_email || '';
       document.getElementById('previewBtn').href = `s.html?id=${encodeURIComponent(t.id)}`;
 
-      // TECHNOLOGIJOS ŽENKLIUKAS (NFC / QR / HYBRID)
+      // Technologijos ženkliukas
       var techEl = document.getElementById('techBadge');
       if (t.tag_technology === 'nfc') {
         techEl.className = "text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200";
@@ -319,6 +320,7 @@
       loadScanLogs();
     }
 
+    // QR KODO GENERAVIMAS IR MODALAS
     function openQrModal() {
       if (!currentTag) return;
       document.getElementById('qrModalTitle').innerText = currentTag.name || 'Saugomas daiktas';
@@ -344,18 +346,34 @@
       document.getElementById('qrModal').classList.add('hidden');
     }
 
+    // PATIKIMAS PNG ATSISIUNTIMAS TELEFONAMS
     function downloadQrImage() {
+      var canvas = document.querySelector('#qrcodeCanvas canvas');
       var img = document.querySelector('#qrcodeCanvas img');
-      if (!img) return;
+      var src = '';
+
+      if (canvas) {
+        src = canvas.toDataURL('image/png');
+      } else if (img && img.src) {
+        src = img.src;
+      }
+
+      if (!src) return;
+
       var a = document.createElement('a');
-      a.href = img.src;
-      a.download = `QRHOPE_${currentTag.id}.png`;
+      a.href = src;
+      a.download = 'QRHOPE_' + currentTag.id + '.png';
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
     }
 
     function printQr() {
+      var canvas = document.querySelector('#qrcodeCanvas canvas');
       var img = document.querySelector('#qrcodeCanvas img');
-      if (!img) return;
+      var src = canvas ? canvas.toDataURL('image/png') : (img ? img.src : '');
+      if (!src) return;
+
       var win = window.open('', '_blank');
       win.document.write(`
         <html><head><title>Spausdinti QR - ${currentTag.id}</title>
@@ -363,7 +381,7 @@
         </head><body>
           <h2>${currentTag.name || 'QR Hope'}</h2>
           <p>ID: #${currentTag.id}</p>
-          <img src="${img.src}" />
+          <img src="${src}" />
           <p>Scan with camera to contact owner</p>
           <script>window.onload = function(){ window.print(); window.close(); }<\/script>
         </body></html>
