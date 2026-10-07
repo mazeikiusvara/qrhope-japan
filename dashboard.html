@@ -18,7 +18,7 @@
 <div id="dashContent" class="hidden space-y-4">
 <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
 <div><div class="flex items-center space-x-2 flex-wrap gap-y-1"><h1 id="tagTitle" class="text-xl font-black text-slate-900"></h1><span id="tagIdBadge" class="text-xs font-mono font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded"></span></div><p id="ownerEmailText" class="text-[11px] text-slate-500 mt-0.5"></p></div>
-<div class="flex items-center space-x-2"><button onclick="openQrModal()" type="button" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-xl border border-emerald-300 cursor-pointer"><i class="fa-solid fa-qrcode mr-1"></i> QR Kodas</button><a id="previewBtn" href="#" class="bg-slate-100 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-300">Radėjo vaizdas</a></div>
+<div class="flex items-center space-x-2"><button onclick="openQrModal()" type="button" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-xl border border-emerald-300 cursor-pointer"><i class="fa-solid fa-qrcode mr-1"></i> Atsisiųsti QR</button><a id="previewBtn" href="#" class="bg-slate-100 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-300">Radėjo vaizdas</a></div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
@@ -29,6 +29,38 @@
 <h2 class="text-xs font-bold text-slate-900 border-b pb-2">Kontaktai</h2>
 <form onsubmit="handleUpdateContacts(event)" class="space-y-2 text-xs"><input id="editName" type="text" required placeholder="Vardas" class="w-full bg-slate-50 border rounded-xl p-2"/><input id="editPhone" type="tel" required placeholder="Telefonas" class="w-full bg-slate-50 border rounded-xl p-2"/><button type="submit" class="bg-emerald-800 text-white font-bold py-2 px-3 rounded-xl cursor-pointer">Atnaujinti</button><span id="contactStatusText" class="text-[10px] font-bold block text-emerald-700"></span></form>
 </div></div></div></main>
+
+<!-- MODAL: KORTELĖ IR QR SPAUDAI -->
+<div id="qrModal" class="hidden fixed inset-0 bg-slate-950/60 flex items-center justify-center p-4 z-50">
+<div class="bg-white rounded-3xl p-5 max-w-xs w-full text-center space-y-4 shadow-2xl">
+<div class="flex justify-between items-center border-b pb-2">
+<span class="text-xs font-black text-slate-900">Apsaugos kortelė</span>
+<button onclick="closeQrModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+</div>
+<!-- Vizuali kortelė -->
+<div id="printCardPreview" class="bg-white border-2 border-slate-900 rounded-2xl p-4 space-y-3 shadow-inner">
+  <div class="flex justify-between items-center text-[10px] font-black uppercase text-slate-500">
+    <span>QR<b class="text-emerald-700">HOPE</b></span>
+    <span id="modalCardId" class="font-mono text-slate-900"></span>
+  </div>
+  <div id="qrcodeCanvas" class="flex justify-center py-1"></div>
+  <div class="space-y-0.5">
+    <div id="modalCardTitle" class="text-xs font-black text-slate-900 truncate"></div>
+    <p class="text-[9px] text-slate-500 font-semibold leading-tight">Jei radote – nuskenuokite kameros programėle</p>
+  </div>
+</div>
+<!-- Veiksmų mygtukai -->
+<div class="space-y-2 text-xs">
+<button onclick="downloadTagCard()" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-2.5 rounded-xl transition flex items-center justify-center space-x-1.5 cursor-pointer">
+<i class="fa-solid fa-download"></i><span>Atsisiųsti kortelę (PNG)</span>
+</button>
+<button onclick="window.print()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2 rounded-xl transition cursor-pointer">
+<i class="fa-solid fa-print mr-1"></i>Spausdinti
+</button>
+</div>
+</div></div>
+
+<!-- MODAL: SLAPTAŽODŽIO KEITIMAS -->
 <div id="resetModal" class="hidden fixed inset-0 bg-slate-950/60 flex items-center justify-center p-4 z-50">
 <div class="bg-white rounded-3xl p-5 max-w-xs w-full text-left space-y-3">
 <div class="flex justify-between items-center border-b pb-2"><h3 class="text-xs font-black text-slate-900">Slaptažodžio keitimas</h3><button onclick="closeResetModal()" class="text-slate-400 cursor-pointer"><i class="fa-solid fa-xmark"></i></button></div>
@@ -46,7 +78,7 @@
 </form>
 <div id="resetMsg" class="hidden text-xs p-2 rounded-xl text-center font-bold"></div>
 </div></div>
-<div id="qrModal" class="hidden fixed inset-0 bg-slate-950/60 flex items-center justify-center p-4 z-50"><div class="bg-white rounded-3xl p-6 max-w-xs w-full text-center space-y-3"><div id="qrcodeCanvas" class="flex justify-center p-2"></div><button onclick="closeQrModal()" class="w-full bg-slate-900 text-white font-bold py-2 rounded-xl text-xs cursor-pointer">Uždaryti</button></div></div>
+
 <footer class="max-w-4xl mx-auto w-full text-center text-[10px] text-slate-400 py-3">QR Hope &copy; 2026.</footer>
 <script>
 var SUPABASE_URL="https://nhnyvztyvovgxbbwmlxx.supabase.co",SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A",currentTag=null;
@@ -56,8 +88,28 @@ function closeResetModal(){document.getElementById('resetModal').classList.add('
 async function requestResetCode(){var id=document.getElementById('resetTagId').value.trim().toUpperCase(),em=document.getElementById('resetEmail').value.trim().toLowerCase(),btn=document.getElementById('sendCodeBtn'),msg=document.getElementById('resetMsg');if(!id||!em){alert("Užpildykite visus laukus");return;}btn.disabled=true;btn.innerText="Siunčiama...";msg.classList.add('hidden');try{var res=await fetch(`${SUPABASE_URL}/functions/v1/send-reset-code`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tag_id:id,email:em})}),d=await res.json();if(!res.ok)throw new Error(d.error||"Nepavyko išsiųsti");document.getElementById('step1Box').classList.add('hidden');document.getElementById('step2Form').classList.remove('hidden');}catch(x){msg.className="bg-rose-50 text-rose-800 text-xs p-2 rounded-xl block font-bold";msg.innerText=x.message;msg.classList.remove('hidden');}finally{btn.disabled=false;btn.innerText="Gauti kodą į el. paštą";}}
 async function verifyAndSaveNewPass(e){e.preventDefault();var id=document.getElementById('resetTagId').value.trim().toUpperCase(),code=document.getElementById('resetCodeInput').value.trim(),np=document.getElementById('resetNewPass').value.trim(),msg=document.getElementById('resetMsg'),btn=document.getElementById('savePassBtn');btn.disabled=true;msg.classList.add('hidden');try{var res=await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(id)}&select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}}),d=await res.json();if(!d||!d.length)throw new Error("Žyma nerasta");var t=d[0];if(!t.reset_code||t.reset_code!==code)throw new Error("Neteisingas patvirtinimo kodas!");if(t.reset_expires_at&&new Date(t.reset_expires_at)<new Date())throw new Error("Kodo laikas baigėsi.");await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(id)}`,{method:'PATCH',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({pin_code:np,reset_code:null,reset_expires_at:null,failed_attempts:0,locked_until:null})});msg.className="bg-emerald-50 text-emerald-800 text-xs p-2 rounded-xl block font-bold";msg.innerText="✅ Slaptažodis pakeistas! Prisijunkite.";msg.classList.remove('hidden');document.getElementById('loginPass').value=np;setTimeout(closeResetModal,1500);}catch(x){msg.className="bg-rose-50 text-rose-800 text-xs p-2 rounded-xl block font-bold";msg.innerText=x.message;msg.classList.remove('hidden');}finally{btn.disabled=false;}}
 function showDashboard(t){document.getElementById('authBox').classList.add('hidden');document.getElementById('dashContent').classList.remove('hidden');document.getElementById('logoutBtn').classList.remove('hidden');document.getElementById('tagTitle').innerText=t.name||'Gaminys';document.getElementById('tagIdBadge').innerText='#'+t.id;document.getElementById('ownerEmailText').innerText=t.user_email||'';document.getElementById('previewBtn').href=`s.html?id=${t.id}&preview=1`;document.getElementById('lostModeToggle').checked=!!t.lost_mode;document.getElementById('lostMsgInput').value=t.lost_message||'';document.getElementById('rewardInput').value=t.reward||'';document.getElementById('editName').value=t.name||'';document.getElementById('editPhone').value=t.emergency_phone||'';}
-function openQrModal(){var b=document.getElementById('qrcodeCanvas');b.innerHTML='';new QRCode(b,{text:window.location.origin+'/s.html?id='+currentTag.id,width:160,height:160});document.getElementById('qrModal').classList.remove('hidden');}
+function openQrModal(){
+  var b=document.getElementById('qrcodeCanvas');b.innerHTML='';
+  document.getElementById('modalCardId').innerText='#'+currentTag.id;
+  document.getElementById('modalCardTitle').innerText=currentTag.name||'Objektas';
+  new QRCode(b,{text:window.location.origin+'/s.html?id='+currentTag.id,width:140,height:140});
+  document.getElementById('qrModal').classList.remove('hidden');
+}
 function closeQrModal(){document.getElementById('qrModal').classList.add('hidden');}
+function downloadTagCard(){
+  var qrImg=document.querySelector('#qrcodeCanvas img');
+  if(!qrImg){alert("Kortelė dar ruošiama...");return;}
+  var cvs=document.createElement('canvas');cvs.width=600;cvs.height=700;
+  var ctx=cvs.getContext('2d');
+  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,600,700);
+  ctx.strokeStyle='#0f172a';ctx.lineWidth=8;ctx.strokeRect(16,16,568,668);
+  ctx.fillStyle='#0f172a';ctx.font='bold 28px sans-serif';ctx.fillText('QRHOPE',40,65);
+  ctx.fillStyle='#047857';ctx.font='bold 24px monospace';ctx.textAlign='right';ctx.fillText('#'+currentTag.id,560,65);
+  ctx.textAlign='left';ctx.drawImage(qrImg,100,100,400,400);
+  ctx.fillStyle='#0f172a';ctx.font='bold 32px sans-serif';ctx.textAlign='center';ctx.fillText(currentTag.name||'Objektas',300,550);
+  ctx.fillStyle='#64748b';ctx.font='600 20px sans-serif';ctx.fillText('Jei radote – nuskenuokite kameros programėle',300,600);
+  var a=document.createElement('a');a.download=`QRHope-${currentTag.id}.png`;a.href=cvs.toDataURL('image/png');a.click();
+}
 async function toggleLostMode(){await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(currentTag.id)}`,{method:'PATCH',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({lost_mode:document.getElementById('lostModeToggle').checked})});}
 async function saveLostModeSettings(){await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(currentTag.id)}`,{method:'PATCH',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({lost_message:document.getElementById('lostMsgInput').value,reward:document.getElementById('rewardInput').value})});document.getElementById('lostStatusText').innerText="✅ Išsaugota!";setTimeout(()=>document.getElementById('lostStatusText').innerText="",2000);}
 async function handleUpdateContacts(e){e.preventDefault();await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(currentTag.id)}`,{method:'PATCH',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({name:document.getElementById('editName').value,emergency_phone:document.getElementById('editPhone').value})});document.getElementById('contactStatusText').innerText="✅ Atnaujinta!";setTimeout(()=>document.getElementById('contactStatusText').innerText="",2000);}
@@ -67,7 +119,7 @@ var urlId=new URLSearchParams(window.location.search).get('id');
 var saved=localStorage.getItem('qrhope_current_active_tag');
 if(saved){
   currentTag=JSON.parse(saved);
-  if(!urlId || urlId.toUpperCase()===currentTag.id.toUpperCase()){
+  if(!urlId||urlId.toUpperCase()===currentTag.id.toUpperCase()){
     showDashboard(currentTag);
     return;
   }
