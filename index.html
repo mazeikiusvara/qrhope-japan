@@ -22,20 +22,20 @@
 
       <!-- Meniu mygtukai -->
       <div class="flex items-center space-x-1.5 sm:space-x-2">
-        <button onclick="toggleLang()" id="langBtn" class="text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 px-2.5 py-1.5 rounded-lg hover:bg-emerald-100 transition">
+        <button onclick="toggleLang()" id="langBtn" type="button" class="text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 px-2.5 py-1.5 rounded-lg hover:bg-emerald-100 cursor-pointer">
           EN
         </button>
 
-        <a href="manufacturer.html" class="text-[11px] font-bold bg-slate-100 text-slate-800 hover:bg-slate-200 px-2.5 py-1.5 rounded-lg border border-slate-200 flex items-center">
+        <a href="manufacturer.html" class="text-[11px] font-bold bg-slate-100 text-slate-800 hover:bg-slate-200 px-2.5 py-1.5 rounded-lg border border-slate-200 flex items-center shrink-0">
           <i class="fa-solid fa-industry mr-1 text-slate-600"></i>
           <span data-i18n="nav_mfg">Gamyba</span>
         </a>
 
-        <a href="login.html" class="text-[11px] font-bold text-slate-700 hover:text-emerald-800 px-2 py-1.5 rounded-lg">
+        <a href="login.html" class="text-[11px] font-bold text-slate-700 hover:text-emerald-800 px-2 py-1.5 rounded-lg shrink-0">
           <span data-i18n="nav_login">Prisijungti</span>
         </a>
 
-        <a href="register.html" class="bg-emerald-800 hover:bg-emerald-900 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap shadow-xs">
+        <a href="register.html" class="bg-emerald-800 hover:bg-emerald-900 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap shadow-xs shrink-0">
           <span data-i18n="nav_activate">Aktyvuoti</span>
         </a>
       </div>
@@ -56,10 +56,10 @@
             </span>
           </div>
           <p id="factText" class="text-xs sm:text-sm font-semibold text-slate-900 leading-snug">
-            Kraunamas faktas...
+            🇯🇵 Japonijos pamokos: Tokijo policija kasmet sugrąžina virš 3,5 mln. pamestų daiktų, o net 70% pamestų piniginių grįžta šeimininkams dėka aiškios sistemos.
           </p>
         </div>
-        <button onclick="nextFact()" title="Kitas faktas" class="shrink-0 text-emerald-800 hover:text-emerald-950 p-1.5 bg-white rounded-lg border border-emerald-200 text-xs shadow-2xs">
+        <button onclick="nextFact()" type="button" title="Kitas faktas" class="shrink-0 text-emerald-800 hover:text-emerald-950 p-2 bg-white rounded-lg border border-emerald-200 text-xs shadow-2xs cursor-pointer">
           <i class="fa-solid fa-shuffle"></i>
         </button>
       </div>
@@ -261,29 +261,29 @@
   </footer>
 
   <script>
-    // Tikri motyvaciniai faktai apie Japonijos radinių kultūrą ir saugumą
-    const FACTS = [
+    var FACTS = [
       {
-        lt: "🇯🇵 Japonijos pamokos: Tokijo policija kasmet sugrąžina daugiau nei 3,5 milijono pamestų daiktų, o net 70% pamestų piniginių su visais pinigais saugiai grįžta šeimininkams dėka aiškios ir patogios sistemos.",
-        en: "🇯🇵 Lessons from Japan: Tokyo Police returns over 3.5 million lost items annually. Over 70% of lost wallets return with cash intact thanks to friction-free return systems."
+        lt: "🇯🇵 Japonijos pamokos: Tokijo policija kasmet sugrąžina virš 3,5 mln. pamestų daiktų, o net 70% pamestų piniginių grįžta šeimininkams dėka aiškios sistemos.",
+        en: "🇯🇵 Lessons from Japan: Tokyo Police returns over 3.5M lost items yearly. Over 70% of lost wallets return with cash intact thanks to friction-free return systems."
       },
       {
-        lt: "🚄 Shinkansen patirtis: Japonijos greitųjų traukinių sistemoje pamestas daiktas vidutiniškai identifikuojamas ir užregistruojamas per mažiau nei 15 minučių. QR Hope siekia to paties greičio kiekvienam.",
+        lt: "🚄 Shinkansen patirtis: Japonijos greitųjų traukinių tinkle pamestas daiktas vidutiniškai identifikuojamas ir užregistruojamas per mažiau nei 15 minučių. QR Hope siekia to paties standarto.",
         en: "🚄 High-Speed Standard: On Japan's Shinkansen network, lost property is identified and tracked in under 15 minutes. QR Hope delivers this standard everywhere."
       },
       {
-        lt: "🏯 Kōban bendruomeniškumas: Japonijoje veikia virš 6 000 vietinių policijos postelių, kur radėjai iškart atneša rastus daiktus. QR Hope skaitmeninė žyma tampa jūsų asmeniniu 'Kōban' posteliu debesyje.",
+        lt: "🏯 Kōban bendruomeniškumas: Japonijoje veikia virš 6 000 vietinių policijos postelių, kur radėjai iškart atneša rastus daiktus. QR Hope žyma tampa jūsų asmeniniu posteliu debesyje.",
         en: "🏯 The Kōban Culture: Japan's 6,000 neighborhood police boxes inspire QR Hope to act as an instant, digital safe-harbor for any lost item."
       },
       {
-        lt: "🔒 Privatumo pagarba: Japonijoje asmens duomenų saugojimas yra kultūros dalis. QR Hope užtikrina, kad jūsų numeris niekada nebūtų matomas nepažįstamiems.",
+        lt: "🔒 Privatumo pagarba: Japonijoje asmens duomenų apsauga yra kultūros dalis. QR Hope užtikrina, kad jūsų numeris niekada nebūtų matomas nepažįstamiems.",
         en: "🔒 Respect for Privacy: Protecting identity is paramount in Japanese service standards. QR Hope shields your private number completely."
       }
     ];
 
-    let currentFactIndex = Math.floor(Math.random() * FACTS.length);
+    var currentFactIndex = 0;
+    var activeLang = "lt";
 
-    const DICT = {
+    var DICT = {
       lt: {
         btn: "EN",
         nav_mfg: "Gamyba",
@@ -331,4 +331,127 @@
         b2b_desc: "Gaminate lagaminus, antkaklius ar darbo aprangą? Generuokite paruoštus graviravimo CSV failus su savo serijos prefiksu tiesiai gamybos portale.",
         b2b_btn: "Atidaryti gamybos portalą",
         price_h: "Pasirinkite apsaugą",
-       
+        p1_t: "NFC / QR Pakabukas",
+        p1_d: "1 vnt. metalinis pakabukas antkakliui ar raktams.",
+        p2_t: "Šeimos rinkinys (3 vnt.)",
+        p2_d: "3 vnt. pakabukai lagaminams, augintiniui ir kuprinei.",
+        p3_t: "Skaitmeninis ID kodas",
+        p3_d: "Suteikiamas unikalus kodas savo turimai NFC žymai.",
+        faq_h: "Dažniausiai užduodami klausimai",
+        fq1_q: "Ar radėjui reikia siųstis specialią programėlę?",
+        fq1_a: "Ne. Radėjas nuskaito QR kodą telefono kamera arba priglaudžia NFC. Viskas atsidaro tiesiogiai naršyklėje.",
+        fq2_q: "Kaip veikia anoniminis skambutis?",
+        fq2_a: "Radėjas skambina į saugų tinklo šliuzą su unikaliu PIN kodu, todėl jūsų asmeninis telefono numeris niekada nepasirodo ekrane.",
+        foot_mfg: "Gamybos portalas"
+      },
+      en: {
+        btn: "LT",
+        nav_mfg: "B2B / Mfg",
+        nav_login: "Sign In",
+        nav_activate: "Activate",
+        fact_badge: "Japanese Standards • Fact",
+        h_badge: "INSTANT RELAY • 100% PRIVATE CALL",
+        h_title: "Bring lost pets and items home without revealing your phone number.",
+        h_desc: "Smart QR and NFC protection with encrypted call routing. Finders reach you via browser or call while your personal number stays completely hidden.",
+        h_order: "Order Smart Tag",
+        h_demo: "Finder Card Demo",
+        f_1: "Hidden Number",
+        f_2: "No App Needed",
+        f_3: "Works Worldwide",
+        demo_badge: "Live Demo",
+        demo_title: "Finder Screen View",
+        demo_name: "🐾 Dog Rex",
+        demo_reward: "Reward: 50 €",
+        demo_sub: "Labrador Retriever • Friendly, microchipped.",
+        demo_btn: "Anonymous Call to Owner",
+        step_tag: "Process",
+        step_h: "How the System Works",
+        st1_t: "Activate Tag",
+        st1_d: "Enter pet/item name, PIN code, and mobile phone for secure relay.",
+        st2_t: "Finder Taps or Scans",
+        st2_d: "Finder taps NFC or scans QR. Opens directly in browser with no extra apps.",
+        st3_t: "Secure Communication",
+        st3_d: "Finder calls via masked gateway or sends direct messages to your dashboard.",
+        comp_tag: "Why Choose Us?",
+        comp_h: "QR Hope Advantage over Alternatives",
+        th_f: "Feature",
+        th_q: "Standard QR",
+        th_a: "AirTag / GPS",
+        tf_1: "Private phone number",
+        tf_2: "No battery to recharge",
+        tf_3: "Works on all smartphones",
+        tf_4: "Direct finder chat",
+        yes: "Yes (Hidden)",
+        no: "No",
+        part: "Lost mode only",
+        bat: "Battery depletes",
+        yes_all: "Android & iPhone",
+        apple: "Apple only",
+        b2b_title: "Manufacturing & Batch Integration",
+        b2b_desc: "Manufacturing luggage, pet collars or uniforms? Generate batch laser-engraving CSV files with your own custom prefix in the B2B portal.",
+        b2b_btn: "Open B2B Portal",
+        price_h: "Choose Protection Plan",
+        p1_t: "NFC / QR Smart Tag",
+        p1_d: "1 durable smart tag for collar or keys.",
+        p2_t: "Family Pack (3 pcs)",
+        p2_d: "3 smart tags for luggage, pet, and backpack.",
+        p3_t: "Digital ID Code",
+        p3_d: "Get a cloud-connected ID for your own NFC tag.",
+        faq_h: "Frequently Asked Questions",
+        fq1_q: "Does the finder need a dedicated app?",
+        fq1_a: "No. The finder scans the QR or taps NFC. Everything operates natively in any web browser.",
+        fq2_q: "How does the anonymous call work?",
+        fq2_a: "Calls route through our masked telecommunications relay, guaranteeing your private phone number is never exposed.",
+        foot_mfg: "B2B Portal"
+      }
+    };
+
+    function displayFact() {
+      var el = document.getElementById("factText");
+      if (el && FACTS[currentFactIndex]) {
+        el.innerText = FACTS[currentFactIndex][activeLang];
+      }
+    }
+
+    function nextFact() {
+      currentFactIndex = (currentFactIndex + 1) % FACTS.length;
+      displayFact();
+    }
+
+    function setLanguage(lang) {
+      activeLang = lang;
+      try { localStorage.setItem("qrhope_lang", lang); } catch(e){}
+      
+      var data = DICT[lang];
+      var btn = document.getElementById("langBtn");
+      if (btn) btn.innerText = data.btn;
+
+      var elements = document.querySelectorAll("[data-i18n]");
+      for (var i = 0; i < elements.length; i++) {
+        var key = elements[i].getAttribute("data-i18n");
+        if (data[key]) {
+          elements[i].innerText = data[key];
+        }
+      }
+
+      displayFact();
+    }
+
+    function toggleLang() {
+      setLanguage(activeLang === "lt" ? "en" : "lt");
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      try {
+        var saved = localStorage.getItem("qrhope_lang");
+        if (saved === "en" || saved === "lt") {
+          activeLang = saved;
+        }
+      } catch(e){}
+
+      currentFactIndex = Math.floor(Math.random() * FACTS.length);
+      setLanguage(activeLang);
+    });
+  </script>
+</body>
+</html>
