@@ -5,148 +5,98 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>QR Hope – Pakabuko aktyvavimas</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  </style>
 </head>
-<body class="bg-slate-50 min-h-screen py-6 px-4 font-sans text-slate-800">
+<body class="bg-[#fcfdfc] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-4 sm:p-6">
 
-  <div class="max-w-md mx-auto mb-3">
-    <a href="index.html" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-800 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-sm transition">
-      <span>←</span> Grįžti į pradžią
+  <header class="max-w-md mx-auto w-full py-3 flex justify-between items-center border-b border-slate-100">
+    <a href="index.html" class="flex items-center space-x-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-700"></span>
+      <span class="text-xl font-bold tracking-tight text-slate-900">QR Hope</span>
     </a>
-  </div>
+    <span class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md font-medium">Aktyvavimas</span>
+  </header>
 
-  <div class="max-w-md mx-auto bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
-    
-    <div class="bg-emerald-600 text-white p-6 text-center">
-      <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-2 text-xl font-black">
-        QR
-      </div>
-      <h1 class="text-xl font-black">Pakabuko aktyvavimas</h1>
-      <p class="text-xs text-emerald-100 mt-1">Anonimiška pagalbos ir apsaugos sistema</p>
+  <main class="max-w-md mx-auto w-full my-6 bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm space-y-6">
+    <div>
+      <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Naujas pakabukas</span>
+      <h1 class="text-2xl font-extrabold text-slate-950 mt-1">Aktyvuokite savo apsaugą</h1>
+      <p class="text-xs text-slate-500 mt-1">Supildykite duomenis, kad radėjas galėtų susisiekti per saugią sistemą neatidengiant jūsų numerio.</p>
     </div>
 
-    <form id="tagForm" onsubmit="saveTag(event)" class="p-6 space-y-4">
-      
+    <form id="activateForm" onsubmit="handleActivation(event)" class="space-y-4 text-xs">
       <div>
-        <label class="block text-xs font-bold text-slate-600 mb-1">Pakabuko ID:</label>
-        <input type="text" id="tagId" required placeholder="Pvz. SOS-002 arba PET-002"
-               class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm font-mono focus:outline-none focus:border-emerald-600">
-      </div>
-
-      <!-- Sugeneruotas PIN kodas anoniminiams skambučiams -->
-      <div>
-        <div class="flex justify-between items-center mb-1">
-          <label class="text-xs font-bold text-slate-600">Saugus PIN skambučiams (GSM):</label>
-          <button type="button" onclick="generatePin()" class="text-[11px] text-emerald-600 font-bold hover:underline">Sugeneruoti naują</button>
-        </div>
-        <input type="text" id="pinCode" readonly required
-               class="w-full bg-slate-100 border border-slate-300 rounded-xl px-3 py-2 text-base font-black tracking-widest text-center text-slate-800 font-mono">
-        <p class="text-[10px] text-slate-400 mt-0.5">Šis PIN naudojamas skambučio peradresavimui neatskleidžiant jūsų numerio.</p>
+        <label class="block font-semibold text-slate-700 mb-1">Pakabuko ID kodas</label>
+        <input id="tagId" type="text" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3.5 py-2.5 font-mono text-slate-600 font-bold focus:outline-none" />
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-slate-600 mb-1">Kategorija:</label>
-        <select id="tagType" onchange="toggleFields()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-600">
-          <option value="sos">🚨 Skubi pagalba (Žmogui / Senjorui / Vaikui)</option>
-          <option value="pet">🐾 Pamestas gyvūnas / Daiktas</option>
+        <label class="block font-semibold text-slate-700 mb-1">Tipas</label>
+        <select id="tagType" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-emerald-600">
+          <option value="pet">Augintinis (šuo, katė)</option>
+          <option value="item">Asmeninis daiktas (lagaminas, raktai, piniginė)</option>
+          <option value="sos">SOS / Medicininė apsauga (vaikui, senjorui)</option>
         </select>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-slate-600 mb-1" id="nameLabel">Vardas, Pavardė:</label>
-        <input type="text" id="name" required placeholder="Įveskite vardą"
-               class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-600">
+        <label class="block font-semibold text-slate-700 mb-1">Vardas / Pavadinimas</label>
+        <input id="tagName" type="text" required placeholder="Pvz., Reksas arba Kelioninis lagaminas" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-emerald-600" />
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-slate-600 mb-1" id="ageLabel">Amžius:</label>
-        <input type="text" id="age" placeholder="Pvz. 72 m. arba 3 metai"
-               class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-600">
+        <label class="block font-semibold text-slate-700 mb-1">Jūsų tikrasis telefono numeris (skambučio peradresavimui)</label>
+        <input id="emergencyPhone" type="tel" required placeholder="+37060000000 arba +353..." class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-emerald-600" />
+        <span class="text-[10px] text-slate-400 mt-0.5 block">Šis numeris niekada nebus viešai rodomas radėjui.</span>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-slate-600 mb-1">Tikrasis telefono numeris (Paslėptas nuo pašalinių):</label>
-        <input type="tel" id="phone" required placeholder="+37060000000"
-               class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-600">
-        <p class="text-[10px] text-slate-400 mt-0.5">🛡️ Numeris niekada nebus viešai rodomas pakabuką nuskaičiusiems asmenims.</p>
+        <label class="block font-semibold text-slate-700 mb-1">Apsauginis PIN kodas (4 skaitmenys skambučio sujungimui)</label>
+        <input id="pinCode" type="text" maxlength="4" pattern="[0-9]{4}" required placeholder="Pvz., 1024" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 font-mono tracking-widest text-slate-800 focus:outline-none focus:border-emerald-600" />
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-slate-600 mb-1" id="detailsLabel">Svarbi informacija / Ligos:</label>
-        <textarea id="details" rows="2" placeholder="Svarbi informacija radusiam žmogui"
-                  class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-600"></textarea>
+        <label class="block font-semibold text-slate-700 mb-1">Papildoma informacija / Požymiai (nebūtina)</label>
+        <textarea id="tagDetails" rows="2" placeholder="Pvz., Bailus, turi mikroschemą arba atlygis radusiam..." class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-emerald-600"></textarea>
       </div>
 
-      <div id="sosOnlyField">
-        <label class="block text-xs font-bold text-slate-600 mb-1">Kritinė medicininė informacija:</label>
-        <input type="text" id="criticalInfo" placeholder="Kraujo grupė, vaistai, alergijos, diabetas..."
-               class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-600">
-      </div>
-
-      <div id="petOnlyField" class="hidden">
-        <label class="block text-xs font-bold text-slate-600 mb-1">Siūlomas atlygis radusiam:</label>
-        <input type="text" id="reward" placeholder="Pvz. 50 €"
-               class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-600">
-      </div>
-
-      <button type="submit" id="submitBtn"
-              class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-sm shadow transition">
-        Išsaugoti ir Aktyvuoti
+      <button id="submitBtn" type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-sm text-sm">
+        Aktyvuoti pakabuką
       </button>
-
-      <div id="statusMsg" class="hidden p-3 rounded-xl text-center text-xs font-bold mt-2"></div>
     </form>
-  </div>
+
+    <div id="statusMsg" class="hidden text-center text-xs p-3 rounded-xl"></div>
+  </main>
+
+  <footer class="max-w-md mx-auto w-full text-center text-[11px] text-slate-400 py-4">
+    QR Hope &copy; 2026. Saugus pamestų daiktų ir augintinių ryšys.
+  </footer>
 
   <script>
     const SUPABASE_URL = "https://nhnyvztyvovgxbbwmlxx.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A";
 
-    function generatePin() {
-      const pin = Math.floor(1000 + Math.random() * 9000);
-      document.getElementById('pinCode').value = pin;
-    }
-    generatePin();
-
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('id')) {
-      document.getElementById('tagId').value = urlParams.get('id');
-    }
+    const tagId = urlParams.get('id') || 'SOS-001';
+    document.getElementById('tagId').value = tagId;
 
-    function toggleFields() {
-      const type = document.getElementById('tagType').value;
-      if (type === 'pet') {
-        document.getElementById('nameLabel').innerText = "Gyvūno vardas / Daikto pavadinimas:";
-        document.getElementById('ageLabel').innerText = "Veislė / Spalva / Požymiai:";
-        document.getElementById('detailsLabel').innerText = "Būdo bruožai / Papildoma informacija:";
-        document.getElementById('sosOnlyField').classList.add('hidden');
-        document.getElementById('petOnlyField').classList.remove('hidden');
-      } else {
-        document.getElementById('nameLabel').innerText = "Vardas, Pavardė:";
-        document.getElementById('ageLabel').innerText = "Amžius:";
-        document.getElementById('detailsLabel').innerText = "Svarbi informacija / Ligos:";
-        document.getElementById('sosOnlyField').classList.remove('hidden');
-        document.getElementById('petOnlyField').classList.add('hidden');
-      }
-    }
-
-    async function saveTag(e) {
+    async function handleActivation(e) {
       e.preventDefault();
       const btn = document.getElementById('submitBtn');
       const status = document.getElementById('statusMsg');
-
       btn.disabled = true;
-      btn.innerText = "Išsaugoma...";
+      btn.innerText = "Aktyvuojama...";
 
       const payload = {
-        id: document.getElementById('tagId').value.trim(),
-        pin_code: document.getElementById('pinCode').value.trim(),
+        id: document.getElementById('tagId').value,
         type: document.getElementById('tagType').value,
-        name: document.getElementById('name').value.trim(),
-        age: document.getElementById('age').value.trim(),
-        emergency_phone: document.getElementById('phone').value.trim(),
-        details: document.getElementById('details').value.trim(),
-        critical_info: document.getElementById('criticalInfo').value.trim(),
-        reward: document.getElementById('reward').value.trim()
+        name: document.getElementById('tagName').value,
+        emergency_phone: document.getElementById('emergencyPhone').value.trim(),
+        pin_code: document.getElementById('pinCode').value.trim(),
+        details: document.getElementById('tagDetails').value.trim()
       };
 
       try {
@@ -161,18 +111,20 @@
           body: JSON.stringify(payload)
         });
 
-        if (!res.ok) throw new Error('Nepavyko išsaugoti.');
-
-        status.className = "p-3 rounded-xl text-center text-xs font-bold mt-2 bg-emerald-100 text-emerald-800";
-        status.innerHTML = `✅ Sėkmingai išsaugota! PIN: <b>${payload.pin_code}</b><br><a href="s.html?id=${payload.id}" class="underline font-bold mt-1 inline-block">Atidaryti pakabuko kortelę</a>`;
-        status.classList.remove('hidden');
+        if (res.ok) {
+          status.className = "bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs p-3 rounded-xl text-center block";
+          status.innerHTML = "🎉 Pakabukas sėkmingai aktyvuotas! Nukreipiama į peržiūrą...";
+          setTimeout(() => {
+            window.location.href = `s.html?id=${encodeURIComponent(payload.id)}`;
+          }, 1500);
+        } else {
+          throw new Error("Nepavyko išsaugoti duomenų.");
+        }
       } catch (err) {
-        status.className = "p-3 rounded-xl text-center text-xs font-bold mt-2 bg-red-100 text-red-800";
-        status.innerText = "❌ Klaida išsaugant duomenis.";
-        status.classList.remove('hidden');
-      } finally {
+        status.className = "bg-rose-50 border border-rose-200 text-rose-800 text-xs p-3 rounded-xl text-center block";
+        status.innerText = "Klaida aktyvuojant. Bandykite dar kartą.";
         btn.disabled = false;
-        btn.innerText = "Išsaugoti ir Aktyvuoti";
+        btn.innerText = "Aktyvuoti pakabuką";
       }
     }
   </script>
