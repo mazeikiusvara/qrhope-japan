@@ -26,6 +26,10 @@
         <a href="#privalumai" id="nav_why" class="hover:text-emerald-800 transition">Privalumai</a>
         <a href="#kainos" id="nav_pricing" class="hover:text-emerald-800 transition">Kainos</a>
         <a href="#duk" id="nav_faq" class="hover:text-emerald-800 transition">DUK</a>
+        <a href="manufacturer.html" id="nav_mfg" class="text-slate-900 hover:text-emerald-800 transition flex items-center">
+          <i class="fa-solid fa-industry mr-1 text-[11px] text-emerald-700"></i>
+          <span>Gamintojams</span>
+        </a>
       </nav>
 
       <!-- Veiksmai ir kalba -->
@@ -111,6 +115,21 @@
       </div>
     </section>
 
+    <!-- B2B Gamintojų reklaminis skydelis -->
+    <section class="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
+      <div class="space-y-2">
+        <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400 bg-slate-800/80 px-2.5 py-1 rounded border border-slate-700">B2B Integracija</span>
+        <h3 id="b2b_banner_title" class="text-xl sm:text-2xl font-black">Gaminate lagaminus, antkaklius ar darbo aprangą?</h3>
+        <p id="b2b_banner_desc" class="text-xs text-slate-300 max-w-xl leading-relaxed">
+          Suteikite savo produkcijai unikalią seriją. Generuokite paruoštus graviravimo CSV failus su individualiais prefiksais per gamintojų portalą.
+        </p>
+      </div>
+      <a href="manufacturer.html" id="b2b_banner_btn" class="shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-5 py-3.5 rounded-xl transition shadow-sm flex items-center space-x-2">
+        <i class="fa-solid fa-industry"></i>
+        <span>Gamintojų prisijungimas</span>
+      </a>
+    </section>
+
     <!-- Kaip veikia -->
     <section id="kaip-veikia" class="space-y-8 pt-4">
       <div class="text-center max-w-xl mx-auto space-y-1">
@@ -156,7 +175,7 @@
               <th id="th_airtag" class="py-2.5 px-2 font-semibold">AirTag / GPS</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-800 text-slate-300">
+          <tbody class="divide-y border-slate-800 text-slate-300">
             <tr>
               <td id="td_f1" class="py-2.5 px-2">Paslėptas telefono numeris</td>
               <td id="td_f1_yes" class="py-2.5 px-2 text-emerald-400 font-bold">Taip</td>
@@ -188,7 +207,6 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <!-- 1 vnt. -->
         <div class="bg-white border border-slate-200/90 rounded-2xl p-6 space-y-4 shadow-sm flex flex-col justify-between">
           <div class="space-y-2">
             <h3 id="plan_1_title" class="font-bold text-slate-900 text-base">NFC / QR Pakabukas</h3>
@@ -200,7 +218,6 @@
           </a>
         </div>
 
-        <!-- 3 vnt. -->
         <div class="bg-white border-2 border-emerald-800 rounded-2xl p-6 space-y-4 shadow-lg flex flex-col justify-between relative">
           <span id="plan_pop" class="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-800 text-white text-[10px] font-extrabold px-3 py-0.5 rounded-full uppercase">Populiariausias</span>
           <div class="space-y-2">
@@ -213,7 +230,6 @@
           </a>
         </div>
 
-        <!-- Skaitmeninis -->
         <div class="bg-white border border-slate-200/90 rounded-2xl p-6 space-y-4 shadow-sm flex flex-col justify-between">
           <div class="space-y-2">
             <h3 id="plan_3_title" class="font-bold text-slate-900 text-base">Skaitmeninis ID kodas</h3>
@@ -248,12 +264,15 @@
 
   </main>
 
-  <!-- Poraštė -->
+  <!-- Poraštė su B2B nuoroda -->
   <footer class="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400 gap-4">
     <p id="foot_copy">QR Hope &copy; 2026. Apsaugota privatumo platforma.</p>
-    <div class="flex items-center space-x-4">
+    <div class="flex flex-wrap items-center gap-4">
       <a href="index.html" id="foot_home" class="hover:text-emerald-800 font-semibold">Pradžia</a>
       <a href="login.html" id="foot_login" class="hover:text-emerald-800 font-semibold">Prisijungti</a>
+      <a href="manufacturer.html" id="foot_mfg" class="text-slate-700 hover:text-emerald-800 font-bold flex items-center">
+        <i class="fa-solid fa-industry mr-1 text-emerald-700"></i> Gamintojų portalas
+      </a>
       <a href="register.html" id="foot_act" class="hover:text-emerald-800 font-semibold">Aktyvuoti žymą</a>
       <a href="s.html?id=SOS-001" id="foot_demo" class="hover:text-emerald-800 font-semibold">Demo kortelė</a>
     </div>
@@ -269,8 +288,13 @@
         nav_why: 'Privalumai',
         nav_pricing: 'Kainos',
         nav_faq: 'DUK',
+        nav_mfg: 'Gamintojams',
         nav_login: 'Prisijungti',
         nav_activate: 'Aktyvuoti žymą',
+        b2b_banner_title: 'Gaminate lagaminus, antkaklius ar darbo aprangą?',
+        b2b_banner_desc: 'Suteikite savo produkcijai unikalią seriją. Generuokite paruoštus graviravimo CSV failus su individualiais prefiksais per gamintojų portalą.',
+        b2b_banner_btn: 'Gamintojų prisijungimas',
+        foot_mfg: 'Gamintojų portalas',
         h_badge: 'MOMENTINIS RYŠYS • 100% PRIVATUS SKAMBUTIS',
         h_title: 'Sugrąžinkite daiktus ir augintinius <span class="text-emerald-800 underline decoration-emerald-300">namo</span> neatskleisdami savo numerio.',
         h_desc: 'Pažangus QR ir NFC atpažinimas su šifruotu skambučių nukreipimu. Radėjas susisiekia tiesiogiai naršyklėje arba skambučiu, o jūsų asmeninis numeris lieka 100% apsaugotas.',
@@ -305,44 +329,4 @@
         td_f1_partial: 'Tik režime',
         td_f2: 'Nereikia baterijos',
         td_f2_yes1: 'Taip',
-        td_f2_yes2: 'Taip',
-        td_f2_no: 'Reikia',
-        td_f3: 'Tinka visiems telefonams',
-        td_f3_yes1: 'Taip',
-        td_f3_yes2: 'Taip',
-        td_f3_no: 'Tik Apple',
-        price_tag: 'Užsakymas',
-        price_title: 'Pasirinkite apsaugą',
-        plan_1_title: 'NFC / QR Pakabukas',
-        plan_1_desc: '1 vnt. metalinis pakabukas antkakliui ar raktams.',
-        plan_1_btn: 'Užsakyti (14.99 €)',
-        plan_pop: 'Populiariausias',
-        plan_2_title: 'Šeimos rinkinys (3 vnt.)',
-        plan_2_desc: '3 vnt. pakabukai lagaminams, augintiniui ir kuprinei.',
-        plan_2_btn: 'Užsakyti rinkinį (34.99 €)',
-        plan_3_title: 'Skaitmeninis ID kodas',
-        plan_3_desc: 'Suteikiamas unikalus kodas savo turimai NFC žymai.',
-        plan_3_btn: 'Pirkti kodą (4.99 €)',
-        faq_tag: 'Atsakymai',
-        faq_title: 'Dažniausiai užduodami klausimai',
-        faq_q1: 'Ar radėjui reikia turėti specialią programėlę?',
-        faq_a1: 'Ne. Radėjas nuskaito QR kameros pagalba arba priglaudžia NFC telefoną. Viskas veikia įprastoje naršyklėje.',
-        faq_q2: 'Kaip veikia anoniminis skambutis?',
-        faq_a2: 'Radėjas sujungiamas per saugų sistemos numerį, todėl jūsų tikrasis telefono numeris niekada neatskleidžiamas.',
-        foot_copy: 'QR Hope © 2026. Apsaugota privatumo platforma.',
-        foot_home: 'Pradžia',
-        foot_login: 'Prisijungti',
-        foot_act: 'Aktyvuoti žymą',
-        foot_demo: 'Demo kortelė'
-      },
-      en: {
-        langBtn: 'LT',
-        nav_how: 'How it works',
-        nav_why: 'Benefits',
-        nav_pricing: 'Pricing',
-        nav_faq: 'FAQ',
-        nav_login: 'Sign In',
-        nav_activate: 'Activate Tag',
-        h_badge: 'INSTANT CONNECTION • 100% PRIVATE CALL',
-        h_title: 'Return lost items and pets <span class="text-emerald-800 underline decoration-emerald-300">home</span> without revealing your number.',
-        h_desc: 'Advanced QR an
+        t
