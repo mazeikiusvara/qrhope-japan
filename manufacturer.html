@@ -1,334 +1,265 @@
 <!DOCTYPE html>
 <html lang="lt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Hope – B2B Gamintojų portalas</title>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Hope – B2B Gamintojai</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }</style>
 </head>
-<body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-3 sm:p-5">
-
-  <header class="max-w-4xl mx-auto w-full py-2.5 flex justify-between items-center border-b border-slate-200">
+<body class="bg-slate-50 text-slate-800 text-xs min-h-screen p-3 sm:p-5 flex flex-col justify-between">
+  <header class="max-w-4xl mx-auto w-full py-2 flex justify-between items-center border-b border-slate-200">
     <div class="flex items-center space-x-2">
-      <a href="index.html" class="flex items-center space-x-2">
-        <span class="w-2.5 h-2.5 rounded-full bg-emerald-700"></span>
-        <span class="text-lg font-black tracking-tight text-slate-900">QR<span class="text-emerald-800">HOPE</span></span>
-      </a>
-      <span class="text-[10px] bg-indigo-900 text-white font-bold px-2 py-0.5 rounded">GAMINTOJŲ B2B</span>
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-700"></span>
+      <span class="text-base font-black text-slate-900">QR HOPE <span class="text-[10px] bg-indigo-900 text-white px-2 py-0.5 rounded font-bold">B2B</span></span>
     </div>
     <div class="flex items-center space-x-2">
-      <a href="index.html" class="text-xs font-bold bg-white text-slate-700 border border-slate-300 px-2.5 py-1 rounded-md">Pradžia</a>
-      <button id="logoutBtn" onclick="logout()" class="hidden text-xs text-rose-600 font-bold hover:underline cursor-pointer">Atsijungti</button>
+      <a href="index.html" class="bg-white border border-slate-300 font-bold px-2 py-1 rounded">Pradžia</a>
+      <button id="logoutBtn" onclick="logout()" class="hidden text-rose-600 font-bold">Atsijungti</button>
     </div>
   </header>
 
-  <main class="max-w-4xl mx-auto w-full my-4">
-
-    <!-- 1. PRISIJUNGIMAS -->
-    <div id="authBox" class="max-w-sm mx-auto bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3">
-      <div>
-        <h1 class="text-lg font-black text-slate-900">Gamintojo prieiga</h1>
-        <p class="text-[11px] text-slate-500">Įveskite B2B partnerio prieigos kodą partijų valdymui.</p>
-      </div>
-
-      <form onsubmit="handleAuth(event)" class="space-y-3 text-xs">
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Partnerio el. paštas / ID</label>
-          <input id="partnerId" type="text" required placeholder="Pvz., BALTICBAGS arba FACTORY1" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 font-bold text-slate-900" />
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Slaptažodis</label>
-          <input id="partnerSecret" type="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold text-sm" />
-        </div>
-        <button type="submit" id="submitLoginBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl transition text-xs cursor-pointer">
-          Prisijungti prie fabriko
-        </button>
+  <main class="max-w-4xl mx-auto w-full my-3">
+    <!-- PRISIJUNGIMAS -->
+    <div id="authBox" class="max-w-xs mx-auto bg-white border border-slate-200 rounded-2xl p-4 space-y-3">
+      <h1 class="text-sm font-black text-slate-900">Gamintojo prisijungimas</h1>
+      <form onsubmit="handleAuth(event)" class="space-y-2">
+        <input id="partnerId" type="text" required placeholder="Partneris (pvz. BALTICBAGS)" class="w-full bg-slate-50 border p-2 rounded-xl font-bold" />
+        <input id="partnerSecret" type="password" required placeholder="Slaptažodis (1234)" class="w-full bg-slate-50 border p-2 rounded-xl" />
+        <button type="submit" class="w-full bg-slate-900 text-white font-bold py-2 rounded-xl">Prisijungti</button>
       </form>
-      <div id="authErr" class="hidden bg-rose-50 border border-rose-200 text-rose-800 text-xs p-2.5 rounded-xl text-center"></div>
+      <p id="authErr" class="hidden text-rose-600 text-center font-bold"></p>
     </div>
 
-    <!-- 2. PARTIJŲ GENERAVIMO IR VALDYMO PULTAS -->
-    <div id="portalContent" class="hidden space-y-4">
-
-      <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex justify-between items-center">
+    <!-- PULTAS -->
+    <div id="portalContent" class="hidden space-y-3">
+      <div class="bg-white border rounded-2xl p-3 flex justify-between items-center">
         <div>
-          <h2 class="text-lg font-black text-slate-900">Partijų generavimo pultas</h2>
-          <p id="partnerNameText" class="text-xs text-slate-500">Partneris: Aktyvus</p>
+          <h2 class="font-black text-slate-900 text-sm">Partijų pultas</h2>
+          <span id="partnerNameText" class="text-[11px] text-slate-500 font-bold"></span>
         </div>
-        <div class="flex items-center space-x-2">
-          <button onclick="loadAllExistingTags()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-2.5 py-1 rounded-lg border border-slate-300 flex items-center space-x-1 cursor-pointer">
-            <i class="fa-solid fa-rotate text-[10px]"></i>
-            <span>Atnaujinti sąrašą</span>
-          </button>
-          <span class="text-xs bg-emerald-50 text-emerald-800 font-bold px-2.5 py-1 rounded-lg border border-emerald-200">Gamybos režimas</span>
-        </div>
+        <button onclick="loadTags()" class="bg-slate-100 hover:bg-slate-200 font-bold px-2.5 py-1 rounded-lg border">
+          <i class="fa-solid fa-rotate"></i> Atnaujinti
+        </button>
       </div>
 
-      <!-- NAUJOS PARTIJOS UŽSAKYMAS -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
-        <h3 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">Naujos gaminių partijos užsakymas</h3>
-
-        <form onsubmit="handleGenerateBatch(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+      <!-- GENERAVIMAS -->
+      <div class="bg-white border rounded-2xl p-4 space-y-3">
+        <h3 class="font-bold text-slate-900 border-b pb-1">Nauja partija</h3>
+        <form onsubmit="handleGenerate(event)" class="grid grid-cols-2 gap-2">
           <div>
-            <label class="block font-bold text-slate-700 mb-1">Gaminio tipas</label>
-            <select id="itemType" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 font-bold">
-              <option value="item">Lagaminas / Krepšys / Daiktas</option>
-              <option value="pet">Augintinio antkaklis / pakabukas</option>
-              <option value="sos">SOS / Medicininė apyrankė</option>
+            <label class="font-bold text-slate-600 block mb-0.5">Tipas</label>
+            <select id="itemType" class="w-full bg-slate-50 border p-2 rounded-xl font-bold">
+              <option value="item">Daiktas / Lagaminas</option>
+              <option value="pet">Augintinis</option>
+              <option value="sos">SOS / Medicina</option>
             </select>
           </div>
-
           <div>
-            <label class="block font-bold text-slate-700 mb-1">Žymos technologija (fizinis tipas)</label>
-            <select id="tagTechnology" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 font-bold text-indigo-900 bg-indigo-50/50">
-              <option value="nfc">📱 NFC Žyma / Lustas</option>
-              <option value="qr">📷 QR Kodas / Lipdukas / Graviravimas</option>
-              <option value="hybrid">⚡ Hibridas (NFC + QR kartu)</option>
+            <label class="font-bold text-slate-600 block mb-0.5">Technologija</label>
+            <select id="tagTech" class="w-full bg-slate-50 border p-2 rounded-xl font-bold text-indigo-900">
+              <option value="nfc">📱 NFC Žyma</option>
+              <option value="qr">📷 QR Kodas</option>
+              <option value="hybrid">⚡ Hibridas (NFC+QR)</option>
             </select>
           </div>
-
           <div>
-            <label class="block font-bold text-slate-700 mb-1">ID Priešdėlis (Prefix)</label>
-            <input id="prefixInput" type="text" required placeholder="Pvz., PET arba BAGS" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 uppercase font-mono font-bold" />
+            <label class="font-bold text-slate-600 block mb-0.5">Prefix</label>
+            <input id="prefixInput" type="text" required placeholder="BAGS arba PET" class="w-full bg-slate-50 border p-2 rounded-xl uppercase font-mono font-bold" />
           </div>
-
           <div>
-            <label class="block font-bold text-slate-700 mb-1">Kiekis (vnt.)</label>
-            <input id="quantityInput" type="number" min="1" max="200" value="10" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 font-bold font-mono" />
+            <label class="font-bold text-slate-600 block mb-0.5">Kiekis (vnt.)</label>
+            <input id="qtyInput" type="number" min="1" max="150" value="10" required class="w-full bg-slate-50 border p-2 rounded-xl font-bold" />
           </div>
-
-          <div class="sm:col-span-2 pt-2">
-            <button id="genBtn" type="submit" class="w-full bg-indigo-900 hover:bg-indigo-950 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm cursor-pointer">
-              Generuoti partiją ir išsaugoti
-            </button>
-          </div>
+          <button id="genBtn" type="submit" class="col-span-2 bg-indigo-900 text-white font-bold py-2.5 rounded-xl">
+            Generuoti ir išsaugoti
+          </button>
         </form>
-
-        <div id="genStatus" class="hidden text-xs p-3 rounded-xl text-center"></div>
+        <p id="genStatus" class="hidden p-2 rounded-xl text-center font-bold"></p>
       </div>
 
-      <!-- VISOS ESAMOS IR SUKURTOS ŽYMOS IŠ SUPABASE -->
-      <div id="resultsCard" class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-2">
-          <div>
-            <h4 class="text-xs font-bold text-slate-900">Visos sukurtos žymos (<span id="totalTagsCount">0</span> vnt.)</h4>
-            <p class="text-[10px] text-slate-400">Sinchronizuota su duomenų baze</p>
-          </div>
-          <button onclick="downloadCSV()" class="bg-emerald-800 hover:bg-emerald-900 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center space-x-1 cursor-pointer">
-            <i class="fa-solid fa-file-csv"></i>
-            <span>Atsisiųsti CSV</span>
+      <!-- SĄRAŠAS -->
+      <div class="bg-white border rounded-2xl p-4 space-y-2">
+        <div class="flex justify-between items-center border-b pb-1.5">
+          <span class="font-bold text-slate-900">Sukurtos žymos (<span id="tagCount">0</span> vnt.)</span>
+          <button onclick="downloadCSV()" class="bg-emerald-800 text-white font-bold px-2.5 py-1 rounded-lg">
+            <i class="fa-solid fa-file-csv"></i> CSV
           </button>
         </div>
-
-        <div class="overflow-x-auto max-h-80 overflow-y-auto">
-          <table class="w-full text-left text-xs border-collapse">
+        <div class="overflow-x-auto max-h-72">
+          <table class="w-full text-left border-collapse">
             <thead>
-              <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 text-[10px] uppercase">
-                <th class="p-2">ID</th>
-                <th class="p-2">Technologija</th>
-                <th class="p-2">Būsena</th>
-                <th class="p-2">Saugos kodas</th>
-                <th class="p-2">Aktyvavimo nuoroda</th>
-                <th class="p-2 text-right">Veiksmas</th>
+              <tr class="bg-slate-50 text-slate-500 text-[10px] uppercase border-b">
+                <th class="p-1.5">ID</th>
+                <th class="p-1.5">Gaminys</th>
+                <th class="p-1.5">Tech</th>
+                <th class="p-1.5">Secret</th>
+                <th class="p-1.5 text-right">Veiksmai</th>
               </tr>
             </thead>
-            <tbody id="generatedList" class="divide-y divide-slate-100">
-              <tr>
-                <td colspan="6" class="p-4 text-center text-slate-400 text-xs">Kraunamos žymos...</td>
-              </tr>
+            <tbody id="tagsTable" class="divide-y divide-slate-100 font-mono">
+              <tr><td colspan="5" class="p-3 text-center text-slate-400 font-sans">Kraunama...</td></tr>
             </tbody>
           </table>
         </div>
       </div>
-
     </div>
-
   </main>
 
-  <footer class="max-w-4xl mx-auto w-full text-center text-[10px] text-slate-400 py-3">
-    QR Hope &copy; 2026. B2B Gamybos infrastruktūra.
+  <!-- REDAGAVIMAS -->
+  <div id="editModal" class="hidden fixed inset-0 bg-slate-950/60 flex items-center justify-center p-3 z-50">
+    <div class="bg-white rounded-2xl p-4 max-w-xs w-full space-y-2.5">
+      <div class="flex justify-between items-center border-b pb-1">
+        <span class="font-bold text-slate-900">Redaguoti <span id="editTagId" class="text-emerald-700 font-mono"></span></span>
+        <button onclick="closeEdit()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form onsubmit="saveEdit(event)" class="space-y-2">
+        <input id="editName" type="text" required placeholder="Gaminio pavadinimas" class="w-full bg-slate-50 border p-2 rounded-xl" />
+        <select id="editTech" class="w-full bg-slate-50 border p-2 rounded-xl font-bold">
+          <option value="nfc">📱 NFC Žyma</option>
+          <option value="qr">📷 QR Kodas</option>
+          <option value="hybrid">⚡ Hibridas</option>
+        </select>
+        <input id="editSecret" type="text" maxlength="6" placeholder="Pakuotės kodas" class="w-full bg-slate-50 border p-2 rounded-xl uppercase font-mono font-bold" />
+        <div class="flex space-x-1 pt-1">
+          <button type="button" onclick="closeEdit()" class="flex-1 bg-slate-100 py-1.5 rounded-xl font-bold">Atšaukti</button>
+          <button type="submit" class="flex-1 bg-emerald-800 text-white py-1.5 rounded-xl font-bold">Išsaugoti</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="max-w-4xl mx-auto w-full text-center text-[10px] text-slate-400 py-2">
+    QR Hope &copy; 2026.
   </footer>
 
   <script>
-    var SUPABASE_URL = "https://nhnyvztyvovgxbbwmlxx.supabase.co";
-    var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A";
-
-    var allTagsList = [];
+    var URL = "https://nhnyvztyvovgxbbwmlxx.supabase.co/rest/v1/tags";
+    var KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A";
+    var H = { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY, 'Content-Type': 'application/json' };
+    var tags = [], curTag = null;
 
     function handleAuth(e) {
       e.preventDefault();
       var id = document.getElementById('partnerId').value.trim();
-      var pass = document.getElementById('partnerSecret').value.trim();
-
-      if (pass === 'admin' || pass === '1234' || id.length > 2) {
-        sessionStorage.setItem('qrhope_partner', id.toUpperCase());
-        initDashboard(id.toUpperCase());
+      var p = document.getElementById('partnerSecret').value.trim();
+      if (p === 'admin' || p === '1234' || id.length > 2) {
+        sessionStorage.setItem('qrhope_p', id.toUpperCase());
+        openDashboard(id.toUpperCase());
       } else {
-        var err = document.getElementById('authErr');
-        err.innerText = "Neteisingas partnerio kodas arba slaptažodis.";
-        err.classList.remove('hidden');
+        document.getElementById('authErr').innerText = "Neteisingi duomenys";
+        document.getElementById('authErr').classList.remove('hidden');
       }
     }
 
-    function initDashboard(name) {
+    function openDashboard(n) {
       document.getElementById('authBox').classList.add('hidden');
       document.getElementById('portalContent').classList.remove('hidden');
       document.getElementById('logoutBtn').classList.remove('hidden');
-      document.getElementById('partnerNameText').innerText = "Partneris: " + name;
-      loadAllExistingTags();
+      document.getElementById('partnerNameText').innerText = "Partneris: " + n;
+      loadTags();
     }
 
-    function makeSecret(len) {
-      var chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
-      var res = '';
-      for (var i = 0; i < len; i++) res += chars.charAt(Math.floor(Math.random() * chars.length));
-      return res;
+    function rndSec() {
+      var s = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ", r = "";
+      for (var i = 0; i < 6; i++) r += s.charAt(Math.floor(Math.random() * s.length));
+      return r;
     }
 
-    // AUTOMATINIS VISŲ ŽYMŲ UŽKROVIMAS IŠ DUOMENŲ BAZĖS
-    async function loadAllExistingTags() {
-      var tbody = document.getElementById('generatedList');
-      tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400 text-xs">Kraunama iš Supabase...</td></tr>';
-
+    async function loadTags() {
+      var b = document.getElementById('tagsTable');
       try {
-        var res = await fetch(`${SUPABASE_URL}/rest/v1/tags?select=*&order=id.desc`, {
-          headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`
-          }
-        });
-        var data = await res.json();
-        if (data && Array.isArray(data)) {
-          allTagsList = data;
-          document.getElementById('totalTagsCount').innerText = allTagsList.length;
-          displayBatchResults(allTagsList);
-        }
-      } catch(err) {
-        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-rose-500 text-xs">Nepavyko užkrauti: ${err.message}</td></tr>`;
-      }
-    }
-
-    async function handleGenerateBatch(e) {
-      e.preventDefault();
-      var prefix = document.getElementById('prefixInput').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
-      var count = parseInt(document.getElementById('quantityInput').value, 10) || 10;
-      var type = document.getElementById('itemType').value;
-      var tech = document.getElementById('tagTechnology').value;
-      var btn = document.getElementById('genBtn');
-      var status = document.getElementById('genStatus');
-
-      btn.disabled = true;
-      btn.innerText = "Generuojama...";
-
-      var startNum = Math.floor(1000 + Math.random() * 8000);
-      var newTags = [];
-
-      for (var i = 0; i < count; i++) {
-        var tagId = prefix + (startNum + i);
-        var secret = makeSecret(6);
-        newTags.push({
-          id: tagId,
-          type: type,
-          tag_technology: tech,
-          activation_secret: secret,
-          status: 'batch_ready',
-          emergency_phone: '',
-          pin_code: '',
-          name: (type === 'pet' ? 'Augintinis' : 'Gaminys') + ' #' + tagId
-        });
-      }
-
-      try {
-        var res = await fetch(`${SUPABASE_URL}/rest/v1/tags`, {
-          method: 'POST',
-          headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`,
-            'Content-Type': 'application/json',
-            'Prefer': 'return=representation'
-          },
-          body: JSON.stringify(newTags)
-        });
-
-        var resData = await res.json();
-
-        if (!res.ok) {
-          var errorMsg = resData.message || resData.hint || JSON.stringify(resData);
-          throw new Error(errorMsg);
-        }
-
-        status.className = "bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs p-3 rounded-xl block font-bold";
-        status.innerText = `✅ Sėkmingai sukurta ir išsaugota ${newTags.length} žymų partija!`;
-
-        // Iš karto atnaujiname bendrą sąrašą iš duomenų bazės
-        loadAllExistingTags();
-      } catch(err) {
-        status.className = "bg-rose-50 border border-rose-200 text-rose-800 text-xs p-3 rounded-xl block font-bold text-left";
-        status.innerText = "Klaidos detalės: " + err.message;
-      } finally {
-        btn.disabled = false;
-        btn.innerText = "Generuoti partiją ir išsaugoti";
-      }
-    }
-
-    function displayBatchResults(list) {
-      var tbody = document.getElementById('generatedList');
-      if (!list || list.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400 text-xs">Žymų dar nesukurta.</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = list.map(function(t) {
-        var techLabel = t.tag_technology === 'nfc' ? '📱 NFC' : (t.tag_technology === 'hybrid' ? '⚡ Hibridas' : '📷 QR');
-        var link = window.location.origin + '/s.html?id=' + encodeURIComponent(t.id);
-        var isReady = t.status === 'batch_ready' || !t.user_email;
-        var statusBadge = isReady 
-          ? '<span class="bg-amber-50 text-amber-800 border border-amber-200 text-[10px] px-1.5 py-0.5 rounded font-bold">Laukia pirkėjo</span>'
-          : '<span class="bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] px-1.5 py-0.5 rounded font-bold">Aktyvuota</span>';
-
-        return `
-          <tr class="hover:bg-slate-50 font-mono text-xs">
-            <td class="p-2 font-bold text-slate-900">${t.id}</td>
-            <td class="p-2 font-sans font-bold text-indigo-700">${techLabel}</td>
-            <td class="p-2 font-sans">${statusBadge}</td>
-            <td class="p-2 font-bold text-emerald-700 tracking-wider">${t.activation_secret || '-'}</td>
-            <td class="p-2 text-[10px] text-slate-400 truncate max-w-xs font-sans">${link}</td>
-            <td class="p-2 text-right">
-              <a href="s.html?id=${t.id}" target="_blank" class="text-emerald-700 font-sans font-bold hover:underline">Atidaryti</a>
+        var r = await fetch(URL + "?select=*&order=id.desc", { headers: H });
+        tags = await r.json();
+        document.getElementById('tagCount').innerText = tags.length;
+        b.innerHTML = tags.map(function(t) {
+          var tech = t.tag_technology === 'nfc' ? '📱 NFC' : (t.tag_technology === 'hybrid' ? '⚡ Hibrid' : '📷 QR');
+          return `<tr class="hover:bg-slate-50 border-b border-slate-100">
+            <td class="p-1.5 font-bold text-slate-900">${t.id}</td>
+            <td class="p-1.5 font-sans truncate max-w-[100px]">${t.name || '-'}</td>
+            <td class="p-1.5 font-sans font-bold text-indigo-700">${tech}</td>
+            <td class="p-1.5 font-bold text-emerald-700">${t.activation_secret || '-'}</td>
+            <td class="p-1.5 text-right space-x-1 font-sans">
+              <a href="s.html?id=${t.id}&preview=1" target="_blank" class="bg-slate-100 p-1 rounded font-bold" title="Tik gaminys"><i class="fa-solid fa-eye"></i></a>
+              <button onclick="editModal('${t.id}')" class="bg-indigo-50 text-indigo-700 p-1 rounded font-bold"><i class="fa-solid fa-pen"></i></button>
+              <button onclick="delTag('${t.id}')" class="bg-rose-50 text-rose-700 p-1 rounded font-bold"><i class="fa-solid fa-trash"></i></button>
             </td>
-          </tr>
-        `;
-      }).join('');
+          </tr>`;
+        }).join('');
+      } catch(e) { b.innerHTML = '<tr><td colspan="5" class="p-2 text-center text-rose-500">Klaida kraunant</td></tr>'; }
+    }
+
+    async function handleGenerate(e) {
+      e.preventDefault();
+      var pre = document.getElementById('prefixInput').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+      var count = parseInt(document.getElementById('qtyInput').value, 10) || 10;
+      var type = document.getElementById('itemType').value;
+      var tech = document.getElementById('tagTech').value;
+      var btn = document.getElementById('genBtn'), st = document.getElementById('genStatus');
+      btn.disabled = true;
+
+      var start = Math.floor(1000 + Math.random() * 8000), list = [];
+      for (var i = 0; i < count; i++) {
+        var id = pre + (start + i);
+        list.push({ id: id, type: type, tag_technology: tech, activation_secret: rndSec(), status: 'batch_ready', emergency_phone: '', pin_code: '', name: 'Gaminys #' + id });
+      }
+
+      try {
+        var r = await fetch(URL, { method: 'POST', headers: Object.assign({}, H, { 'Prefer': 'return=representation' }), body: JSON.stringify(list) });
+        var d = await r.json();
+        if (!r.ok) throw new Error(d.message || JSON.stringify(d));
+        st.className = "bg-emerald-50 text-emerald-800 p-2 rounded-xl block font-bold";
+        st.innerText = "✅ Sukurta " + list.length + " žymų!";
+        loadTags();
+      } catch(err) {
+        st.className = "bg-rose-50 text-rose-800 p-2 rounded-xl block font-bold text-left";
+        st.innerText = "Klaida: " + err.message;
+      } finally { btn.disabled = false; }
+    }
+
+    async function delTag(id) {
+      if (!confirm("Ištrinti #" + id + "?")) return;
+      var r = await fetch(URL + "?id=eq." + encodeURIComponent(id), { method: 'DELETE', headers: H });
+      if (r.ok) loadTags(); else alert("Nepavyko ištrinti");
+    }
+
+    function editModal(id) {
+      curTag = tags.find(function(t){ return t.id === id; });
+      if (!curTag) return;
+      document.getElementById('editTagId').innerText = '#' + curTag.id;
+      document.getElementById('editName').value = curTag.name || '';
+      document.getElementById('editTech').value = curTag.tag_technology || 'qr';
+      document.getElementById('editSecret').value = curTag.activation_secret || '';
+      document.getElementById('editModal').classList.remove('hidden');
+    }
+
+    function closeEdit() { document.getElementById('editModal').classList.add('hidden'); }
+
+    async function saveEdit(e) {
+      e.preventDefault();
+      var body = {
+        name: document.getElementById('editName').value.trim(),
+        tag_technology: document.getElementById('editTech').value,
+        activation_secret: document.getElementById('editSecret').value.trim().toUpperCase()
+      };
+      var r = await fetch(URL + "?id=eq." + encodeURIComponent(curTag.id), { method: 'PATCH', headers: H, body: JSON.stringify(body) });
+      if (r.ok) { closeEdit(); loadTags(); } else alert("Klaida saugant");
     }
 
     function downloadCSV() {
-      if (allTagsList.length === 0) return;
-      var csv = "ID,Technology,Status,ActivationSecret,Url\n";
-      allTagsList.forEach(function(t) {
-        var u = window.location.origin + '/s.html?id=' + t.id;
-        csv += `${t.id},${t.tag_technology || 'qr'},${t.status || ''},${t.activation_secret || ''},${u}\n`;
-      });
-
-      var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      var url = URL.createObjectURL(blob);
+      if (!tags.length) return;
+      var c = "ID,Name,Technology,ActivationSecret,Url\n";
+      tags.forEach(function(t){ c += `${t.id},"${t.name||''}",${t.tag_technology||'qr'},${t.activation_secret||''},${window.location.origin}/s.html?id=${t.id}\n`; });
       var a = document.createElement('a');
-      a.href = url;
-      a.download = `QRHOPE_EXPOSURE_${allTagsList.length}PCS.csv`;
+      a.href = URL.createObjectURL(new Blob([c], { type: 'text/csv' }));
+      a.download = `QRHOPE_${tags.length}PCS.csv`;
       a.click();
     }
 
-    function logout() {
-      sessionStorage.removeItem('qrhope_partner');
-      window.location.reload();
-    }
+    function logout() { sessionStorage.removeItem('qrhope_p'); window.location.reload(); }
 
     document.addEventListener("DOMContentLoaded", function() {
-      var savedPartner = sessionStorage.getItem('qrhope_partner');
-      if (savedPartner) {
-        initDashboard(savedPartner);
-      }
+      var p = sessionStorage.getItem('qrhope_p');
+      if (p) openDashboard(p);
     });
   </script>
 </body>
