@@ -3,106 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Hope – Savininko valdymo skydelis</title>
+  <title>QR Hope – Valdymo pultas</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    .chat-container { max-height: 280px; overflow-y: auto; }
-  </style>
+  <style>body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }</style>
 </head>
 <body class="bg-[#fcfdfc] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-4 sm:p-6">
 
-  <!-- Viršutinė juosta -->
-  <header class="max-w-2xl mx-auto w-full py-3 flex justify-between items-center border-b border-slate-100">
-    <div class="flex items-center space-x-2">
+  <!-- Navigacija -->
+  <header class="max-w-4xl mx-auto w-full py-4 flex justify-between items-center border-b border-slate-100">
+    <a href="index.html" class="flex items-center space-x-2">
       <span class="w-2.5 h-2.5 rounded-full bg-emerald-700"></span>
       <span class="text-xl font-bold tracking-tight text-slate-900">QR Hope</span>
-      <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono ml-2">Valdymas</span>
-    </div>
-    <div class="flex items-center space-x-2">
-      <a href="index.html" class="text-xs text-slate-500 hover:text-slate-800 px-2.5 py-1">Pradžia</a>
-      <a id="previewBtn" href="s.html?id=SOS-001" target="_blank" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg transition inline-flex items-center">
-        <span>Peržiūrėti kortelę</span>
-        <i class="fa-solid fa-arrow-up-right-from-square ml-1.5 text-[10px]"></i>
-      </a>
+    </a>
+    <div class="flex items-center space-x-3 text-xs">
+      <a href="index.html" class="text-slate-500 hover:text-slate-800">Pradžia</a>
+      <button onclick="logout()" class="text-rose-600 font-bold hover:underline">Atsijungti</button>
     </div>
   </header>
 
-  <main class="max-w-2xl mx-auto w-full my-6 space-y-6">
+  <main class="max-w-4xl mx-auto w-full my-6 space-y-6">
 
-    <!-- Pakabuko parinkimas ir būsena -->
-    <div class="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm space-y-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-        <div>
-          <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Objekto apsauga</span>
-          <h1 id="tagTitle" class="text-xl sm:text-2xl font-extrabold text-slate-950 mt-0.5">Kraunama...</h1>
-          <p id="tagIdDisplay" class="text-xs font-mono text-slate-500 mt-0.5">#SOS-001</p>
+    <!-- Pagrindinė informacija ir būsena -->
+    <div class="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <div class="flex items-center space-x-2">
+          <h1 id="dashName" class="text-2xl font-black text-slate-950">Kraunama...</h1>
+          <span id="dashTagId" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono font-bold">#ID</span>
         </div>
-        
-        <!-- Lost Mode jungiklis -->
-        <button id="toggleLostBtn" onclick="toggleLostMode()" class="px-4 py-2.5 rounded-xl font-bold text-xs transition flex items-center justify-center space-x-2 border">
-          <i id="lostIcon" class="fa-solid fa-circle-notch fa-spin"></i>
-          <span id="lostStatusText">Tikrinama būsena...</span>
-        </button>
+        <p id="dashDetails" class="text-xs text-slate-500 mt-1"></p>
       </div>
 
-      <!-- Greita nustatymų forma -->
-      <form id="quickSettingsForm" onsubmit="saveSettings(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Tikrasis tel. numeris (skambučiams)</label>
-          <input id="ownerPhone" type="tel" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:border-emerald-600 font-mono" />
+      <!-- Lost Mode perjungiklis -->
+      <div class="flex items-center space-x-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+        <span class="text-xs font-bold text-slate-700">Paieškos režimas (Lost Mode):</span>
+        <button id="lostToggleBtn" onclick="toggleLostMode()" class="px-4 py-2 rounded-lg font-bold text-xs transition bg-slate-200 text-slate-700">
+          Kraunama...
+        </button>
+      </div>
+    </div>
+
+    <!-- 2 Skiltys: Nuskaitymai (GPS) ir Žinutės -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Nuskaitymų ir GPS istorija -->
+      <div class="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+          <h2 class="font-bold text-slate-900 text-sm flex items-center">
+            <i class="fa-solid fa-location-dot text-emerald-700 mr-2"></i>
+            Nuskaitymų ir GPS žurnalas
+          </h2>
+          <button onclick="loadLogs()" class="text-xs text-slate-400 hover:text-slate-700"><i class="fa-solid fa-rotate-right"></i></button>
         </div>
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Siūlomas atlygis (nebūtina)</label>
-          <input id="ownerReward" type="text" placeholder="Pvz., 50 € arba Dėžutė saldainių" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:border-emerald-600" />
+
+        <div id="logsList" class="space-y-2.5 max-h-80 overflow-y-auto text-xs">
+          <p class="text-slate-400 text-center py-4">Kraunami įrašai...</p>
         </div>
-        <div class="sm:col-span-2 flex justify-end pt-1">
-          <button type="submit" id="saveBtn" class="bg-slate-900 hover:bg-slate-800 text-white font-semibold px-4 py-2 rounded-xl text-xs transition">
-            Išsaugoti nustatymus
+      </div>
+
+      <!-- Žinutės su radėju -->
+      <div class="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm space-y-4 flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+            <h2 class="font-bold text-slate-900 text-sm flex items-center">
+              <i class="fa-solid fa-comments text-emerald-700 mr-2"></i>
+              Susirašinėjimas su radėju
+            </h2>
+            <button onclick="loadMessages()" class="text-xs text-slate-400 hover:text-slate-700"><i class="fa-solid fa-rotate-right"></i></button>
+          </div>
+
+          <div id="chatBox" class="space-y-2 max-h-60 overflow-y-auto text-xs bg-slate-50 p-3 rounded-xl border border-slate-100">
+            <p class="text-slate-400 text-center py-4">Kraunamos žinutės...</p>
+          </div>
+        </div>
+
+        <!-- Atsakymo siuntimas -->
+        <div class="flex space-x-2 pt-2 border-t border-slate-100">
+          <input id="replyInput" type="text" placeholder="Atsakyti radėjui..." class="flex-1 bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-emerald-600" />
+          <button onclick="sendReply()" class="bg-emerald-800 hover:bg-emerald-900 text-white font-bold px-4 py-2 rounded-xl text-xs transition">
+            Atsakyti
           </button>
         </div>
-      </form>
-    </div>
-
-    <!-- Tiesioginis anoniminis susirašinėjimas su radėju -->
-    <div class="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm space-y-4">
-      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-        <div>
-          <h2 class="text-base font-bold text-slate-900">Radėjo pranešimai</h2>
-          <p class="text-xs text-slate-500">Atsakykite radėjui tiesiogiai – jūsų asmeniniai kontaktai nebus matomi.</p>
-        </div>
-        <span class="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full font-semibold flex items-center">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 mr-1.5 animate-pulse"></span> Realiu laiku
-        </span>
       </div>
 
-      <!-- Žinučių langas -->
-      <div id="ownerChatBox" class="chat-container bg-slate-50 border border-slate-200/70 rounded-xl p-3.5 space-y-2.5 text-xs">
-        <p class="text-slate-400 text-center py-4">Tikrinamos žinutės...</p>
-      </div>
-
-      <!-- Žinutės rašymas -->
-      <div class="flex space-x-2 pt-1">
-        <input id="ownerReplyInput" type="text" placeholder="Rašykite atsakymą radėjui..." class="flex-1 bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-xs text-slate-800 focus:outline-none focus:border-emerald-600" />
-        <button id="replyBtn" onclick="sendOwnerReply()" class="bg-emerald-800 hover:bg-emerald-900 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center justify-center transition">
-          <i class="fa-solid fa-paper-plane mr-1.5"></i> Siųsti
-        </button>
-      </div>
-    </div>
-
-    <!-- Paskutinės nuskaitymo vietos (GPS) -->
-    <div class="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-sm space-y-3">
-      <h2 class="text-base font-bold text-slate-900">Paskutiniai nuskaitymai (GPS)</h2>
-      <div id="logsBox" class="space-y-2 text-xs">
-        <p class="text-slate-400 py-2">Tikrinama nuskaitymų istorija...</p>
-      </div>
     </div>
 
   </main>
 
-  <footer class="max-w-2xl mx-auto w-full text-center text-[11px] text-slate-400 py-4">
-    QR Hope &copy; 2026. Valdymo pultas.
+  <footer class="max-w-4xl mx-auto w-full text-center text-[11px] text-slate-400 py-4">
+    QR Hope &copy; 2026. Savininko valdymo pultas.
   </footer>
 
   <script>
@@ -110,64 +99,57 @@
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A";
 
     const urlParams = new URLSearchParams(window.location.search);
-    const tagId = urlParams.get('id') || 'SOS-001';
+    const tagId = (urlParams.get('id') || localStorage.getItem('qrhope_current_tag') || 'SOS-001').trim();
 
     let currentTag = null;
-    let refreshTimer = null;
 
-    document.getElementById('tagIdDisplay').innerText = '#' + tagId;
-    document.getElementById('previewBtn').href = `s.html?id=${encodeURIComponent(tagId)}`;
+    async function initDashboard() {
+      document.getElementById('dashTagId').innerText = '#' + tagId;
 
-    async function loadDashboard() {
       try {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(tagId)}&select=*`, {
-          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          }
         });
         const data = await res.json();
-        if (!data || data.length === 0) return;
+
+        if (!data || data.length === 0) {
+          alert("Pakabukas nerastas!");
+          window.location.href = "login.html";
+          return;
+        }
 
         currentTag = data[0];
-        document.getElementById('tagTitle').innerText = currentTag.name || 'Be pavadinimo';
-        document.getElementById('ownerPhone').value = currentTag.emergency_phone || '';
-        document.getElementById('ownerReward').value = currentTag.reward || '';
+        document.getElementById('dashName').innerText = currentTag.name;
+        document.getElementById('dashDetails').innerText = currentTag.details || 'Papildomų pastabų nėra';
 
-        updateLostModeUI(currentTag.is_lost);
+        updateLostButtonUI();
+        loadLogs();
         loadMessages();
-        loadGpsLogs();
+        setInterval(loadMessages, 5000);
 
-        if (!refreshTimer) {
-          refreshTimer = setInterval(() => {
-            loadMessages();
-            loadGpsLogs();
-          }, 4000);
-        }
       } catch (err) {
         console.error(err);
       }
     }
 
-    function updateLostModeUI(isLost) {
-      const btn = document.getElementById('toggleLostBtn');
-      const icon = document.getElementById('lostIcon');
-      const text = document.getElementById('lostStatusText');
-
-      if (isLost) {
-        btn.className = "px-4 py-2.5 rounded-xl font-bold text-xs transition flex items-center justify-center space-x-2 bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100";
-        icon.className = "fa-solid fa-triangle-exclamation text-rose-600";
-        text.innerText = "PAIEŠKA AKTYVI (Pamestas)";
+    function updateLostButtonUI() {
+      const btn = document.getElementById('lostToggleBtn');
+      if (currentTag.is_lost) {
+        btn.className = "px-4 py-2 rounded-lg font-bold text-xs bg-rose-600 text-white hover:bg-rose-700 shadow-sm";
+        btn.innerText = "🚨 AKTYVUOTA PAIEŠKA";
       } else {
-        btn.className = "px-4 py-2.5 rounded-xl font-bold text-xs transition flex items-center justify-center space-x-2 bg-emerald-50 border-emerald-200 text-emerald-800 hover:bg-emerald-100";
-        icon.className = "fa-solid fa-shield-check text-emerald-700";
-        text.innerText = "SAUGUS (Įprastas režimas)";
+        btn.className = "px-4 py-2 rounded-lg font-bold text-xs bg-emerald-700 text-white hover:bg-emerald-800 shadow-sm";
+        btn.innerText = "✅ Saugu (Normalus)";
       }
     }
 
     async function toggleLostMode() {
-      if (!currentTag) return;
       const newStatus = !currentTag.is_lost;
-
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(tagId)}`, {
+        await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(currentTag.id)}`, {
           method: 'PATCH',
           headers: {
             'apikey': SUPABASE_KEY,
@@ -176,91 +158,87 @@
           },
           body: JSON.stringify({ is_lost: newStatus })
         });
-
-        if (res.ok) {
-          currentTag.is_lost = newStatus;
-          updateLostModeUI(newStatus);
-        }
-      } catch (err) {
-        console.error(err);
+        currentTag.is_lost = newStatus;
+        updateLostButtonUI();
+      } catch (e) {
+        alert("Nepavyko pakeisti būsenos.");
       }
     }
 
-    async function saveSettings(e) {
-      e.preventDefault();
-      const saveBtn = document.getElementById('saveBtn');
-      saveBtn.disabled = true;
-      saveBtn.innerText = "Saugoma...";
-
-      const payload = {
-        emergency_phone: document.getElementById('ownerPhone').value.trim(),
-        reward: document.getElementById('ownerReward').value.trim()
-      };
-
+    async function loadLogs() {
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(tagId)}`, {
-          method: 'PATCH',
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/scan_logs?tag_id=eq.${encodeURIComponent(tagId)}&order=created_at.desc&limit=10`, {
           headers: {
             'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          }
         });
+        const logs = await res.json();
+        const box = document.getElementById('logsList');
 
-        if (res.ok) {
-          saveBtn.innerText = "Išsaugota!";
-          setTimeout(() => { saveBtn.innerText = "Išsaugoti nustatymus"; saveBtn.disabled = false; }, 1500);
+        if (!logs || logs.length === 0) {
+          box.innerHTML = '<p class="text-slate-400 text-center py-4">Nuskaitymų dar nebuvo.</p>';
+          return;
         }
-      } catch (err) {
-        console.error(err);
-        saveBtn.disabled = false;
-        saveBtn.innerText = "Klaida";
+
+        box.innerHTML = logs.map(l => {
+          const date = new Date(l.created_at).toLocaleString('lt-LT');
+          const hasGps = l.latitude && l.longitude;
+          return `
+            <div class="bg-slate-50 border border-slate-200/70 p-3 rounded-xl flex justify-between items-center">
+              <div>
+                <p class="font-semibold text-slate-800">${hasGps ? '📍 GPS koordinatės gautos' : '👁️ Nuskaityta peržiūra'}</p>
+                <p class="text-[10px] text-slate-400">${date}</p>
+              </div>
+              ${hasGps ? `<a href="https://maps.google.com/?q=${l.latitude},${l.longitude}" target="_blank" class="bg-emerald-800 text-white font-bold px-3 py-1.5 rounded-lg text-[11px] hover:bg-emerald-900">Žemėlapis</a>` : ''}
+            </div>
+          `;
+        }).join('');
+      } catch (e) {
+        console.error(e);
       }
     }
 
     async function loadMessages() {
       try {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/messages?tag_id=eq.${encodeURIComponent(tagId)}&order=created_at.asc`, {
-          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          }
         });
-        if (!res.ok) return;
         const msgs = await res.json();
-        const chatBox = document.getElementById('ownerChatBox');
+        const box = document.getElementById('chatBox');
 
-        if (msgs.length === 0) {
-          chatBox.innerHTML = '<p class="text-slate-400 text-center py-4 text-xs">Kol kas žinučių nėra.</p>';
+        if (!msgs || msgs.length === 0) {
+          box.innerHTML = '<p class="text-slate-400 text-center py-4">Žinučių nėra.</p>';
           return;
         }
 
-        chatBox.innerHTML = msgs.map(m => {
+        box.innerHTML = msgs.map(m => {
           const isOwner = m.sender_role === 'owner';
           return `
             <div class="flex flex-col ${isOwner ? 'items-end' : 'items-start'}">
-              <div class="max-w-[85%] rounded-xl px-3 py-2 ${isOwner ? 'bg-emerald-800 text-white' : 'bg-white border border-slate-200 text-slate-800 shadow-2xs'}">
+              <div class="max-w-[85%] rounded-xl px-3 py-2 ${isOwner ? 'bg-emerald-800 text-white' : 'bg-white border border-slate-200 text-slate-800'}">
                 <p>${m.message_text}</p>
               </div>
-              <span class="text-[9px] text-slate-400 mt-0.5">${isOwner ? 'Jūs (Savininkas)' : 'Radėjas'} • ${new Date(m.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+              <span class="text-[9px] text-slate-400 mt-0.5">${isOwner ? 'Jūs (Savininkas)' : 'Radėjas'}</span>
             </div>
           `;
         }).join('');
-
-        chatBox.scrollTop = chatBox.scrollHeight;
+        box.scrollTop = box.scrollHeight;
       } catch (e) {
         console.error(e);
       }
     }
 
-    async function sendOwnerReply() {
-      const input = document.getElementById('ownerReplyInput');
+    async function sendReply() {
+      const input = document.getElementById('replyInput');
       const text = input.value.trim();
       if (!text) return;
 
-      const btn = document.getElementById('replyBtn');
-      btn.disabled = true;
-
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/messages`, {
+        await fetch(`${SUPABASE_URL}/rest/v1/messages`, {
           method: 'POST',
           headers: {
             'apikey': SUPABASE_KEY,
@@ -273,49 +251,19 @@
             message_text: text
           })
         });
-
-        if (res.ok) {
-          input.value = '';
-          loadMessages();
-        }
-      } catch (e) {
-        console.error(e);
-      } finally {
-        btn.disabled = false;
-      }
-    }
-
-    async function loadGpsLogs() {
-      try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/scan_logs?tag_id=eq.${encodeURIComponent(tagId)}&order=created_at.desc&limit=3`, {
-          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-        });
-        if (!res.ok) return;
-        const logs = await res.json();
-        const logsBox = document.getElementById('logsBox');
-
-        if (logs.length === 0) {
-          logsBox.innerHTML = '<p class="text-slate-400 py-2">Nėra užfiksuotų vietos duomenų.</p>';
-          return;
-        }
-
-        logsBox.innerHTML = logs.map(l => `
-          <div class="flex justify-between items-center bg-slate-50 border border-slate-200/80 p-2.5 rounded-xl">
-            <div>
-              <p class="font-semibold text-slate-800">Užfiksuota vieta</p>
-              <p class="text-[10px] text-slate-400">${new Date(l.created_at).toLocaleString()}</p>
-            </div>
-            <a href="https://maps.google.com/?q=${l.latitude},${l.longitude}" target="_blank" class="bg-white border border-slate-200 hover:border-slate-300 text-emerald-800 font-semibold px-2.5 py-1.5 rounded-lg text-[11px] inline-flex items-center">
-              <i class="fa-solid fa-location-dot mr-1 text-emerald-700"></i> Žemėlapis
-            </a>
-          </div>
-        `).join('');
+        input.value = '';
+        loadMessages();
       } catch (e) {
         console.error(e);
       }
     }
 
-    loadDashboard();
+    function logout() {
+      localStorage.removeItem('qrhope_current_tag');
+      window.location.href = 'index.html';
+    }
+
+    initDashboard();
   </script>
 </body>
 </html>
