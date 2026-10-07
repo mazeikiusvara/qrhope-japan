@@ -13,7 +13,7 @@
 </head>
 <body class="bg-[#fcfdfc] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-4 sm:p-6">
 
-  <!-- Navigacija -->
+  <!-- Navigacija su kalbos perjungikliu -->
   <header class="max-w-md mx-auto w-full py-3 flex justify-between items-center border-b border-slate-100">
     <a href="index.html" class="flex items-center space-x-2">
       <span class="w-2.5 h-2.5 rounded-full bg-emerald-700"></span>
@@ -21,23 +21,29 @@
     </a>
     <div class="flex items-center space-x-2">
       <span id="tagIdDisplay" class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md font-mono">#SOS-001</span>
-      <a href="index.html" class="text-xs text-slate-400 hover:text-slate-700 ml-1">Pradžia</a>
+      
+      <!-- Kalbos perjungiklis -->
+      <button onclick="toggleLanguage()" id="langToggleBtn" class="text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-1 rounded-md font-bold hover:bg-emerald-100 transition">
+        EN
+      </button>
+
+      <a href="index.html" id="t_homeLink" class="text-xs text-slate-400 hover:text-slate-700 ml-1">Pradžia</a>
     </div>
   </header>
 
   <!-- Krovimosi indikatorius -->
   <div id="loader" class="my-auto text-center py-16">
     <i class="fa-solid fa-circle-notch fa-spin text-3xl text-emerald-700 mb-3"></i>
-    <p class="text-xs text-slate-500">Ieškoma informacijos...</p>
+    <p id="t_loading" class="text-xs text-slate-500">Ieškoma informacijos...</p>
   </div>
 
   <!-- Klaidos vaizdas -->
   <div id="errorView" class="hidden max-w-md mx-auto w-full my-6 bg-rose-50 border border-rose-200 text-rose-800 p-5 rounded-2xl text-center space-y-2">
     <i class="fa-solid fa-triangle-exclamation text-2xl text-rose-600"></i>
-    <p class="text-sm font-bold">Pakabukas nerastas arba dar neaktyvuotas.</p>
+    <p id="t_errorNotFound" class="text-sm font-bold">Pakabukas nerastas arba dar neaktyvuotas.</p>
     <p id="errDetail" class="text-[11px] text-rose-500 font-mono"></p>
     <a id="registerLink" href="register.html" class="inline-block mt-2 bg-slate-900 text-white text-xs font-semibold px-4 py-2 rounded-xl">
-      Aktyvuoti šį pakabuką
+      <span id="t_activateBtn">Aktyvuoti šį pakabuką</span>
     </a>
   </div>
 
@@ -48,9 +54,9 @@
     <div id="lostBanner" class="hidden bg-rose-50 border border-rose-200 p-3.5 rounded-xl space-y-1">
       <div class="flex items-center space-x-2 text-rose-700 font-bold text-xs uppercase tracking-wider">
         <i class="fa-solid fa-triangle-exclamation text-sm animate-pulse"></i>
-        <span>Paskelbta paieška!</span>
+        <span id="t_lostTitle">Paskelbta paieška!</span>
       </div>
-      <p class="text-xs text-rose-900 leading-tight">Šeimininkas skubiai ieško šio objekto. Padėkite jam sugrįžti namo.</p>
+      <p id="t_lostDesc" class="text-xs text-rose-900 leading-tight">Šeimininkas skubiai ieško šio objekto. Padėkite jam sugrįžti namo.</p>
     </div>
 
     <!-- Profilio informacija -->
@@ -61,7 +67,7 @@
         <p id="tagDetails" class="text-xs text-slate-500 mt-0.5"></p>
       </div>
       <div id="rewardBox" class="hidden bg-amber-50 border border-amber-200 text-amber-900 text-xs px-2.5 py-1.5 rounded-xl text-right">
-        <span class="block text-[9px] uppercase font-bold text-amber-700">Atlygis</span>
+        <span id="t_rewardLabel" class="block text-[9px] uppercase font-bold text-amber-700">Atlygis</span>
         <span id="rewardAmount" class="font-bold"></span>
       </div>
     </div>
@@ -70,30 +76,30 @@
     <div class="space-y-2.5">
       <button onclick="triggerCall()" class="w-full bg-emerald-800 hover:bg-emerald-900 active:scale-[0.99] transition text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center space-x-2 shadow-sm text-sm">
         <i class="fa-solid fa-phone"></i>
-        <span>Skambinti savininkui (Anonimiškai)</span>
+        <span id="t_callBtn">Skambinti savininkui (Anonimiškai)</span>
       </button>
 
       <button id="gpsBtn" onclick="sendLocation()" class="w-full bg-slate-50 hover:bg-slate-100 active:scale-[0.99] transition text-slate-700 font-semibold py-3 px-4 rounded-xl flex items-center justify-center space-x-2 border border-slate-200 text-xs">
         <i class="fa-solid fa-location-crosshairs text-emerald-700"></i>
-        <span>Nusiųsti radimo vietą (GPS)</span>
+        <span id="t_gpsBtn">Nusiųsti radimo vietą (GPS)</span>
       </button>
 
       <div id="gpsSuccessBox" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs p-2.5 rounded-xl text-center">
-        <i class="fa-solid fa-check mr-1 text-emerald-700"></i> Koordinatės sėkmingai perduotos šeimininkui.
+        <i class="fa-solid fa-check mr-1 text-emerald-700"></i> <span id="t_gpsSuccess">Koordinatės sėkmingai perduotos šeimininkui.</span>
       </div>
     </div>
 
     <!-- Susirašinėjimas -->
     <div class="border-t border-slate-100 pt-4 space-y-3">
       <div class="flex items-center justify-between">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Saugi žinutė savininkui</h2>
+        <h2 id="t_chatTitle" class="text-xs font-bold uppercase tracking-wider text-slate-700">Saugi žinutė savininkui</h2>
         <span class="text-[10px] text-emerald-700 flex items-center">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 mr-1 animate-pulse"></span> Tiesioginis ryšys
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 mr-1 animate-pulse"></span> <span id="t_chatStatus">Tiesioginis ryšys</span>
         </span>
       </div>
 
       <div id="chatBox" class="chat-scroll bg-slate-50 border border-slate-200/70 rounded-xl p-3 space-y-2 text-xs">
-        <p class="text-slate-400 text-center text-[11px] py-2">Kraunamos žinutės...</p>
+        <p id="t_noMessages" class="text-slate-400 text-center text-[11px] py-2">Kraunamos žinutės...</p>
       </div>
 
       <div class="flex space-x-2">
@@ -107,7 +113,7 @@
   </main>
 
   <footer class="max-w-md mx-auto w-full text-center text-[11px] text-slate-400 py-4">
-    QR Hope &copy; 2026. Asmeniniai kontaktai lieka apsaugoti.
+    <span id="t_footer">QR Hope &copy; 2026. Asmeniniai kontaktai lieka apsaugoti.</span>
   </footer>
 
   <script>
@@ -117,19 +123,113 @@
 
     let currentTag = null;
     let chatInterval = null;
+    let currentLang = localStorage.getItem('qrhope_lang') || 'lt';
+
+    const TRANSLATIONS = {
+      lt: {
+        toggleBtn: 'EN',
+        homeLink: 'Pradžia',
+        loading: 'Ieškoma informacijos...',
+        errorNotFound: 'Pakabukas nerastas arba dar neaktyvuotas.',
+        activateBtn: 'Aktyvuoti šį pakabuką',
+        lostTitle: 'Paskelbta paieška!',
+        lostDesc: 'Šeimininkas skubiai ieško šio objekto. Padėkite jam sugrįžti namo.',
+        rewardLabel: 'Atlygis',
+        badgePet: 'Pamestas augintinis',
+        badgeSos: 'SOS / Medicininė apsauga',
+        badgeItem: 'Asmeninis daiktas',
+        badgeDefault: 'Apsaugotas objektas',
+        callBtn: 'Skambinti savininkui (Anonimiškai)',
+        gpsBtn: 'Nusiųsti radimo vietą (GPS)',
+        gpsGetting: 'Nustatoma vieta...',
+        gpsSuccess: 'Koordinatės sėkmingai perduotos šeimininkui.',
+        gpsError: 'Nepavyko nustatyti vietos. Įsitikinkite, kad naršyklei suteiktas leidimas.',
+        gpsConfirm: 'Ar sutinkate nusiųsti radimo vietą savininkui?',
+        chatTitle: 'Saugi žinutė savininkui',
+        chatStatus: 'Tiesioginis ryšys',
+        chatPlaceholder: 'Parašykite kur radote...',
+        chatEmpty: 'Žinučių nėra. Parašykite radimo detales savininkui.',
+        roleFinder: 'Jūs (Radėjas)',
+        roleOwner: 'Savininkas',
+        footer: 'QR Hope © 2026. Asmeniniai kontaktai lieka apsaugoti.'
+      },
+      en: {
+        toggleBtn: 'LT',
+        homeLink: 'Home',
+        loading: 'Searching for details...',
+        errorNotFound: 'Tag not found or not activated yet.',
+        activateBtn: 'Activate this tag',
+        lostTitle: 'Missing / Lost Alert!',
+        lostDesc: 'The owner is actively looking for this item. Please help return it home.',
+        rewardLabel: 'Reward',
+        badgePet: 'Lost Pet',
+        badgeSos: 'SOS / Medical ID',
+        badgeItem: 'Personal Item',
+        badgeDefault: 'Protected Item',
+        callBtn: 'Call Owner (Anonymous)',
+        gpsBtn: 'Send Current Location (GPS)',
+        gpsGetting: 'Detecting location...',
+        gpsSuccess: 'Location coordinates successfully sent to owner.',
+        gpsError: 'Unable to get location. Please allow browser location access.',
+        gpsConfirm: 'Do you agree to share your current location with the owner?',
+        chatTitle: 'Secure Message to Owner',
+        chatStatus: 'Live connection',
+        chatPlaceholder: 'Type where you found it...',
+        chatEmpty: 'No messages yet. Send a note to the owner.',
+        roleFinder: 'You (Finder)',
+        roleOwner: 'Owner',
+        footer: 'QR Hope © 2026. Personal contacts remain protected.'
+      }
+    };
+
+    function applyTranslations() {
+      const t = TRANSLATIONS[currentLang];
+      document.getElementById('langToggleBtn').innerText = t.toggleBtn;
+      document.getElementById('t_homeLink').innerText = t.homeLink;
+      document.getElementById('t_loading').innerText = t.loading;
+      document.getElementById('t_errorNotFound').innerText = t.errorNotFound;
+      document.getElementById('t_activateBtn').innerText = t.activateBtn;
+      document.getElementById('t_lostTitle').innerText = t.lostTitle;
+      document.getElementById('t_lostDesc').innerText = t.lostDesc;
+      document.getElementById('t_rewardLabel').innerText = t.rewardLabel;
+      document.getElementById('t_callBtn').innerText = t.callBtn;
+      document.getElementById('t_gpsBtn').innerText = t.gpsBtn;
+      document.getElementById('t_gpsSuccess').innerText = t.gpsSuccess;
+      document.getElementById('t_chatTitle').innerText = t.chatTitle;
+      document.getElementById('t_chatStatus').innerText = t.chatStatus;
+      document.getElementById('messageInput').placeholder = t.chatPlaceholder;
+      document.getElementById('t_footer').innerText = t.footer;
+
+      if (currentTag) updateBadgeText();
+    }
+
+    function toggleLanguage() {
+      currentLang = (currentLang === 'lt') ? 'en' : 'lt';
+      localStorage.setItem('qrhope_lang', currentLang);
+      applyTranslations();
+      loadMessages();
+    }
+
+    function updateBadgeText() {
+      if (!currentTag) return;
+      const t = TRANSLATIONS[currentLang];
+      const badge = document.getElementById('tagBadge');
+      if (currentTag.type === 'pet') badge.innerText = t.badgePet;
+      else if (currentTag.type === 'sos') badge.innerText = t.badgeSos;
+      else if (currentTag.type === 'item') badge.innerText = t.badgeItem;
+      else badge.innerText = t.badgeDefault;
+    }
 
     async function loadData() {
+      applyTranslations();
+
       const urlParams = new URLSearchParams(window.location.search);
       let rawId = urlParams.get('id');
-      
-      // Jei parametro nėra arba jis tuščias, naudojame SOS-001 kaip numatytąjį testą
       if (!rawId || rawId.trim() === '') {
         rawId = localStorage.getItem('qrhope_current_tag') || 'SOS-001';
       }
 
-      // Išvalome bet kokius skliaustus ar neteisingus simbolius
       const tagId = rawId.split(']')[0].split('(')[0].trim().toUpperCase();
-
       document.getElementById('tagIdDisplay').innerText = '#' + tagId;
 
       const regLink = document.getElementById('registerLink');
@@ -145,12 +245,9 @@
 
         document.getElementById('loader').classList.add('hidden');
 
-        if (!res.ok) {
-          throw new Error("Duomenų bazės ryšio klaida (" + res.status + ")");
-        }
+        if (!res.ok) throw new Error("Duomenų bazės ryšio klaida (" + res.status + ")");
 
         const data = await res.json();
-
         if (!data || data.length === 0) {
           document.getElementById('errDetail').innerText = `ID "${tagId}" nerastas duomenų bazėje.`;
           document.getElementById('errorView').classList.remove('hidden');
@@ -160,16 +257,9 @@
         currentTag = data[0];
         document.getElementById('mainCard').classList.remove('hidden');
 
-        document.getElementById('tagName').innerText = currentTag.name || 'Pamestas daiktas';
-        document.getElementById('tagDetails').innerText = currentTag.details || 'Jokių papildomų pastabų nepateikta.';
-
-        if (currentTag.type === 'pet') {
-          document.getElementById('tagBadge').innerText = 'Pamestas augintinis';
-        } else if (currentTag.type === 'sos') {
-          document.getElementById('tagBadge').innerText = 'SOS / Medicininė apsauga';
-        } else {
-          document.getElementById('tagBadge').innerText = 'Asmeninis daiktas';
-        }
+        document.getElementById('tagName').innerText = currentTag.name || 'Objektas';
+        document.getElementById('tagDetails').innerText = currentTag.details || '';
+        updateBadgeText();
 
         if (currentTag.is_lost) {
           document.getElementById('lostBanner').classList.remove('hidden');
@@ -180,7 +270,6 @@
           document.getElementById('rewardBox').classList.remove('hidden');
         }
 
-        // Užfiksuojame peržiūrą scan_logs fone
         fetch(`${SUPABASE_URL}/rest/v1/scan_logs`, {
           method: 'POST',
           headers: {
@@ -195,9 +284,7 @@
         }).catch(() => {});
 
         loadMessages();
-        if (!chatInterval) {
-          chatInterval = setInterval(loadMessages, 4000);
-        }
+        if (!chatInterval) chatInterval = setInterval(loadMessages, 4000);
 
       } catch (err) {
         document.getElementById('loader').classList.add('hidden');
@@ -212,16 +299,17 @@
     }
 
     function sendLocation() {
-      if (!confirm("Ar sutinkate nusiųsti radimo vietą savininkui?")) return;
+      const t = TRANSLATIONS[currentLang];
+      if (!confirm(t.gpsConfirm)) return;
 
       if (!navigator.geolocation) {
-        alert("Geolokacija nepalaikoma jūsų naršyklėje.");
+        alert("Geolokacija nepalaikoma naršyklėje.");
         return;
       }
 
       const btn = document.getElementById('gpsBtn');
       const oldText = btn.innerHTML;
-      btn.innerText = "Nustatoma vieta...";
+      btn.innerText = t.gpsGetting;
 
       navigator.geolocation.getCurrentPosition(async (pos) => {
         try {
@@ -248,12 +336,14 @@
         }
       }, () => {
         btn.innerHTML = oldText;
-        alert("Nepavyko nustatyti vietos. Įsitikinkite, kad naršyklei suteiktas leidimas.");
+        alert(t.gpsError);
       }, { enableHighAccuracy: true, timeout: 10000 });
     }
 
     async function loadMessages() {
       if (!currentTag) return;
+      const t = TRANSLATIONS[currentLang];
+
       try {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/messages?tag_id=eq.${encodeURIComponent(currentTag.id)}&order=created_at.asc`, {
           headers: {
@@ -265,7 +355,7 @@
         const chatBox = document.getElementById('chatBox');
 
         if (!msgs || msgs.length === 0) {
-          chatBox.innerHTML = '<p class="text-slate-400 text-center text-[11px] py-2">Žinučių nėra. Parašykite radimo detales savininkui.</p>';
+          chatBox.innerHTML = `<p class="text-slate-400 text-center text-[11px] py-2">${t.chatEmpty}</p>`;
           return;
         }
 
@@ -276,7 +366,7 @@
               <div class="max-w-[85%] rounded-xl px-3 py-2 ${isFinder ? 'bg-emerald-800 text-white' : 'bg-white border border-slate-200 text-slate-800 shadow-2xs'}">
                 <p>${m.message_text}</p>
               </div>
-              <span class="text-[9px] text-slate-400 mt-0.5">${isFinder ? 'Jūs (Radėjas)' : 'Savininkas'}</span>
+              <span class="text-[9px] text-slate-400 mt-0.5">${isFinder ? t.roleFinder : t.roleOwner}</span>
             </div>
           `;
         }).join('');
