@@ -43,18 +43,27 @@
         <div id="rewardBadge" class="hidden text-xs font-black text-emerald-800 bg-emerald-100/70 border border-emerald-300 p-2 rounded-xl text-center"></div>
       </div>
 
-      <div class="space-y-3 pt-2">
-        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
-          <h2 class="text-xs font-black text-slate-900">
-            <i class="fa-solid fa-envelope-open-text mr-1 text-emerald-700"></i> Pranešti savininkui anonimiškai
+      <!-- TIESIOGINIS POKALBIS RADĖJUI -->
+      <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-3xl p-4 shadow-xl space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+          <h2 class="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+            <i class="fa-solid fa-comments"></i> Pokalbis su savininku
           </h2>
-          <textarea id="finderMsg" rows="2" placeholder="Parašykite žinutę savininkui (kur radote)..." class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 focus:outline-none focus:border-emerald-600"></textarea>
-          <button onclick="sendAnonymousAlert()" id="alertBtn" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3 rounded-xl transition text-xs shadow-sm cursor-pointer">
-            <i class="fa-solid fa-paper-plane mr-1"></i> Nusiųsti žinutę ir GPS vietą savininkui
+          <span id="gpsStatusText" class="text-[10px] text-emerald-400 font-bold">GPS aktyvus 📍</span>
+        </div>
+
+        <div id="finderChatMessages" class="bg-slate-950 border border-slate-800 rounded-2xl p-3 h-40 overflow-y-auto space-y-2 text-xs">
+          <div class="text-slate-500 text-center italic">Parašykite žinutę savininkui...</div>
+        </div>
+
+        <div class="flex gap-2">
+          <input id="finderReplyInput" type="text" placeholder="Jūsų žinutė savininkui..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-600" />
+          <button onclick="sendFinderMessage()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3.5 py-2 rounded-xl text-xs transition shadow-sm cursor-pointer">
+            Siųsti
           </button>
         </div>
-        <div id="gpsStatus" class="hidden text-xs p-2.5 rounded-xl text-center font-bold"></div>
       </div>
+
     </div>
   </main>
 
@@ -65,121 +74,104 @@
   <script>
     var SUPABASE_URL = "https://nhnyvztyvovgxbbwmlxx.supabase.co";
     var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A";
-    var currentTagId = "";
+    var currentTag = null;
+    var userGpsUrl = "";
 
     document.addEventListener("DOMContentLoaded", async function() {
       var params = new URLSearchParams(window.location.search);
       var id = params.get('id');
       var isPreview = params.get('preview');
 
-      if (!id) {
-        document.getElementById('loadingBox').innerText = "Klaida: Nenurodytas žymos ID (pridėkite ?id=FREE-XXXX)";
-        return;
-      }
+      if (!id) { document.getElementById('loadingBox').innerText = "Žymos ID nenurodytas"; return; }
+      id = id.toUpperCase();
 
-      currentTagId = id.toUpperCase();
-
-      if (isPreview === '1' || localStorage.getItem('qrhope_logged_tag_' + currentTagId)) {
+      if (isPreview === '1' || localStorage.getItem('qrhope_logged_tag_' + id)) {
         var backBtn = document.getElementById('backToDashBtn');
-        backBtn.href = "dashboard.html?id=" + currentTagId;
+        backBtn.href = "dashboard.html?id=" + id;
         backBtn.classList.remove('hidden');
       }
 
-      try {
-        var response = await fetch(SUPABASE_URL + "/rest/v1/tags?id=eq." + encodeURIComponent(currentTagId) + "&select=*", {
-          headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': 'Bearer ' + SUPABASE_KEY
-          }
+      // Automatiškai gauname radėjo GPS vietą fonā
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          userGpsUrl = "https://maps.google.com/?q=" + pos.coords.latitude + "," + pos.coords.longitude;
         });
+      }
 
-        var data = await response.json();
+      await loadTagForFinder(id);
+      setInterval(function() { loadTagForFinder(id); }, 5000); // Atnaujina kas 5 sek.
+    });
 
-        if (!data || data.length === 0) {
-          document.getElementById('loadingBox').innerText = "Žyma #" + currentTagId + " nerasta duomenų bazėje.";
-          return;
-        }
-
-        var tag = data[0];
+    async function loadTagForFinder(id) {
+      try {
+        var res = await fetch(SUPABASE_URL + "/rest/v1/tags?id=eq." + encodeURIComponent(id) + "&select=*", {
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+        });
+        var data = await res.json();
+        if (!data || !data.length) { document.getElementById('loadingBox').innerText = "Žyma nerasta"; return; }
+        
+        currentTag = data[0];
         document.getElementById('loadingBox').classList.add('hidden');
         document.getElementById('contentBox').classList.remove('hidden');
 
-        document.getElementById('tagName').innerText = tag.name || 'Mano gaminys';
-        document.getElementById('tagIdBadge').innerText = '#' + tag.id;
+        document.getElementById('tagName').innerText = currentTag.name || 'Gaminys';
+        document.getElementById('tagIdBadge').innerText = '#' + currentTag.id;
 
-        var typeNames = { 'pet': 'Augintinis', 'item': 'Daiktas', 'sos': 'SOS / Medicininė' };
-        document.getElementById('typeBadge').innerText = typeNames[tag.type] || 'Daiktas';
-
-        if (tag.lost_mode) {
+        if (currentTag.lost_mode) {
           document.getElementById('lostBanner').classList.remove('hidden');
-          document.getElementById('lostMessage').innerText = tag.lost_message || 'Savininkas ieško šio objekto.';
-          if (tag.reward) {
+          document.getElementById('lostMessage').innerText = currentTag.lost_message || 'Savininkas ieško šio objekto.';
+          if (currentTag.reward) {
             document.getElementById('rewardBadge').classList.remove('hidden');
-            document.getElementById('rewardBadge').innerText = '🎁 Siūlomas atlygis: ' + tag.reward;
+            document.getElementById('rewardBadge').innerText = '🎁 Siūlomas atlygis: ' + currentTag.reward;
           }
         }
 
-      } catch (err) {
-        document.getElementById('loadingBox').innerText = "Klaida kraunant duomenis: " + err.message;
-      }
-    });
+        // Renderiname pokalbį
+        var chatBox = document.getElementById('finderChatMessages');
+        var history = [];
+        try { history = JSON.parse(currentTag.chat_history || '[]'); } catch(e){}
 
-    function sendAnonymousAlert() {
-      var statusDiv = document.getElementById('gpsStatus');
-      var btn = document.getElementById('alertBtn');
-      var msg = document.getElementById('finderMsg').value.trim();
-
-      if (!navigator.geolocation) {
-        alert("Jūsų naršyklė nepalaiko vietos nustatymo (GPS)");
-        return;
-      }
-
-      btn.disabled = true;
-      btn.innerText = "Nustatoma vieta...";
-      statusDiv.classList.add('hidden');
-
-      navigator.geolocation.getCurrentPosition(async function(position) {
-        var lat = position.coords.latitude;
-        var lng = position.coords.longitude;
-        var mapUrl = "https://maps.google.com/?q=" + lat + "," + lng;
-
-        btn.innerText = "Siunčiama savininkui...";
-
-        try {
-          var res = await fetch(SUPABASE_URL + "/functions/v1/send-reset-code", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              tag_id: currentTagId,
-              finder_message: msg || 'Radau jūsų daiktą!',
-              gps_url: mapUrl
-            })
-          });
-
-          if (!res.ok) {
-            throw new Error("Nepavyko išsiustis per serverį");
-          }
-
-          statusDiv.className = "bg-emerald-50 text-emerald-800 text-xs p-2.5 rounded-xl block font-bold";
-          statusDiv.innerText = "✅ Pranešimas ir GPS vieta sėkmingai nusiųsti savininkui į el. paštą!";
-          statusDiv.classList.remove('hidden');
-          btn.innerText = "Išsiųsta ✓";
-
-        } catch (error) {
-          statusDiv.className = "bg-rose-50 text-rose-800 text-xs p-2.5 rounded-xl block font-bold";
-          statusDiv.innerText = "Klaida: " + error.message;
-          statusDiv.classList.remove('hidden');
-          btn.disabled = false;
-          btn.innerText = "Nusiųsti žinutę ir GPS vietą savininkui";
+        if (history.length === 0) {
+          chatBox.innerHTML = '<div class="text-slate-500 text-center italic py-4">Parašykite žinutę radę šį daiktą...</div>';
+        } else {
+          chatBox.innerHTML = history.map(function(m) {
+            var isFinder = m.sender === 'finder';
+            var bg = isFinder ? 'bg-emerald-900/80 text-emerald-100 ml-auto' : 'bg-slate-800 text-slate-200 mr-auto';
+            var senderLabel = isFinder ? 'Jūs (Radėjas)' : 'Savininkas';
+            return '<div class="max-w-[85%] p-2.5 rounded-xl ' + bg + '"><div class="text-[9px] font-bold opacity-70 mb-0.5">' + senderLabel + '</div><div>' + m.text + '</div></div>';
+          }).join('');
+          chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-      }, function(error) {
-        statusDiv.className = "bg-rose-50 text-rose-800 text-xs p-2.5 rounded-xl block font-bold";
-        statusDiv.innerText = "Nepavyko gauti GPS vietos. Leiskite naršyklei prieigą prie vietos nustatymo.";
-        statusDiv.classList.remove('hidden');
-        btn.disabled = false;
-        btn.innerText = "Nusiųsti žinutę ir GPS vietą savininkui";
-      });
+      } catch(e) {}
+    }
+
+    async function sendFinderMessage() {
+      var input = document.getElementById('finderReplyInput');
+      var text = input.value.trim();
+      if (!text) return;
+
+      var history = [];
+      try { history = JSON.parse(currentTag.chat_history || '[]'); } catch(e){}
+      
+      var fullMsg = text;
+      if (userGpsUrl && history.length === 0) {
+        fullMsg += " | GPS vieta: " + userGpsUrl;
+      }
+
+      history.push({ sender: 'finder', text: fullMsg, time: new Date().toISOString() });
+
+      try {
+        await fetch(SUPABASE_URL + "/rest/v1/tags?id=eq." + encodeURIComponent(currentTag.id), {
+          method: 'PATCH',
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_history: JSON.stringify(history), lost_message: "🚨 RADĖJAS: " + fullMsg })
+        });
+        input.value = '';
+        await loadTagForFinder(currentTag.id);
+      } catch(e) {
+        alert("Klaida siunčiant: " + e.message);
+      }
     }
   </script>
 </body>
