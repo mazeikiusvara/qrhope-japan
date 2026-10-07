@@ -28,21 +28,21 @@
 
   <main class="max-w-4xl mx-auto w-full my-4">
 
-    <!-- 1. PRISIJUNGIMAS -->
+    <!-- PRISIJUNGIMAS -->
     <div id="authBox" class="max-w-sm mx-auto bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3">
       <div>
         <h1 class="text-lg font-black text-slate-900" data-i18n="login_title">Prisijungimas prie žymos</h1>
-        <p class="text-[11px] text-slate-500 mt-0.5" data-i18n="login_desc">Įveskite žymos ID ir 4 skaitmenų PIN kodą.</p>
+        <p class="text-[11px] text-slate-500 mt-0.5" data-i18n="login_desc">Įveskite žymos ID (su brūkšneliu arba be jo) ir PIN kodą.</p>
       </div>
 
       <form onsubmit="handleAuth(event)" class="space-y-3 text-xs">
         <div>
           <label class="block font-bold text-slate-700 mb-1" data-i18n="lbl_tag_id">Žymos ID kodas</label>
-          <input id="loginTagId" type="text" required placeholder="Pvz., BAGS-1001" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 font-mono uppercase font-bold text-slate-900" />
+          <input id="loginTagId" type="text" required placeholder="Pvz., BAGS-1001 arba BAGS1001" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 font-mono uppercase font-bold text-slate-900" />
         </div>
         <div>
           <label class="block font-bold text-slate-700 mb-1" data-i18n="lbl_pin">4 skaitmenų PIN kodas</label>
-          <input id="loginPin" type="password" maxlength="4" pattern="[0-9]{4}" required placeholder="••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 font-mono text-center tracking-widest text-slate-900 font-bold text-sm" />
+          <input id="loginPin" type="tel" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" required placeholder="1234" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 font-mono text-center tracking-widest text-slate-900 font-bold text-sm" />
         </div>
         <button type="submit" id="submitLoginBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-sm">
           <span data-i18n="btn_enter">Atidaryti pultą</span>
@@ -51,7 +51,7 @@
       <div id="loginErr" class="hidden bg-rose-50 border border-rose-200 text-rose-800 text-xs p-2.5 rounded-xl text-center"></div>
     </div>
 
-    <!-- 2. PULTAS -->
+    <!-- PULTAS -->
     <div id="dashContent" class="hidden space-y-4">
 
       <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex justify-between items-center">
@@ -209,14 +209,26 @@
 
     function toggleLang() { setLanguage(activeLang === "lt" ? "en" : "lt"); }
 
+    function getCleanVariants(raw) {
+      if (!raw) return [];
+      var clean = raw.trim().toUpperCase().replace(/[\s]/g, '');
+      var noDash = clean.replace(/-/g, '');
+      var withDash = clean.includes('-') ? clean : clean.replace(/([A-Z]+)(\d+)/, '$1-$2');
+      return Array.from(new Set([clean, noDash, withDash]));
+    }
+
     async function handleAuth(e) {
       e.preventDefault();
-      var id = document.getElementById('loginTagId').value.trim().toUpperCase();
+      var rawId = document.getElementById('loginTagId').value;
       var pin = document.getElementById('loginPin').value.trim();
       var err = document.getElementById('loginErr');
       err.classList.add('hidden');
+
+      var variants = getCleanVariants(rawId);
+      var orFilter = variants.map(function(v){ return 'id.eq.' + encodeURIComponent(v); }).join(',');
+
       try {
-        var res = await fetch(`${SUPABASE_URL}/rest/v1/tags?id=eq.${encodeURIComponent(id)}&pin_code=eq.${encodeURIComponent(pin)}&select=*`, {
+        var res = await fetch(`${SUPABASE_URL}/rest/v1/tags?or=(${orFilter})&pin_code=eq.${encodeURIComponent(pin)}&select=*`, {
           headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
         });
         var data = await res.json();
@@ -337,7 +349,8 @@
       if (c) {
         try {
           var tag = JSON.parse(c);
-          if (!p || p.toUpperCase() === tag.id.toUpperCase()) {
+          var variants = getCleanVariants(p);
+          if (!p || variants.includes(tag.id.toUpperCase())) {
             currentTag = tag;
             showDashboard(currentTag);
             return;
