@@ -10,25 +10,32 @@
 </head>
 <body class="bg-[#fcfdfc] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-4 sm:p-6">
 
-  <header class="max-w-md mx-auto w-full py-3 flex justify-between items-center border-b border-slate-100">
+  <!-- Navigacija su grįžimo mygtuku -->
+  <header class="max-w-md mx-auto w-full py-2.5 flex justify-between items-center border-b border-slate-100">
     <a href="index.html" class="flex items-center space-x-2">
       <span class="w-2.5 h-2.5 rounded-full bg-emerald-700"></span>
       <span class="text-xl font-bold tracking-tight text-slate-900">QR Hope</span>
     </a>
     <div class="flex items-center space-x-2">
-      <button onclick="toggleLang()" id="langBtn" type="button" class="text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 px-2.5 py-1 rounded-md">EN</button>
-      <a href="login.html" class="text-xs text-slate-500 hover:text-slate-800 font-semibold" data-i18n="nav_owner">Savininkui</a>
+      <button onclick="goBackToDashboard()" id="backToDashBtn" type="button" class="text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 px-2.5 py-1 rounded-lg flex items-center space-x-1 cursor-pointer">
+        <i class="fa-solid fa-arrow-left text-[10px]"></i>
+        <span data-i18n="btn_dash">Pultas</span>
+      </button>
+      <button onclick="toggleLang()" id="langBtn" type="button" class="text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 px-2 py-1 rounded-md cursor-pointer">
+        EN
+      </button>
     </div>
   </header>
 
   <main class="max-w-md mx-auto w-full my-6">
 
+    <!-- Krovimo būsena -->
     <div id="loadingState" class="text-center py-12 space-y-3">
       <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-800 border-t-transparent"></div>
       <p class="text-xs text-slate-500 font-medium">Tikrinama žymos informacija...</p>
     </div>
 
-    <!-- PIRKĖJO PIRMINIS AKTYVAVIMAS -->
+    <!-- PIRKĖJO AKTYVAVIMAS (Naujas gaminys) -->
     <div id="batchActivationState" class="hidden bg-white border-2 border-emerald-700 rounded-2xl p-6 shadow-sm space-y-5">
       <div>
         <span class="text-[10px] font-black uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">Naujas gaminys</span>
@@ -62,9 +69,9 @@
         </div>
         <div>
           <label class="block font-bold text-slate-700 mb-1">4 skaitmenų valdymo PIN</label>
-          <input id="claimPin" type="password" maxlength="4" pattern="[0-9]{4}" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 font-mono text-center tracking-widest font-bold text-sm" />
+          <input id="claimPin" type="tel" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" required placeholder="1234" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 font-mono text-center tracking-widest font-bold text-sm" />
         </div>
-        <button id="claimBtn" type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3.5 rounded-xl transition text-sm">
+        <button id="claimBtn" type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3.5 rounded-xl transition text-sm cursor-pointer">
           Patvirtinti ir aktyvuoti
         </button>
       </form>
@@ -105,7 +112,7 @@
           <span data-i18n="btn_call">Anoniminis skambutis savininkui</span>
         </a>
 
-        <button onclick="sendLocation()" id="gpsBtn" type="button" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 px-4 rounded-xl flex items-center justify-center space-x-2 text-xs transition border border-slate-200">
+        <button onclick="sendLocation()" id="gpsBtn" type="button" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 px-4 rounded-xl flex items-center justify-center space-x-2 text-xs transition border border-slate-200 cursor-pointer">
           <i class="fa-solid fa-location-crosshairs text-emerald-700"></i>
           <span data-i18n="btn_gps">Nusiųsti radimo vietą (GPS)</span>
         </button>
@@ -134,12 +141,12 @@
 
     var DICT = {
       lt: {
-        btn: "EN", nav_owner: "Savininkui", lost_alert: "Paskelbta paieška!",
+        btn: "EN", btn_dash: "Pultas", lost_alert: "Paskelbta paieška!",
         btn_call: "Anoniminis skambutis savininkui", btn_gps: "Nusiųsti radimo vietą (GPS)",
         reward_prefix: "Atlygis: "
       },
       en: {
-        btn: "LT", nav_owner: "Owner Sign In", lost_alert: "Lost Mode Active!",
+        btn: "LT", btn_dash: "Dashboard", lost_alert: "Lost Mode Active!",
         btn_call: "Anonymous Call to Owner", btn_gps: "Send Found Location (GPS)",
         reward_prefix: "Reward: "
       }
@@ -159,6 +166,15 @@
     }
 
     function toggleLang() { setLanguage(activeLang === "lt" ? "en" : "lt"); }
+
+    function goBackToDashboard() {
+      var p = new URLSearchParams(window.location.search).get('id');
+      if (p) {
+        window.location.href = 'dashboard.html?id=' + encodeURIComponent(p.trim().toUpperCase());
+      } else {
+        window.location.href = 'dashboard.html';
+      }
+    }
 
     async function loadTag() {
       var p = new URLSearchParams(window.location.search).get('id');
@@ -196,19 +212,23 @@
 
     function setupFinderCard(tag) {
       document.getElementById('tagName').innerText = tag.name || 'Saugomas objektas';
-      document.getElementById('tagIdDisplay').innerText = `#${tag.id}`;
+      document.getElementById('tagIdDisplay').innerText = '#' + tag.id;
 
-      // LOST MODE & REWARD RODYMAS
+      var typeText = tag.type === 'pet' ? 'AUGINTINIS' : (tag.type === 'sos' ? 'SOS / MEDICINA' : 'DAIKTAS');
+      document.getElementById('tagTypeBadge').innerText = typeText;
+
       var lostBox = document.getElementById('lostModeBanner');
       var lostTxt = document.getElementById('lostModeText');
       var rewBadge = document.getElementById('rewardBadge');
 
-      if (tag.lost_mode) {
+      var isLost = tag.lost_mode === true || tag.lost_mode === 'true' || tag.lost_mode === 1;
+
+      if (isLost) {
         lostBox.classList.remove('hidden');
-        lostTxt.innerText = tag.lost_message || 'Šis daiktas ar augintinis šiuo metu ieškomas savininko!';
+        lostTxt.innerText = tag.lost_message || 'Šis daiktas ar augintinis ieškomas savininko!';
         
-        if (tag.reward && tag.reward.trim() !== "") {
-          rewBadge.innerText = DICT[activeLang].reward_prefix + tag.reward;
+        if (tag.reward && String(tag.reward).trim() !== "") {
+          rewBadge.innerText = (activeLang === 'lt' ? 'Atlygis: ' : 'Reward: ') + tag.reward;
           rewBadge.classList.remove('hidden');
         } else {
           rewBadge.classList.add('hidden');
@@ -223,7 +243,7 @@
       }
 
       if (tag.emergency_phone) {
-        document.getElementById('callOwnerBtn').href = `tel:${tag.emergency_phone}`;
+        document.getElementById('callOwnerBtn').href = 'tel:' + tag.emergency_phone;
       }
     }
 
