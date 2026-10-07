@@ -19,15 +19,25 @@
   </header>
 
   <main class="max-w-4xl mx-auto w-full my-3">
-    <!-- PRISIJUNGIMAS -->
+    <!-- PRISIJUNGIMAS SU APSAUGA -->
     <div id="authBox" class="max-w-xs mx-auto bg-white border border-slate-200 rounded-2xl p-4 space-y-3">
-      <h1 class="text-sm font-black text-slate-900">Gamintojo prisijungimas</h1>
+      <div>
+        <h1 class="text-sm font-black text-slate-900">B2B Gamintojo prieiga</h1>
+        <p class="text-[10px] text-slate-400">Prieiga skirta tik autorizuotiems gamybos partneriams.</p>
+      </div>
+
       <form onsubmit="handleAuth(event)" class="space-y-2">
-        <input id="partnerId" type="text" required placeholder="Partneris (pvz. BALTICBAGS)" class="w-full bg-slate-50 border p-2 rounded-xl font-bold" />
-        <input id="partnerSecret" type="password" required placeholder="Slaptažodis (1234)" class="w-full bg-slate-50 border p-2 rounded-xl" />
-        <button type="submit" class="w-full bg-slate-900 text-white font-bold py-2 rounded-xl cursor-pointer">Prisijungti</button>
+        <div>
+          <label class="block font-bold text-slate-600 mb-0.5">Partnerio ID / Įmonė</label>
+          <input id="partnerId" type="text" required placeholder="Pvz., BALTICBAGS" class="w-full bg-slate-50 border p-2 rounded-xl font-bold uppercase" />
+        </div>
+        <div>
+          <label class="block font-bold text-slate-600 mb-0.5">B2B Slaptažodis</label>
+          <input id="partnerSecret" type="password" required placeholder="••••••••" class="w-full bg-slate-50 border p-2 rounded-xl" />
+        </div>
+        <button type="submit" class="w-full bg-indigo-900 hover:bg-indigo-950 text-white font-bold py-2 rounded-xl cursor-pointer">Prisijungti prie gamybos</button>
       </form>
-      <p id="authErr" class="hidden text-rose-600 text-center font-bold"></p>
+      <div id="authErr" class="hidden text-rose-600 bg-rose-50 border border-rose-200 p-2 rounded-xl text-center font-bold"></div>
     </div>
 
     <!-- PULTAS -->
@@ -138,17 +148,33 @@
     var H = { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY, 'Content-Type': 'application/json' };
     var tags = [], curTag = null;
 
+    // LEIDŽIAMI TIK TIKRI B2B PARTNERIAI
+    var ALLOWED_PARTNERS = ["BALTICBAGS", "SAMSONITE", "FACTORY1", "EGILAS", "BALTICTRAVEL", "ADMIN"];
+
     function handleAuth(e) {
       e.preventDefault();
-      var id = document.getElementById('partnerId').value.trim();
+      var id = document.getElementById('partnerId').value.trim().toUpperCase();
       var p = document.getElementById('partnerSecret').value.trim();
-      if (p === 'admin' || p === '1234' || id.length > 2) {
-        // IŠSAUGOMA ILGALAIKĖJE ATMINTYJE (localStorage)
-        localStorage.setItem('qrhope_partner_auth', id.toUpperCase());
-        openDashboard(id.toUpperCase());
+      var err = document.getElementById('authErr');
+      err.classList.add('hidden');
+
+      // 1. BLOKAVIMAS: Jei bandoma vesti konkrečią kliento žymą (pvz., PET-777, BAGS-1001, SOS-999)
+      if (id.startsWith('PET') || id.startsWith('BAGS') || id.startsWith('SOS') || /\d{3,}/.test(id)) {
+        err.innerHTML = `⚠️ <b>${id}</b> yra kliento žymos ID, o ne gamintojas!<br><a href="dashboard.html?id=${id}" class="underline font-black text-indigo-900 mt-1 block">Spauskite čia, kad eitumėte į Savininko pultą</a>`;
+        err.classList.remove('hidden');
+        return;
+      }
+
+      // 2. PATIKRINIMAS: Ar tai autorizuotas gamintojas ir teisingas slaptažodis
+      var isPartnerOk = ALLOWED_PARTNERS.includes(id);
+      var isPassOk = (p === 'admin' || p === '1234');
+
+      if (isPartnerOk && isPassOk) {
+        localStorage.setItem('qrhope_partner_auth', id);
+        openDashboard(id);
       } else {
-        document.getElementById('authErr').innerText = "Neteisingi duomenys";
-        document.getElementById('authErr').classList.remove('hidden');
+        err.innerText = "Neteisingas gamintojo ID arba slaptažodis. Prieiga atmesta.";
+        err.classList.remove('hidden');
       }
     }
 
@@ -261,11 +287,12 @@
       window.location.reload(); 
     }
 
-    // AUTOMATINIS PRISIJUNGIMAS PERKROVUS PUSLAPĮ
     document.addEventListener("DOMContentLoaded", function() {
       var saved = localStorage.getItem('qrhope_partner_auth');
-      if (saved) {
+      if (saved && ALLOWED_PARTNERS.includes(saved)) {
         openDashboard(saved);
+      } else {
+        localStorage.removeItem('qrhope_partner_auth');
       }
     });
   </script>
