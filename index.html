@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Hope – Saugi apsaugos platforma</title>
+  <title>QR Hope – Saugi apsaugos ir radinių platforma</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -12,7 +12,7 @@
 </head>
 <body class="bg-[#fcfdfc] text-slate-800 antialiased min-h-screen flex flex-col justify-between">
 
-  <!-- Navigacijos juosta pritaikyta telefonams -->
+  <!-- Navigacija telefonams ir kompiuteriams -->
   <header class="sticky top-0 bg-[#fcfdfc]/95 backdrop-blur-md z-40 border-b border-slate-100">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
       <a href="index.html" class="flex items-center space-x-2 shrink-0">
@@ -20,9 +20,9 @@
         <span class="text-lg font-black tracking-tight text-slate-900">QR<span class="text-emerald-800">HOPE</span></span>
       </a>
 
-      <!-- Valdymo mygtukai viršuje -->
+      <!-- Meniu mygtukai -->
       <div class="flex items-center space-x-1.5 sm:space-x-2">
-        <button onclick="toggleLang()" id="langBtn" class="text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 px-2.5 py-1.5 rounded-lg hover:bg-emerald-100">
+        <button onclick="toggleLang()" id="langBtn" class="text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 px-2.5 py-1.5 rounded-lg hover:bg-emerald-100 transition">
           EN
         </button>
 
@@ -45,6 +45,26 @@
   <!-- Pagrindinis turinys -->
   <main class="max-w-6xl mx-auto px-4 py-6 sm:py-12 space-y-12">
 
+    <!-- Dinaminis motyvacinis faktas (Japonijos standartas) -->
+    <section class="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200/90 rounded-2xl p-4 sm:p-5 shadow-xs">
+      <div class="flex items-start justify-between gap-3">
+        <div class="space-y-1.5">
+          <div class="flex items-center space-x-2">
+            <span class="text-[10px] font-black uppercase tracking-widest text-emerald-900 bg-emerald-200/60 px-2 py-0.5 rounded flex items-center">
+              <i class="fa-solid fa-earth-asia mr-1 text-emerald-700"></i>
+              <span data-i18n="fact_badge">Japonijos įkvėpimas • Faktas</span>
+            </span>
+          </div>
+          <p id="factText" class="text-xs sm:text-sm font-semibold text-slate-900 leading-snug">
+            Kraunamas faktas...
+          </p>
+        </div>
+        <button onclick="nextFact()" title="Kitas faktas" class="shrink-0 text-emerald-800 hover:text-emerald-950 p-1.5 bg-white rounded-lg border border-emerald-200 text-xs shadow-2xs">
+          <i class="fa-solid fa-shuffle"></i>
+        </button>
+      </div>
+    </section>
+
     <!-- Hero blokas -->
     <section class="space-y-4">
       <div class="inline-flex items-center space-x-2 bg-emerald-50 border border-emerald-200 text-emerald-900 text-[11px] px-3 py-1 rounded-full font-bold">
@@ -56,7 +76,7 @@
         Sugrąžinkite daiktus ir augintinius namo neatskleisdami savo numerio.
       </h1>
 
-      <p class="text-slate-600 text-xs sm:text-sm leading-relaxed" data-i18n="h_desc">
+      <p class="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-2xl" data-i18n="h_desc">
         Pažangus QR ir NFC atpažinimas su šifruotu skambučių nukreipimu. Radėjas susisiekia tiesiogiai naršyklėje arba skambučiu, o jūsų asmeninis numeris lieka apsaugotas.
       </p>
 
@@ -101,8 +121,83 @@
       </a>
     </section>
 
+    <!-- Kaip veikia procesas -->
+    <section class="space-y-4 pt-2">
+      <div class="text-center space-y-1">
+        <span class="text-xs font-extrabold uppercase tracking-widest text-emerald-800" data-i18n="step_tag">Procesas</span>
+        <h2 class="text-xl sm:text-2xl font-black text-slate-950" data-i18n="step_h">Kaip veikia sistema</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+        <div class="bg-white border border-slate-200/90 p-4 rounded-xl space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center font-black">1</div>
+          <h3 class="font-bold text-slate-900 text-sm" data-i18n="st1_t">Aktyvuojate žymą</h3>
+          <p class="text-slate-500 leading-relaxed" data-i18n="st1_d">Suveskite savo daikto ar gyvūno vardą, PIN kodą ir telefono numerį skambučio nukreipimui.</p>
+        </div>
+
+        <div class="bg-white border border-slate-200/90 p-4 rounded-xl space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center font-black">2</div>
+          <h3 class="font-bold text-slate-900 text-sm" data-i18n="st2_t">Radėjas priglaudžia telefoną</h3>
+          <p class="text-slate-500 leading-relaxed" data-i18n="st2_d">Telefonas automatiškai atveria radėjo kortelę – nereikia siųstis jokių papildomų programų.</p>
+        </div>
+
+        <div class="bg-white border border-slate-200/90 p-4 rounded-xl space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center font-black">3</div>
+          <h3 class="font-bold text-slate-900 text-sm" data-i18n="st3_t">Saugi komunikacija</h3>
+          <p class="text-slate-500 leading-relaxed" data-i18n="st3_d">Radėjas skambina per apsaugotą šliuzą arba parašo žinutę tiesiai į jūsų valdymo pultą.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kodėl rinktis (Palyginimas su AirTag ir paprastu QR) -->
+    <section class="bg-slate-900 text-white rounded-2xl p-5 sm:p-8 space-y-5">
+      <div class="space-y-1">
+        <span class="text-xs font-bold uppercase tracking-widest text-emerald-400" data-i18n="comp_tag">Kodėl rinktis mus?</span>
+        <h2 class="text-xl sm:text-2xl font-black" data-i18n="comp_h">QR Hope pranašumas prieš alternatyvas</h2>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="border-b border-slate-800 text-slate-400">
+              <th class="py-2.5 px-2 font-bold" data-i18n="th_f">Savybė</th>
+              <th class="py-2.5 px-2 text-emerald-400 font-extrabold">QR Hope</th>
+              <th class="py-2.5 px-2 text-slate-300 font-semibold" data-i18n="th_q">Paprastas QR</th>
+              <th class="py-2.5 px-2 text-slate-300 font-semibold" data-i18n="th_a">AirTag / GPS</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y border-slate-800 text-slate-300">
+            <tr>
+              <td class="py-2.5 px-2" data-i18n="tf_1">Privatus telefono numeris</td>
+              <td class="py-2.5 px-2 text-emerald-400 font-bold" data-i18n="yes">Taip (Paslėptas)</td>
+              <td class="py-2.5 px-2 text-rose-400" data-i18n="no">Ne (Viešas)</td>
+              <td class="py-2.5 px-2 text-amber-400" data-i18n="part">Tik pametus</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 px-2" data-i18n="tf_2">Nereikia krauti / keisti baterijų</td>
+              <td class="py-2.5 px-2 text-emerald-400 font-bold" data-i18n="yes">Taip (Amžinas)</td>
+              <td class="py-2.5 px-2 text-emerald-400" data-i18n="yes">Taip</td>
+              <td class="py-2.5 px-2 text-rose-400" data-i18n="bat">Baterija išsikrauna</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 px-2" data-i18n="tf_3">Tinka visiems telefonams</td>
+              <td class="py-2.5 px-2 text-emerald-400 font-bold" data-i18n="yes_all">Android ir iPhone</td>
+              <td class="py-2.5 px-2 text-emerald-400" data-i18n="yes_all">Android ir iPhone</td>
+              <td class="py-2.5 px-2 text-rose-400" data-i18n="apple">Tik Apple ekosistema</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 px-2" data-i18n="tf_4">Radėjas gali tiesiogiai rašyti</td>
+              <td class="py-2.5 px-2 text-emerald-400 font-bold" data-i18n="yes">Taip (Tiesioginis čatas)</td>
+              <td class="py-2.5 px-2 text-rose-400" data-i18n="no">Ne</td>
+              <td class="py-2.5 px-2 text-rose-400" data-i18n="no">Ne</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- B2B Gamintojų skiltis -->
-    <section class="bg-slate-900 text-white rounded-2xl p-5 sm:p-7 space-y-3">
+    <section class="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-2xl p-5 sm:p-7 space-y-3">
       <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest bg-slate-800 px-2 py-0.5 rounded border border-slate-700">B2B Portalas</span>
       <h3 class="text-lg font-black" data-i18n="b2b_title">Gamybos ir partijų integracija</h3>
       <p class="text-xs text-slate-300 leading-relaxed" data-i18n="b2b_desc">
@@ -128,11 +223,26 @@
           <div class="text-2xl font-black text-slate-950">34.99 €</div>
           <p class="text-[11px] text-slate-500" data-i18n="p2_d">3 vnt. pakabukai lagaminams, augintiniui ir kuprinei.</p>
         </div>
-        <div class="bg-white border border-slate-200 rounded-xl p-4 space-y-2">
+        <div class="bg-white border-2 border-slate-200 rounded-xl p-4 space-y-2">
           <h3 class="font-bold text-slate-900" data-i18n="p3_t">Skaitmeninis ID kodas</h3>
           <div class="text-2xl font-black text-slate-950">4.99 €</div>
           <p class="text-[11px] text-slate-500" data-i18n="p3_d">Suteikiamas unikalus kodas savo turimai NFC žymai.</p>
         </div>
+      </div>
+    </section>
+
+    <!-- DUK -->
+    <section class="max-w-3xl mx-auto space-y-3 pt-2">
+      <h2 class="text-lg font-black text-slate-950 text-center" data-i18n="faq_h">Dažniausiai užduodami klausimai</h2>
+      <div class="space-y-2 text-xs">
+        <details class="bg-white border border-slate-200 p-3.5 rounded-xl cursor-pointer">
+          <summary class="font-bold text-slate-900" data-i18n="fq1_q">Ar radėjui reikia siųstis specialią programėlę?</summary>
+          <p class="text-slate-600 mt-2 leading-relaxed" data-i18n="fq1_a">Ne. Radėjas nuskaito QR kodą telefono kamera arba priglaudžia NFC. Viskas atsidaro tiesiogiai naršyklėje.</p>
+        </details>
+        <details class="bg-white border border-slate-200 p-3.5 rounded-xl cursor-pointer">
+          <summary class="font-bold text-slate-900" data-i18n="fq2_q">Kaip veikia anoniminis skambutis?</summary>
+          <p class="text-slate-600 mt-2 leading-relaxed" data-i18n="fq2_a">Radėjas skambina į saugų tinklo šliuzą su unikaliu PIN kodu, todėl jūsų asmeninis telefono numeris niekada nepasirodo ekrane.</p>
+        </details>
       </div>
     </section>
 
@@ -151,12 +261,35 @@
   </footer>
 
   <script>
+    // Tikri motyvaciniai faktai apie Japonijos radinių kultūrą ir saugumą
+    const FACTS = [
+      {
+        lt: "🇯🇵 Japonijos pamokos: Tokijo policija kasmet sugrąžina daugiau nei 3,5 milijono pamestų daiktų, o net 70% pamestų piniginių su visais pinigais saugiai grįžta šeimininkams dėka aiškios ir patogios sistemos.",
+        en: "🇯🇵 Lessons from Japan: Tokyo Police returns over 3.5 million lost items annually. Over 70% of lost wallets return with cash intact thanks to friction-free return systems."
+      },
+      {
+        lt: "🚄 Shinkansen patirtis: Japonijos greitųjų traukinių sistemoje pamestas daiktas vidutiniškai identifikuojamas ir užregistruojamas per mažiau nei 15 minučių. QR Hope siekia to paties greičio kiekvienam.",
+        en: "🚄 High-Speed Standard: On Japan's Shinkansen network, lost property is identified and tracked in under 15 minutes. QR Hope delivers this standard everywhere."
+      },
+      {
+        lt: "🏯 Kōban bendruomeniškumas: Japonijoje veikia virš 6 000 vietinių policijos postelių, kur radėjai iškart atneša rastus daiktus. QR Hope skaitmeninė žyma tampa jūsų asmeniniu 'Kōban' posteliu debesyje.",
+        en: "🏯 The Kōban Culture: Japan's 6,000 neighborhood police boxes inspire QR Hope to act as an instant, digital safe-harbor for any lost item."
+      },
+      {
+        lt: "🔒 Privatumo pagarba: Japonijoje asmens duomenų saugojimas yra kultūros dalis. QR Hope užtikrina, kad jūsų numeris niekada nebūtų matomas nepažįstamiems.",
+        en: "🔒 Respect for Privacy: Protecting identity is paramount in Japanese service standards. QR Hope shields your private number completely."
+      }
+    ];
+
+    let currentFactIndex = Math.floor(Math.random() * FACTS.length);
+
     const DICT = {
       lt: {
         btn: "EN",
         nav_mfg: "Gamyba",
         nav_login: "Prisijungti",
         nav_activate: "Aktyvuoti",
+        fact_badge: "Japonijos įkvėpimas • Faktas",
         h_badge: "MOMENTINIS RYŠYS • 100% PRIVATUS SKAMBUTIS",
         h_title: "Sugrąžinkite daiktus ir augintinius namo neatskleisdami savo numerio.",
         h_desc: "Pažangus QR ir NFC atpažinimas su šifruotu skambučių nukreipimu. Radėjas susisiekia tiesiogiai naršyklėje arba skambučiu, o jūsų asmeninis numeris lieka apsaugotas.",
@@ -171,72 +304,31 @@
         demo_reward: "Atlygis: 50 €",
         demo_sub: "Labradoro retriveris • Draugiškas, turi mikroschemą.",
         demo_btn: "Anoniminis skambutis savininkui",
+        step_tag: "Procesas",
+        step_h: "Kaip veikia sistema",
+        st1_t: "Aktyvuojate žymą",
+        st1_d: "Suveskite savo daikto ar gyvūno vardą, PIN kodą ir telefono numerį skambučio nukreipimui.",
+        st2_t: "Radėjas priglaudžia telefoną",
+        st2_d: "Telefonas automatiškai atveria radėjo kortelę – nereikia siųstis jokių papildomų programų.",
+        st3_t: "Saugi komunikacija",
+        st3_d: "Radėjas skambina per apsaugotą šliuzą arba parašo žinutę tiesiai į jūsų valdymo pultą.",
+        comp_tag: "Kodėl rinktis mus?",
+        comp_h: "QR Hope pranašumas prieš alternatyvas",
+        th_f: "Savybė",
+        th_q: "Paprastas QR",
+        th_a: "AirTag / GPS",
+        tf_1: "Privatus telefono numeris",
+        tf_2: "Nereikia krauti / keisti baterijų",
+        tf_3: "Tinka visiems telefonams",
+        tf_4: "Radėjas gali tiesiogiai rašyti",
+        yes: "Taip (Paslėptas)",
+        no: "Ne",
+        part: "Tik pametus",
+        bat: "Baterija išsikrauna",
+        yes_all: "Android ir iPhone",
+        apple: "Tik Apple ekosistema",
         b2b_title: "Gamybos ir partijų integracija",
         b2b_desc: "Gaminate lagaminus, antkaklius ar darbo aprangą? Generuokite paruoštus graviravimo CSV failus su savo serijos prefiksu tiesiai gamybos portale.",
         b2b_btn: "Atidaryti gamybos portalą",
         price_h: "Pasirinkite apsaugą",
-        p1_t: "NFC / QR Pakabukas",
-        p1_d: "1 vnt. metalinis pakabukas antkakliui ar raktams.",
-        p2_t: "Šeimos rinkinys (3 vnt.)",
-        p2_d: "3 vnt. pakabukai lagaminams, augintiniui ir kuprinei.",
-        p3_t: "Skaitmeninis ID kodas",
-        p3_d: "Suteikiamas unikalus kodas savo turimai NFC žymai.",
-        foot_mfg: "Gamybos portalas"
-      },
-      en: {
-        btn: "LT",
-        nav_mfg: "B2B / Mfg",
-        nav_login: "Sign In",
-        nav_activate: "Activate",
-        h_badge: "INSTANT RELAY • 100% PRIVATE CALL",
-        h_title: "Bring lost pets and items home without revealing your phone number.",
-        h_desc: "Smart QR and NFC protection with encrypted call routing. Finders reach you via browser or call while your personal number stays completely hidden.",
-        h_order: "Order Smart Tag",
-        h_demo: "Finder Card Demo",
-        f_1: "Hidden Number",
-        f_2: "No App Needed",
-        f_3: "Works Worldwide",
-        demo_badge: "Live Demo",
-        demo_title: "Finder Screen View",
-        demo_name: "🐾 Dog Rex",
-        demo_reward: "Reward: 50 €",
-        demo_sub: "Labrador Retriever • Friendly, microchipped.",
-        demo_btn: "Anonymous Call to Owner",
-        b2b_title: "Manufacturing & Batch Integration",
-        b2b_desc: "Manufacturing luggage, pet collars or uniforms? Generate batch laser-engraving CSV files with your own custom prefix in the B2B portal.",
-        b2b_btn: "Open B2B Portal",
-        price_h: "Choose Protection Plan",
-        p1_t: "NFC / QR Smart Tag",
-        p1_d: "1 durable smart tag for collar or keys.",
-        p2_t: "Family Pack (3 pcs)",
-        p2_d: "3 smart tags for luggage, pet, and backpack.",
-        p3_t: "Digital ID Code",
-        p3_d: "Get a cloud-connected ID for your own NFC tag.",
-        foot_mfg: "B2B Portal"
-      }
-    };
-
-    let activeLang = localStorage.getItem('qrhope_lang') || 'lt';
-
-    function setLanguage(lang) {
-      activeLang = lang;
-      localStorage.setItem('qrhope_lang', lang);
-      const data = DICT[lang];
-
-      document.getElementById('langBtn').innerText = data.btn;
-
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (data[key]) el.innerText = data[key];
-      });
-    }
-
-    function toggleLang() {
-      setLanguage(activeLang === 'lt' ? 'en' : 'lt');
-    }
-
-    // Inicializavimas
-    setLanguage(activeLang);
-  </script>
-</body>
-</html>
+       
