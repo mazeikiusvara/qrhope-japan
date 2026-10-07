@@ -10,15 +10,32 @@
 </head>
 <body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-4 sm:p-6">
 
-  <!-- Navigacija -->
-  <header class="max-w-4xl mx-auto w-full py-4 flex justify-between items-center border-b border-slate-200">
+  <!-- Navigacija su grįžimo mygtuku ir kalbos pasirinkimu -->
+  <header class="max-w-4xl mx-auto w-full py-3 flex justify-between items-center border-b border-slate-200">
     <div class="flex items-center space-x-2">
-      <span class="w-3 h-3 rounded-full bg-slate-900"></span>
-      <span class="text-xl font-black tracking-tight text-slate-900">QR<span class="text-emerald-700">HOPE</span> <span class="text-xs bg-slate-900 text-white px-2 py-0.5 rounded ml-1">B2B</span></span>
+      <a href="index.html" class="flex items-center space-x-2">
+        <span class="w-3 h-3 rounded-full bg-slate-900"></span>
+        <span class="text-xl font-black tracking-tight text-slate-900">QR<span class="text-emerald-700">HOPE</span> <span class="text-xs bg-slate-900 text-white px-2 py-0.5 rounded ml-1">B2B</span></span>
+      </a>
     </div>
-    <div id="authNav" class="hidden items-center space-x-3 text-xs">
-      <span id="companyBadge" class="font-bold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200"></span>
-      <button onclick="logoutMfg()" class="text-rose-600 font-bold hover:underline">Atsijungti</button>
+
+    <div class="flex items-center space-x-2">
+      <!-- Kalbos perjungiklis -->
+      <button onclick="toggleLang()" id="langBtn" type="button" class="text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 px-2.5 py-1.5 rounded-lg hover:bg-emerald-100 cursor-pointer">
+        EN
+      </button>
+
+      <!-- Grįžimo mygtukas -->
+      <a href="index.html" class="text-xs font-bold bg-white text-slate-700 hover:text-slate-950 border border-slate-300 px-3 py-1.5 rounded-lg flex items-center space-x-1 shadow-2xs">
+        <i class="fa-solid fa-arrow-left text-[10px]"></i>
+        <span data-i18n="back_home">Grįžti į pradžią</span>
+      </a>
+
+      <!-- Atsijungimas (prisijungus) -->
+      <div id="authNav" class="hidden items-center space-x-2 ml-1">
+        <span id="companyBadge" class="text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200"></span>
+        <button onclick="logoutMfg()" class="text-xs text-rose-600 font-bold hover:underline cursor-pointer" data-i18n="logout_btn">Atsijungti</button>
+      </div>
     </div>
   </header>
 
@@ -27,24 +44,24 @@
     <!-- 1. Prisijungimo forma -->
     <div id="loginSection" class="max-w-md mx-auto bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm space-y-5">
       <div>
-        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Gamintojo prieiga</span>
-        <h1 class="text-2xl font-black text-slate-900 mt-1">Gamybos portalas</h1>
-        <p class="text-xs text-slate-500 mt-1">Prisijunkite norėdami generuoti naujas žymų partijas ir atsisiųsti gamybos failus.</p>
+        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider" data-i18n="mfg_badge">Gamintojo prieiga</span>
+        <h1 class="text-2xl font-black text-slate-900 mt-1" data-i18n="mfg_title">Gamybos portalas</h1>
+        <p class="text-xs text-slate-500 mt-1" data-i18n="mfg_desc">Prisijunkite norėdami generuoti naujas žymų partijas ir atsisiųsti gamybos failus.</p>
       </div>
 
       <form onsubmit="handleMfgLogin(event)" class="space-y-4 text-xs">
         <div>
-          <label class="block font-bold text-slate-700 mb-1">Serijos prefiksas (3–6 raidės)</label>
+          <label class="block font-bold text-slate-700 mb-1" data-i18n="lbl_prefix">Serijos prefiksas (3–6 raidės)</label>
           <input id="mfgPrefix" type="text" required placeholder="Pvz., BAGG" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 font-mono text-slate-900 font-bold uppercase focus:outline-none focus:border-slate-800" />
         </div>
 
         <div>
-          <label class="block font-bold text-slate-700 mb-1">Gamybos prieigos raktas</label>
+          <label class="block font-bold text-slate-700 mb-1" data-i18n="lbl_key">Gamybos prieigos raktas</label>
           <input id="mfgKey" type="password" required placeholder="••••••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 font-mono focus:outline-none focus:border-slate-800" />
         </div>
 
-        <button id="loginBtn" type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-sm text-sm">
-          Prisijungti prie gamybos
+        <button id="loginBtn" type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-sm text-sm cursor-pointer">
+          <span data-i18n="btn_login">Prisijungti prie gamybos</span>
         </button>
       </form>
       <div id="loginErr" class="hidden bg-rose-50 border border-rose-200 text-rose-800 text-xs p-3 rounded-xl text-center"></div>
@@ -61,7 +78,7 @@
         </div>
         <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-3.5 py-2 rounded-xl text-xs font-bold flex items-center space-x-2">
           <i class="fa-solid fa-industry"></i>
-          <span>Serija aktyvi gamybai</span>
+          <span data-i18n="series_active">Serija aktyvi gamybai</span>
         </div>
       </div>
 
@@ -69,33 +86,33 @@
       <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
         <h3 class="text-sm font-bold text-slate-900 flex items-center">
           <i class="fa-solid fa-barcode mr-2 text-slate-700"></i>
-          Generuoti naują žymų partiją
+          <span data-i18n="batch_title">Generuoti naują žymų partiją</span>
         </h3>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
           <div>
-            <label class="block font-semibold text-slate-700 mb-1">Kiekis (vnt.)</label>
+            <label class="block font-semibold text-slate-700 mb-1" data-i18n="lbl_qty">Kiekis (vnt.)</label>
             <input id="batchQty" type="number" min="1" max="5000" value="50" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:outline-none focus:border-slate-800" />
           </div>
 
           <div>
-            <label class="block font-semibold text-slate-700 mb-1">Pradinis numeris</label>
+            <label class="block font-semibold text-slate-700 mb-1" data-i18n="lbl_start">Pradinis numeris</label>
             <input id="batchStartNum" type="number" min="1" value="1001" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-bold focus:outline-none focus:border-slate-800" />
           </div>
 
           <div>
-            <label class="block font-semibold text-slate-700 mb-1">Gaminio paskirtis</label>
+            <label class="block font-semibold text-slate-700 mb-1" data-i18n="lbl_type">Gaminio paskirtis</label>
             <select id="batchType" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-slate-800">
-              <option value="item">Lagaminai / Krepšiai / Įrankiai</option>
-              <option value="pet">Antkakliai gyvūnams</option>
-              <option value="sos">Darbo rūbai / Apsauga</option>
+              <option value="item" data-i18n="opt_item">Lagaminai / Krepšiai / Įrankiai</option>
+              <option value="pet" data-i18n="opt_pet">Antkakliai gyvūnams</option>
+              <option value="sos" data-i18n="opt_sos">Darbo rūbai / Apsauga</option>
             </select>
           </div>
         </div>
 
-        <button onclick="generateBatch()" id="genBtn" class="bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3 px-6 rounded-xl text-xs transition flex items-center justify-center space-x-2 shadow-sm">
+        <button onclick="generateBatch()" id="genBtn" class="bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3 px-6 rounded-xl text-xs transition flex items-center justify-center space-x-2 shadow-sm cursor-pointer">
           <i class="fa-solid fa-file-csv"></i>
-          <span>Generuoti ir atsisiųsti gamybos CSV</span>
+          <span data-i18n="btn_gen">Generuoti ir atsisiųsti gamybos CSV</span>
         </button>
 
         <p id="genStatus" class="text-xs font-mono"></p>
@@ -106,35 +123,126 @@
   </main>
 
   <footer class="max-w-4xl mx-auto w-full text-center text-[11px] text-slate-400 py-4">
-    QR Hope &copy; 2026. Gamintojų API ir serijų valdymo platforma.
+    <span data-i18n="footer_text">QR Hope &copy; 2026. Gamintojų API ir serijų valdymo platforma.</span>
   </footer>
 
   <script>
-    const SUPABASE_URL = "https://nhnyvztyvovgxbbwmlxx.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A";
+    var SUPABASE_URL = "https://nhnyvztyvovgxbbwmlxx.supabase.co";
+    var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5obnl2enR5dm92Z3hiYndtbHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMjU0NDcsImV4cCI6MjEwNjgwMTQ0N30.FlfiRdNzID31aSwGM1gPf2KVliE1fScVGz-Iwopr_0A";
 
-    let currentMfg = null;
+    var activeLang = "lt";
+    var currentMfg = null;
+
+    var DICT = {
+      lt: {
+        btn: "EN",
+        back_home: "Grįžti į pradžią",
+        logout_btn: "Atsijungti",
+        mfg_badge: "Gamintojo prieiga",
+        mfg_title: "Gamybos portalas",
+        mfg_desc: "Prisijunkite norėdami generuoti naujas žymų partijas ir atsisiųsti gamybos failus.",
+        lbl_prefix: "Serijos prefiksas (3–6 raidės)",
+        lbl_key: "Gamybos prieigos raktas",
+        btn_login: "Prisijungti prie gamybos",
+        btn_checking: "Tikrinama...",
+        err_invalid: "Neteisingas serijos kodas arba prieigos raktas.",
+        err_network: "Ryšio klaida su serveriu.",
+        series_active: "Serija aktyvi gamybai",
+        batch_title: "Generuoti naują žymų partiją",
+        lbl_qty: "Kiekis (vnt.)",
+        lbl_start: "Pradinis numeris",
+        lbl_type: "Gaminio paskirtis",
+        opt_item: "Lagaminai / Krepšiai / Įrankiai",
+        opt_pet: "Antkakliai gyvūnams",
+        opt_sos: "Darbo rūbai / Apsauga",
+        btn_gen: "Generuoti ir atsisiųsti gamybos CSV",
+        status_preparing: "Ruošiama partija ir registruojama sistemoje...",
+        status_done: "✅ Sėkmingai sugeneruota! CSV failas paruoštas.",
+        footer_text: "QR Hope © 2026. Gamintojų API ir serijų valdymo platforma."
+      },
+      en: {
+        btn: "LT",
+        back_home: "Back to Home",
+        logout_btn: "Sign Out",
+        mfg_badge: "Manufacturer Access",
+        mfg_title: "B2B Production Portal",
+        mfg_desc: "Sign in to generate new smart tag batches and download production engraving files.",
+        lbl_prefix: "Series Prefix (3–6 letters)",
+        lbl_key: "Production Access Key",
+        btn_login: "Access Production",
+        btn_checking: "Verifying...",
+        err_invalid: "Invalid series prefix or access key.",
+        err_network: "Network connection error.",
+        series_active: "Series active for production",
+        batch_title: "Generate New Tag Batch",
+        lbl_qty: "Quantity (pcs)",
+        lbl_start: "Starting Number",
+        lbl_type: "Product Category",
+        opt_item: "Luggage / Bags / Tools",
+        opt_pet: "Pet Collars & Tags",
+        opt_sos: "Workwear / Safety Gear",
+        btn_gen: "Generate & Download CSV",
+        status_preparing: "Generating batch and registering tags...",
+        status_done: "✅ Batch generated successfully! CSV file downloaded.",
+        footer_text: "QR Hope © 2026. B2B Manufacturing & Serial Management Portal."
+      }
+    };
+
+    function setLanguage(lang) {
+      activeLang = lang;
+      try { localStorage.setItem("qrhope_lang", lang); } catch(e){}
+
+      var data = DICT[lang];
+      var btn = document.getElementById("langBtn");
+      if (btn) btn.innerText = data.btn;
+
+      document.querySelectorAll("[data-i18n]").forEach(function(el) {
+        var key = el.getAttribute("data-i18n");
+        if (data[key]) {
+          el.innerText = data[key];
+        }
+      });
+
+      if (currentMfg) {
+        updateDashSubText();
+      }
+    }
+
+    function toggleLang() {
+      setLanguage(activeLang === "lt" ? "en" : "lt");
+    }
+
+    function updateDashSubText() {
+      var sub = document.getElementById("dashSub");
+      if (!sub || !currentMfg) return;
+      if (activeLang === "en") {
+        sub.innerText = "All tags in this series start with: " + currentMfg.prefix + "-XXXX";
+      } else {
+        sub.innerText = "Visi šio gamintojo kodai prasidės: " + currentMfg.prefix + "-XXXX";
+      }
+    }
 
     async function handleMfgLogin(e) {
       e.preventDefault();
-      const prefix = document.getElementById('mfgPrefix').value.trim().toUpperCase();
-      const key = document.getElementById('mfgKey').value.trim();
-      const errBox = document.getElementById('loginErr');
-      const btn = document.getElementById('loginBtn');
+      var prefix = document.getElementById('mfgPrefix').value.trim().toUpperCase();
+      var key = document.getElementById('mfgKey').value.trim();
+      var errBox = document.getElementById('loginErr');
+      var btn = document.getElementById('loginBtn');
+      var t = DICT[activeLang];
 
       btn.disabled = true;
-      btn.innerText = "Tikrinama...";
+      btn.innerText = t.btn_checking;
       errBox.classList.add('hidden');
 
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/manufacturers?prefix=eq.${encodeURIComponent(prefix)}&access_key=eq.${encodeURIComponent(key)}&select=*`, {
+        var res = await fetch(`${SUPABASE_URL}/rest/v1/manufacturers?prefix=eq.${encodeURIComponent(prefix)}&access_key=eq.${encodeURIComponent(key)}&select=*`, {
           headers: {
             'apikey': SUPABASE_KEY,
             'Authorization': `Bearer ${SUPABASE_KEY}`
           }
         });
 
-        const data = await res.json();
+        var data = await res.json();
 
         if (data && data.length > 0) {
           currentMfg = data[0];
@@ -144,53 +252,53 @@
           document.getElementById('authNav').classList.add('flex');
           
           document.getElementById('companyBadge').innerText = `${currentMfg.company_name} [${currentMfg.prefix}]`;
-          document.getElementById('dashTitle').innerText = `${currentMfg.company_name} – Serija ${currentMfg.prefix}`;
-          document.getElementById('dashSub').innerText = `Visi šio gamintojo kodai prasidės: ${currentMfg.prefix}-XXXX`;
+          document.getElementById('dashTitle').innerText = `${currentMfg.company_name} – ${currentMfg.prefix}`;
+          updateDashSubText();
         } else {
-          errBox.innerText = "Neteisingas serijos kodas arba prieigos raktas.";
+          errBox.innerText = t.err_invalid;
           errBox.classList.remove('hidden');
         }
       } catch (err) {
-        errBox.innerText = "Ryšio klaida su serveriu.";
+        errBox.innerText = t.err_network;
         errBox.classList.remove('hidden');
       } finally {
         btn.disabled = false;
-        btn.innerText = "Prisijungti prie gamybos";
+        btn.innerText = t.btn_login;
       }
     }
 
-    // Atsitiktinio apsaugos rakto generavimas
     function makeSecret(len = 6) {
-      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-      let res = "";
-      for (let i = 0; i < len; i++) {
+      var chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      var res = "";
+      for (var i = 0; i < len; i++) {
         res += chars.charAt(Math.floor(Math.random() * chars.length));
       }
       return res;
     }
 
     async function generateBatch() {
-      const qty = parseInt(document.getElementById('batchQty').value);
-      const startNum = parseInt(document.getElementById('batchStartNum').value);
-      const type = document.getElementById('batchType').value;
-      const genBtn = document.getElementById('genBtn');
-      const status = document.getElementById('genStatus');
+      var qty = parseInt(document.getElementById('batchQty').value);
+      var startNum = parseInt(document.getElementById('batchStartNum').value);
+      var type = document.getElementById('batchType').value;
+      var genBtn = document.getElementById('genBtn');
+      var status = document.getElementById('genStatus');
+      var t = DICT[activeLang];
 
       if (!qty || qty <= 0 || !startNum) return;
 
       genBtn.disabled = true;
-      status.innerText = "Ruošiama partija ir registruojama sistemoje...";
+      status.innerText = t.status_preparing;
       status.className = "text-xs text-amber-600 font-mono";
 
-      const tagsPayload = [];
-      const csvRows = [
+      var tagsPayload = [];
+      var csvRows = [
         ["ID", "NFC_URL", "SECRET_KEY", "TYPE", "MANUFACTURER"]
       ];
 
-      for (let i = 0; i < qty; i++) {
-        const currentId = `${currentMfg.prefix}-${startNum + i}`;
-        const secret = makeSecret(6);
-        const targetUrl = `https://qrhope-japan.vercel.app/s.html?id=${currentId}`;
+      for (var i = 0; i < qty; i++) {
+        var currentId = `${currentMfg.prefix}-${startNum + i}`;
+        var secret = makeSecret(6);
+        var targetUrl = `https://qrhope-japan.vercel.app/s.html?id=${currentId}`;
 
         tagsPayload.push({
           id: currentId,
@@ -207,7 +315,7 @@
       }
 
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/tags`, {
+        var res = await fetch(`${SUPABASE_URL}/rest/v1/tags`, {
           method: 'POST',
           headers: {
             'apikey': SUPABASE_KEY,
@@ -218,26 +326,25 @@
           body: JSON.stringify(tagsPayload)
         });
 
-        if (!res.ok) throw new Error("Duomenų įrašymo klaida");
+        if (!res.ok) throw new Error("Database error");
 
-        // Formuojame ir atsisiunčiame CSV failą
-        let csvContent = "data:text/csv;charset=utf-8," 
-          + csvRows.map(e => e.join(",")).join("\n");
+        var csvContent = "data:text/csv;charset=utf-8," 
+          + csvRows.map(function(e){ return e.join(","); }).join("\n");
 
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `Gamybos_Partija_${currentMfg.prefix}_${startNum}-${startNum + qty - 1}.csv`);
+        link.setAttribute("download", `Batch_${currentMfg.prefix}_${startNum}-${startNum + qty - 1}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
 
-        status.innerText = `✅ Sėkmingai sugeneruota ${qty} vnt.! CSV failas paruoštas.`;
+        status.innerText = t.status_done;
         status.className = "text-xs text-emerald-700 font-mono font-bold";
         document.getElementById('batchStartNum').value = startNum + qty;
 
       } catch (err) {
-        status.innerText = "❌ Klaida generuojant partiją: " + err.message;
+        status.innerText = "❌ Klaida: " + err.message;
         status.className = "text-xs text-rose-600 font-mono";
       } finally {
         genBtn.disabled = false;
@@ -247,6 +354,16 @@
     function logoutMfg() {
       window.location.reload();
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      try {
+        var saved = localStorage.getItem("qrhope_lang");
+        if (saved === "en" || saved === "lt") {
+          activeLang = saved;
+        }
+      } catch(e){}
+      setLanguage(activeLang);
+    });
   </script>
 </body>
 </html>
