@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Hope – Radėjo puslapis</title>
+  <title>QR Hope – Gaminio peržiūra</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }</style>
@@ -30,10 +30,42 @@
 
     <div id="loadingState" class="text-center py-12 space-y-3">
       <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-800 border-t-transparent"></div>
-      <p class="text-xs text-slate-500 font-medium">Tikrinama žymos informacija...</p>
+      <p class="text-xs text-slate-500 font-medium">Tikrinama gaminio informacija...</p>
     </div>
 
-    <!-- PIRKĖJO AKTYVAVIMAS -->
+    <!-- 1. TIK GAMYKLINĖ PERŽIŪRA (GAMYBOS PASAS) -->
+    <div id="factoryPreviewState" class="hidden bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-5 text-center">
+      <div class="w-14 h-14 bg-indigo-50 border border-indigo-200 text-indigo-700 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-inner">
+        <i id="previewIcon" class="fa-solid fa-tag"></i>
+      </div>
+
+      <div>
+        <span id="previewTechBadge" class="text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded border"></span>
+        <h1 id="previewTitle" class="text-xl font-black text-slate-950 mt-2"></h1>
+        <p id="previewId" class="font-mono text-xs text-slate-400 mt-0.5 font-bold"></p>
+      </div>
+
+      <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 text-xs text-left space-y-2">
+        <div class="flex justify-between border-b border-slate-200/50 pb-1.5">
+          <span class="text-slate-500 font-medium">Gaminio tipas:</span>
+          <span id="previewTypeTxt" class="font-bold text-slate-800"></span>
+        </div>
+        <div class="flex justify-between border-b border-slate-200/50 pb-1.5">
+          <span class="text-slate-500 font-medium">Fizinis nešiklis:</span>
+          <span id="previewTechTxt" class="font-bold text-indigo-700"></span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500 font-medium">Gamybos statusas:</span>
+          <span id="previewStatusTxt" class="font-bold text-emerald-700">Paruošta platinimui</span>
+        </div>
+      </div>
+
+      <p class="text-[11px] text-slate-400 leading-relaxed">
+        Tai yra gamyklinė gaminio peržiūra. Pirkėjui nuskenavus šį gaminį bus atidarytas apsaugos aktyvavimo vedlys.
+      </p>
+    </div>
+
+    <!-- 2. PIRKĖJO AKTYVAVIMAS (RODOMA PIRKĖJUI) -->
     <div id="batchActivationState" class="hidden bg-white border-2 border-emerald-700 rounded-2xl p-6 shadow-sm space-y-5">
       <div>
         <span class="text-[10px] font-black uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">Naujas gaminys</span>
@@ -76,7 +108,7 @@
       <div id="claimStatus" class="hidden text-xs p-3 rounded-xl text-center"></div>
     </div>
 
-    <!-- RADĖJO KORTELĖ -->
+    <!-- 3. RADĖJO KORTELĖ (AKTYVUOTAM GAMINIO RADIMUI) -->
     <div id="finderCardState" class="hidden bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
       <div class="flex justify-between items-start border-b border-slate-100 pb-3">
         <div>
@@ -136,8 +168,8 @@
     var activeLang = "lt", currentTagData = null;
 
     var DICT = {
-      lt: { btn: "EN", btn_dash: "Pultas", lost_alert: "Paskelbta paieška!", btn_call: "Anoniminis skambutis savininkui", btn_gps: "Nusiųsti radimo vietą (GPS)", reward_prefix: "Atlygis: " },
-      en: { btn: "LT", btn_dash: "Dashboard", lost_alert: "Lost Mode Active!", btn_call: "Anonymous Call to Owner", btn_gps: "Send Found Location (GPS)", reward_prefix: "Reward: " }
+      lt: { btn: "EN", btn_dash: "Pultas", lost_alert: "Paskelbta paieška!", btn_call: "Anoniminis skambutis savininkui", btn_gps: "Nusiųsti radimo vietą (GPS)" },
+      en: { btn: "LT", btn_dash: "Dashboard", lost_alert: "Lost Mode Active!", btn_call: "Anonymous Call to Owner", btn_gps: "Send Found Location (GPS)" }
     };
 
     function setLanguage(l) {
@@ -163,7 +195,6 @@
       }
     }
 
-    // Lanksti paieška: suformuoja variantus su brūkšneliu ir be jo
     function getCleanVariants(raw) {
       if (!raw) return [];
       var clean = raw.trim().toUpperCase().replace(/[\s]/g, '');
@@ -173,7 +204,10 @@
     }
 
     async function loadTag() {
-      var p = new URLSearchParams(window.location.search).get('id');
+      var urlParams = new URLSearchParams(window.location.search);
+      var p = urlParams.get('id');
+      var isPreview = urlParams.get('preview') === '1';
+
       if (!p) { showState('notFound'); return; }
 
       var variants = getCleanVariants(p);
@@ -188,6 +222,14 @@
 
         currentTagData = data[0];
 
+        // JEI ATIDARYTA IŠ GAMINTOJO SU PREVIEW=1: RODYTI TIK GAMINIO INFORMACIJĄ
+        if (isPreview) {
+          setupFactoryPreview(currentTagData);
+          showState('preview');
+          return;
+        }
+
+        // KITAIP - PIRKĖJO ARBA RADĖJO VAIZDAS
         if (currentTagData.status === 'batch_ready' || (!currentTagData.user_email && currentTagData.activation_secret)) {
           document.getElementById('batchTagId').innerText = currentTagData.id;
           document.getElementById('claimName').value = currentTagData.name || '';
@@ -199,12 +241,45 @@
       } catch(e) { showState('notFound'); }
     }
 
+    function setupFactoryPreview(tag) {
+      document.getElementById('previewTitle').innerText = tag.name || 'Gaminys';
+      document.getElementById('previewId').innerText = '#' + tag.id;
+
+      var tech = tag.tag_technology === 'nfc' ? 'NFC Žyma' : (tag.tag_technology === 'hybrid' ? 'QR + NFC Hibridas' : 'QR Kodas');
+      var techBadge = document.getElementById('previewTechBadge');
+      techBadge.innerText = tech;
+      techBadge.className = tag.tag_technology === 'nfc' 
+        ? "text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded bg-indigo-50 text-indigo-700 border border-indigo-200"
+        : "text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded bg-slate-100 text-slate-700 border border-slate-300";
+
+      document.getElementById('previewTechTxt').innerText = tech;
+      var typeTxt = tag.type === 'pet' ? 'Augintinis' : (tag.type === 'sos' ? 'SOS / Medicina' : 'Lagaminas / Krepšys');
+      document.getElementById('previewTypeTxt').innerText = typeTxt;
+      
+      var icon = document.getElementById('previewIcon');
+      if (tag.type === 'pet') icon.className = "fa-solid fa-paw";
+      else if (tag.type === 'sos') icon.className = "fa-solid fa-heart-pulse";
+      else icon.className = "fa-solid fa-suitcase";
+
+      var statusTxt = document.getElementById('previewStatusTxt');
+      if (tag.status === 'active' || tag.user_email) {
+        statusTxt.innerText = "Aktyvuota savininko";
+        statusTxt.className = "font-bold text-indigo-700";
+      } else {
+        statusTxt.innerText = "Paruošta platinimui (laukia pirkėjo)";
+        statusTxt.className = "font-bold text-emerald-700";
+      }
+    }
+
     function showState(s) {
       document.getElementById('loadingState').classList.add('hidden');
+      document.getElementById('factoryPreviewState').classList.add('hidden');
       document.getElementById('batchActivationState').classList.add('hidden');
       document.getElementById('finderCardState').classList.add('hidden');
       document.getElementById('notFoundState').classList.add('hidden');
-      if (s === 'batch') document.getElementById('batchActivationState').classList.remove('hidden');
+
+      if (s === 'preview') document.getElementById('factoryPreviewState').classList.remove('hidden');
+      else if (s === 'batch') document.getElementById('batchActivationState').classList.remove('hidden');
       else if (s === 'finder') document.getElementById('finderCardState').classList.remove('hidden');
       else if (s === 'notFound') document.getElementById('notFoundState').classList.remove('hidden');
     }
